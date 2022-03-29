@@ -1,6 +1,6 @@
 <template>
-  <div class="home">
-    HOME
+  <div class="moderate">
+    MODERAR
   </div>
 </template>
 
