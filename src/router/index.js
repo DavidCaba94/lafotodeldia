@@ -3,6 +3,7 @@ import Home from '../views/Home.vue'
 import Moderate from '../views/Moderate.vue'
 import Ranking from '../views/Ranking.vue'
 import Historical from '../views/Historical.vue'
+import User from '../views/User.vue'
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     path: '/historical',
     name: 'Historical',
     component: Historical
+  },
+  {
+    path: '/user',
+    name: 'User',
+    component: User
   }
 ]
 
