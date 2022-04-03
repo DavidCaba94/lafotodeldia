@@ -1,7 +1,7 @@
 <template>
   <div class="menu">
     <div id="nav">
-      <div class="desktop-menu" v-if="!screenWidthMobile">
+      <div class="desktop-menu">
         <div class="icon-lettering">
           <div class="icon-img"></div>
           <div class="lettering"></div>
@@ -22,14 +22,14 @@
           <div class="user-img"></div>
         </router-link>
       </div>
-      <div class="header-mobile" v-if="screenWidthMobile">
+      <div class="header-mobile">
         <div class="icon-img"></div>
         <div class="lettering"></div>
         <router-link to="/user">
           <div class="user-img"></div>
         </router-link>
       </div>
-      <div class="mobile-menu" v-if="screenWidthMobile">
+      <div class="mobile-menu">
         <router-link to="/">
           <div class="mobile-item">
             <img alt="Inicio" class="mobile-item-image" src="../assets/img/home.png">
@@ -69,14 +69,10 @@ export default {
     }
   },
   computed: {
-    screenWidthMobile() {
-      return this.isMobile();
-    }
+
   },
   methods: {
-    isMobile() {
-      return screen.width <= 768;
-    }
+
   }
 }
 </script>
@@ -119,7 +115,7 @@ export default {
   top: 0;
   -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1); 
   box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: space-around;
   flex-wrap: nowrap;
@@ -195,5 +191,19 @@ export default {
   align-items: center;
   justify-content: space-between;
   flex-wrap: nowrap;
+}
+
+@media (min-width: 768px) {
+  .desktop-menu {
+    display: flex;
+  }
+
+  .mobile-menu {
+    display: none;
+  }
+
+  .header-mobile {
+    display: none;
+  }
 }
 </style>
