@@ -1,6 +1,11 @@
 <template>
   <div class="ranking">
-    <div class="fecha-actual">{{ diaActual }}/{{ mesActual }}/{{ anoActual }}</div>
+    <div class="selector-tiempo">
+      <div id="dia" class="item-tiempo" @click="tiempoSeleccionado = 'dia'; setTabValue()">Día</div>
+      <div id="mes" class="item-tiempo" @click="tiempoSeleccionado = 'mes'; setTabValue()">Mes</div>
+      <div id="ano" class="item-tiempo" @click="tiempoSeleccionado = 'ano'; setTabValue()">Año</div>
+    </div>
+    <div class="fecha-actual">{{ finalTimeLabel }}</div>
     <div class="items-container">
       <RankingItem 
         urlImage='https://neliosoftware.com/es/wp-content/uploads/sites/3/2018/07/aziz-acharki-549137-unsplash-1200x775.jpg'
@@ -36,13 +41,41 @@ import RankingItem from '../components/RankingItem.vue';
 export default {
   data() {
     return {
+      meses: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
       diaActual: new Date().getDate(),
       mesActual: new Date().getMonth(),
-      anoActual: new Date().getFullYear()
+      anoActual: new Date().getFullYear(),
+      tiempoSeleccionado: 'dia',
+      finalTimeLabel: ''
     }
   },
   components: {
     RankingItem
+  },
+  mounted() {
+    this.setTabValue();
+  },
+  methods: {
+    setTabValue() {
+      document.getElementById("dia").classList.remove("tiempo-seleccionado");
+      document.getElementById("mes").classList.remove("tiempo-seleccionado");
+      document.getElementById("ano").classList.remove("tiempo-seleccionado");
+      document.getElementById(this.tiempoSeleccionado).classList.add("tiempo-seleccionado");
+      this.setLabelValue(this.tiempoSeleccionado);
+    },
+    setLabelValue(t) {
+      switch(t) {
+        case 'dia':
+          this.finalTimeLabel = this.diaActual + ' de ' + this.meses[this.mesActual] + ' de ' + this.anoActual;
+          break;
+        case 'mes':
+          this.finalTimeLabel = this.meses[this.mesActual];
+          break;
+        case 'ano':
+          this.finalTimeLabel = this.anoActual;
+          break;
+      }
+    }
   }
 }
 </script>
@@ -64,17 +97,36 @@ export default {
 }
 
 .fecha-actual {
-  width: 90%;
-  max-width: 900px;
+  max-width: 280px;
   margin: auto;
   margin-top: 10px;
   margin-bottom: 10px;
   font-weight: 500;
   font-size: 20px;
   color: #000000;
-  background-color: #f0f0f0;
+  border: 1px solid #f0f0f0;
   border-radius: 5px;
   padding: 5px;
+}
+
+.selector-tiempo {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-wrap: nowrap;
+}
+
+.item-tiempo {
+  width: 33%;
+  border-radius: 5px;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.tiempo-seleccionado {
+  background-color: #f0f0f0;
 }
 
 @media (min-width: 768px) {
