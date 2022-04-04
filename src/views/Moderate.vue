@@ -80,6 +80,8 @@ export default {
 }
 
 .vote-button {
+  width: 40px;
+  height: 40px;
   padding: 10px;
   background-color: #ffffff;
   border-radius: 50px;
@@ -91,6 +93,7 @@ export default {
 
 .vote-button img {
   width: 30px;
+  margin-top: 5px;
 }
 
 @media (min-width: 768px) {
