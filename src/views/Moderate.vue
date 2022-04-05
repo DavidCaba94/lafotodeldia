@@ -1,5 +1,8 @@
 <template>
-  <div class="moderate">
+  <div v-if="!userLogged">
+    <Unauthorized />
+  </div>
+  <div class="moderate" v-if="userLogged">
     <p class="moderate-text">Tú decides con tu voto si esta imagen merece ser La Foto del Día</p>
     <div class="items-container">
       <ModerateItem 
@@ -21,6 +24,7 @@
 
 <script>
 import ModerateItem from '../components/ModerateItem.vue';
+import Unauthorized from '../components/Unauthorized.vue';
 
 export default {
   data() {
@@ -32,7 +36,20 @@ export default {
     }
   },
   components: {
-    ModerateItem
+    ModerateItem,
+    Unauthorized
+  },
+  computed: {
+    userLogged() {
+      var isLogged = false;
+      if (this.$store.state.login.user !== '' && this.$store.state.login.pass !== '') {
+        isLogged = true;
+      } else {
+        isLogged = false;
+      }
+
+      return isLogged;
+    }
   },
   methods: {
     getFoto() {

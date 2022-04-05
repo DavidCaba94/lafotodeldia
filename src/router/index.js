@@ -5,6 +5,8 @@ import Ranking from '../views/Ranking.vue'
 import Historical from '../views/Historical.vue'
 import User from '../views/User.vue'
 import Products from '../views/Products.vue'
+import Login from '../views/Login.vue'
+import Registro from '../views/Registro.vue'
 
 const routes = [
   {
@@ -36,6 +38,16 @@ const routes = [
     path: '/products',
     name: 'Products',
     component: Products
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login
+  },
+  {
+    path: '/registro',
+    name: 'Registro',
+    component: Registro
   }
 ]
 

@@ -19,14 +19,16 @@
           <div class="desktop-item">Historial</div>
         </router-link>
         <router-link to="/user">
-          <div class="user-img"></div>
+          <div class="user-img" v-if="!userLogged"></div>
+          <div class="user-loged-img" v-if="userLogged">{{ userNameInicial }}</div>
         </router-link>
       </div>
       <div class="header-mobile">
         <div class="icon-img"></div>
         <div class="lettering"></div>
         <router-link to="/user">
-          <div class="user-img"></div>
+          <div class="user-img" v-if="!userLogged"></div>
+          <div class="user-loged-img" v-if="userLogged">{{ userNameInicial }}</div>
         </router-link>
       </div>
       <div class="mobile-menu">
@@ -65,11 +67,20 @@ export default {
   name: 'Menu',
   data() {
     return {
-
+      userNameInicial: this.$store.state.login.user.charAt(0).toUpperCase()
     }
   },
   computed: {
+    userLogged() {
+      var isLogged = false;
+      if (this.$store.state.login.user !== '' && this.$store.state.login.pass !== '') {
+        isLogged = true;
+      } else {
+        isLogged = false;
+      }
 
+      return isLogged;
+    }
   },
   methods: {
 
@@ -167,6 +178,18 @@ export default {
   cursor: pointer;
 }
 
+.user-loged-img {
+  width: 30px;
+  height: 30px;
+  font-size: 24px;
+  font-weight: 700;
+  color: #000000;
+  border: 1px solid #000000;
+  margin: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
 .icon-img {
   width: 30px;
   height: 30px;
@@ -175,6 +198,7 @@ export default {
   background-size: cover;
   background-repeat: no-repeat;
   margin: 10px;
+  margin-left: 15px;
 }
 
 .lettering {
