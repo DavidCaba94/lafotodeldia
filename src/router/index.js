@@ -4,6 +4,7 @@ import Moderate from '../views/Moderate.vue'
 import Ranking from '../views/Ranking.vue'
 import Historical from '../views/Historical.vue'
 import User from '../views/User.vue'
+import Products from '../views/Products.vue'
 
 const routes = [
   {
@@ -30,6 +31,11 @@ const routes = [
     path: '/user',
     name: 'User',
     component: User
+  },
+  {
+    path: '/products',
+    name: 'Products',
+    component: Products
   }
 ]
 
