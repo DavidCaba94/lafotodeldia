@@ -32,6 +32,7 @@ export default {
 <style scoped>
 .unauthorized {
   margin-top: 150px;
+  padding: 10px;
 }
 
 a {
