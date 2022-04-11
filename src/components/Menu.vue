@@ -70,11 +70,15 @@ export default {
       userNameInicial: this.$store.state.login.user.charAt(0).toUpperCase()
     }
   },
+  created() {
+    this.setStoredLogin();
+  },
   computed: {
     userLogged() {
       var isLogged = false;
       if (this.$store.state.login.user !== '' && this.$store.state.login.pass !== '') {
         isLogged = true;
+        this.setUserInicial();
       } else {
         isLogged = false;
       }
@@ -83,7 +87,14 @@ export default {
     }
   },
   methods: {
-
+    setUserInicial() {
+      this.userNameInicial = this.$store.state.login.user.charAt(0).toUpperCase();
+    },
+    setStoredLogin() {
+      if (JSON.parse(localStorage.getItem('user'))) {
+        this.$store.commit('setStoredLogin', JSON.parse(localStorage.getItem('user')));
+      }
+    }
   }
 }
 </script>
