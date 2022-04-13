@@ -1,4 +1,7 @@
 <template>
+  <div v-if="showImage">
+    <DetailImage @closeFullImage="closeFullImage" />
+  </div>
   <div class="historical">
     <div class="selector-tiempo">
       <div id="mes" class="item-tiempo" @click="setMes()">{{ mesSeleccionado }}</div>
@@ -9,21 +12,25 @@
         urlImage='https://neliosoftware.com/es/wp-content/uploads/sites/3/2018/07/aziz-acharki-549137-unsplash-1200x775.jpg'
         date='23/03/2022'
         username='username'
+        @click="showFullImage()"
       />
       <HistoricalItem 
         urlImage='https://c.pxhere.com/photos/1d/87/adult_blur_camera_canon_capture_dslr_dslr_camera_fashion-1549227.jpg!d'
         date='24/03/2022'
         username='username'
+        @click="showFullImage()"
       />
       <HistoricalItem 
         urlImage='https://images.unsplash.com/photo-1574217013471-c32c6846cef7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8Zm90b3xlbnwwfHwwfHw%3D&w=1000&q=80'
         date='25/03/2022'
         username='username'
+        @click="showFullImage()"
       />
       <HistoricalItem 
         urlImage='https://images.unsplash.com/photo-1606946887361-78feb162a525?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Zm90b3xlbnwwfHwwfHw%3D&w=1000&q=80'
         date='26/03/2022'
         username='username'
+        @click="showFullImage()"
       />
     </div>
   </div>
@@ -45,6 +52,7 @@
 
 <script>
 import HistoricalItem from '../components/HistoricalItem.vue';
+import DetailImage from '../components/DetailImage.vue';
 
 export default {
   data() {
@@ -56,11 +64,13 @@ export default {
       mesSeleccionado: '',
       anoSeleccionado: '',
       modalMeses: false,
-      modalAnos: false
+      modalAnos: false,
+      showImage: false
     }
   },
   components: {
-    HistoricalItem
+    HistoricalItem,
+    DetailImage
   },
   mounted() {
     this.mesSeleccionado = this.meses[this.mesActual];
@@ -80,6 +90,12 @@ export default {
     selectAno(ano) {
       this.anoSeleccionado = ano;
       this.modalAnos = false;
+    },
+    showFullImage() {
+      this.showImage = true;
+    },
+    closeFullImage() {
+      this.showImage = false;
     }
   }
 }

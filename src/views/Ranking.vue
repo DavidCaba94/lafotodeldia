@@ -1,4 +1,7 @@
 <template>
+  <div v-if="showImage">
+    <DetailImage @closeFullImage="closeFullImage" />
+  </div>
   <div class="ranking">
     <div class="selector-tiempo">
       <div id="dia" class="item-tiempo" @click="tiempoSeleccionado = 'dia'; setTabValue()">Día</div>
@@ -12,24 +15,28 @@
         username='username'
         order="1"
         likes="7383"
+        @click="showFullImage()"
       />
       <RankingItem 
         urlImage='https://c.pxhere.com/photos/1d/87/adult_blur_camera_canon_capture_dslr_dslr_camera_fashion-1549227.jpg!d'
         username='username'
         order="2"
         likes="646"
+        @click="showFullImage()"
       />
       <RankingItem 
         urlImage='https://images.unsplash.com/photo-1574217013471-c32c6846cef7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8Zm90b3xlbnwwfHwwfHw%3D&w=1000&q=80'
         username='username'
         order="3"
         likes="54"
+        @click="showFullImage()"
       />
       <RankingItem 
         urlImage='https://images.unsplash.com/photo-1606946887361-78feb162a525?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Zm90b3xlbnwwfHwwfHw%3D&w=1000&q=80'
         username='username'
         order="4"
         likes="2"
+        @click="showFullImage()"
       />
     </div>
   </div>
@@ -37,6 +44,7 @@
 
 <script>
 import RankingItem from '../components/RankingItem.vue';
+import DetailImage from '../components/DetailImage.vue';
 
 export default {
   data() {
@@ -46,11 +54,13 @@ export default {
       mesActual: new Date().getMonth(),
       anoActual: new Date().getFullYear(),
       tiempoSeleccionado: 'dia',
-      finalTimeLabel: ''
+      finalTimeLabel: '',
+      showImage: false
     }
   },
   components: {
-    RankingItem
+    RankingItem,
+    DetailImage
   },
   mounted() {
     this.setTabValue();
@@ -75,6 +85,12 @@ export default {
           this.finalTimeLabel = this.anoActual;
           break;
       }
+    },
+    showFullImage() {
+      this.showImage = true;
+    },
+    closeFullImage() {
+      this.showImage = false;
     }
   }
 }
