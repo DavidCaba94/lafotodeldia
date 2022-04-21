@@ -37,6 +37,7 @@ export default {
   backdrop-filter: blur(5px);
   position: fixed;
   top: 0;
+  z-index: 9;
 }
 
 .close-box {
@@ -60,5 +61,7 @@ export default {
   width: 90%;
   max-width: 600px;
   border-radius: 5px;
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1); 
+  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
 }
 </style>

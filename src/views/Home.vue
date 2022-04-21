@@ -11,6 +11,12 @@
         </div>
       </div>
     </router-link>
+    <p class="concurso-text">
+      El total recaudado en el año en comisiones de la venta de los productos irá destinado a los 
+      premios del usuario con mayor número de fotos del día, mayor número de fotos del mes y la mejor foto 
+      del año
+    </p>
+    <p class="recaudacion-text">Total recaudado: <strong>183,45€</strong></p>
     <p class="home-text">Esta es la foto ganadora del día de ayer</p>
     <div class="items-container">
       <HistoricalItem 
@@ -61,6 +67,18 @@ a {
 .btn-productos img {
   width: 20px;
   margin-top: 10px;
+}
+
+.home-text {
+  font-weight: 700;
+}
+
+.concurso-text {
+  font-size: 12px;
+}
+
+.recaudacion-text {
+  font-size: 14px;
 }
 
 .items-container {

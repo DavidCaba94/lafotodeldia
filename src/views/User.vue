@@ -5,9 +5,22 @@
   <div v-if="showImage">
     <DetailImage @closeFullImage="closeFullImage" />
   </div>
+  <div v-if="showUpload">
+    <UploadImage @closeUploadImage="closeUploadImage" />
+  </div>
+  <div v-if="showUploadProfile">
+    <UploadProfileImage @closeUploadProfileImage="closeUploadProfileImage" />
+  </div>
   <div class="user" v-if="userLogged">
-    <div class="img-perfil"></div>
-    <div class="user-name">{{ username }}</div>
+    <div id="img-perfil" class="img-perfil" v-bind:style="{ backgroundImage: 'url(' + foto + ')' }">
+      <div class="edit-img-perfil" @click="showUploadProfileImage()">
+        <img src="../assets/img/edit.png">
+      </div>
+    </div>
+    <div class="user-name">
+      <img src="../assets/img/verified.png" v-if="verified">
+      {{ username }}
+    </div>
     <div class="prizes-box">
       <div class="prize-item">
         <p class="titulo-premio">Foto del día</p>
@@ -24,6 +37,10 @@
         <img src="../assets/img/prize-year.png" class="prize-image">
         <p class="num-premios">0</p>
       </div>
+    </div>
+    <div class="new-image" @click="showUploadImage()">
+      <img src="../assets/img/photo-light.png" alt="">
+      <p>SUBIR IMAGEN</p>
     </div>
     <div class="fotos-box">
       <img class="foto-item" @click="showFullImage()" src="https://neliosoftware.com/es/wp-content/uploads/sites/3/2018/07/aziz-acharki-549137-unsplash-1200x775.jpg">
@@ -56,21 +73,29 @@
 <script>
 import Unauthorized from '../components/Unauthorized.vue';
 import DetailImage from '../components/DetailImage.vue';
+import UploadImage from '../components/UploadImage.vue';
+import UploadProfileImage from '../components/UploadProfileImage.vue';
 
 export default {
   data() {
     return {
       username: '',
       pass: '',
+      foto: '',
+      verified: false,
       oldPass: '',
       newPass: '',
       showImage: false,
+      showUpload: false,
+      showUploadProfile: false,
       errorLog: null
     }
   },
   components: {
     Unauthorized,
-    DetailImage
+    DetailImage,
+    UploadImage,
+    UploadProfileImage
   },
   computed: {
     userLogged() {
@@ -94,6 +119,10 @@ export default {
     cargarDatosUser() {
       this.username = this.$store.state.login.user;
       this.pass = this.$store.state.login.pass;
+      if (JSON.parse(localStorage.getItem('user'))) {
+        this.foto = JSON.parse(localStorage.getItem('user')).foto ? JSON.parse(localStorage.getItem('user')).foto : 'https://c.pxhere.com/photos/1d/87/adult_blur_camera_canon_capture_dslr_dslr_camera_fashion-1549227.jpg!d';
+        this.verified = JSON.parse(localStorage.getItem('user')).verificado === '1' ? true : false;
+      }
     },
     changePass() {
       this.errorLog = null;
@@ -102,6 +131,19 @@ export default {
       } else {
         this.errorLog = 'Contraseña antigua incorrecta';
       }
+    },
+    showUploadImage() {
+      this.showUpload = true;
+    },
+    closeUploadImage() {
+      this.showUpload = false;
+    },
+    showUploadProfileImage() {
+      this.showUploadProfile = true;
+    },
+    closeUploadProfileImage() {
+      this.showUploadProfile = false;
+      this.foto = JSON.parse(localStorage.getItem('user')).foto;
     },
     showFullImage() {
       this.showImage = true;
@@ -144,9 +186,37 @@ export default {
   margin-bottom: 10px;
 }
 
+.edit-img-perfil {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  margin-top: 150px;
+  margin-left: 150px;
+  background-color: #ffffff;
+  border: 1px solid #cfcfcf;
+  border-radius: 50px;
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1); 
+  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+  cursor: pointer;
+}
+
+.edit-img-perfil img {
+  width: 30px;
+  margin-top: 10px;
+}
+
 .user-name {
   font-weight: 700;
   margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+
+.user-name img {
+  width: 20px;
+  margin-right: 5px;
 }
 
 .prizes-box {
@@ -275,5 +345,30 @@ export default {
     color: #ff6d6d;
     font-weight: 300;
     margin-top: -10px;
+}
+
+.new-image {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: nowrap;
+    max-width: 150px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    background-color: #1fbd54;
+    color: #ffffff;
+    border-radius: 5px;
+    padding: 5px;
+    cursor: pointer;
+    -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1); 
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+}
+
+.new-image img {
+    width: 30px;
+}
+
+.new-image p {
+    margin: 0;
 }
 </style>

@@ -60,5 +60,20 @@ export default {
       }
     });
     return successReg;
+  },
+  async updateFotoUsuario(form) {
+    let successUpdate = false;
+    await axios.post(url, {
+      opcion:5, 
+      id: form.id,
+      foto: form.foto
+    }).then(response =>{
+      if(response.status == 200){
+        successUpdate = true;
+      } else {
+        console.log('error');
+      }
+    });
+    return successUpdate;
   }
 }

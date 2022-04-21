@@ -28,38 +28,15 @@ $id = (isset($_POST['id'])) ? $_POST['id'] : '';
 $user = (isset($_POST['user'])) ? $_POST['user'] : '';
 $pass = (isset($_POST['pass'])) ? $_POST['pass'] : '';
 $email = (isset($_POST['email'])) ? $_POST['email'] : '';
-$foto = (isset($_POST['foto'])) ? $_POST['foto'] : '';
 
 $pass = md5($pass);
 
 switch($opcion){
 	case 1:
-        $consulta = "SELECT * FROM users ORDER BY id DESC";
+        $consulta = "SELECT * FROM images ORDER BY id DESC";
         $resultado = $conexion->prepare($consulta);
         $resultado->execute();
         $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
-        break;
-    case 2:
-        $consulta = "INSERT INTO users (user, pass, email, verificado) VALUES('$user', '$pass', '$email', 0) ";
-        $resultado = $conexion->prepare($consulta);
-        $resultado->execute();                
-        break;
-    case 3:
-        $consulta = "SELECT user FROM users WHERE user = '$user' OR email = '$email'";
-        $resultado = $conexion->prepare($consulta);
-        $resultado->execute();
-        $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
-        break;
-    case 4:
-        $consulta = "SELECT * FROM users WHERE (user = '$user' OR email = '$email') AND pass = '$pass'";
-        $resultado = $conexion->prepare($consulta);
-        $resultado->execute();
-        $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
-        break;
-    case 5:
-        $consulta = "UPDATE users SET foto='$foto' WHERE id='$id' ";	
-        $resultado = $conexion->prepare($consulta);
-        $resultado->execute();                
         break;
 }
 print json_encode($data, JSON_UNESCAPED_UNICODE);
