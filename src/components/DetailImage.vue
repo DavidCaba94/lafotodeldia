@@ -57,8 +57,13 @@ export default {
 }
 
 .img-container {
+  height: 80%;
   margin-top: 20px;
   padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
 }
 
 .img-show {

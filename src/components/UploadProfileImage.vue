@@ -110,6 +110,7 @@ export default {
   margin: 0 auto;
   border-radius: 5px;
   margin-top: 20px;
+  margin-bottom: 70px;
   padding: 10px;
   background-color: #ffffff;
   -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1); 
@@ -142,6 +143,7 @@ export default {
 }
 
 #upload-photo {
+  width: 10px;
   opacity: 0;
   position: absolute;
   z-index: -1;
