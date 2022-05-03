@@ -25,15 +25,31 @@ permisos();
 
 $opcion = (isset($_POST['opcion'])) ? $_POST['opcion'] : '';
 $id = (isset($_POST['id'])) ? $_POST['id'] : '';
-$user = (isset($_POST['user'])) ? $_POST['user'] : '';
-$pass = (isset($_POST['pass'])) ? $_POST['pass'] : '';
-$email = (isset($_POST['email'])) ? $_POST['email'] : '';
-
-$pass = md5($pass);
+$id_user = (isset($_POST['id_user'])) ? $_POST['id_user'] : '';
+$url = (isset($_POST['url'])) ? $_POST['url'] : '';
+$likes = (isset($_POST['likes'])) ? $_POST['likes'] : '';
+$date = (isset($_POST['date'])) ? $_POST['date'] : '';
 
 switch($opcion){
 	case 1:
         $consulta = "SELECT * FROM images ORDER BY id DESC";
+        $resultado = $conexion->prepare($consulta);
+        $resultado->execute();
+        $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
+        break;
+  case 2:
+        $consulta = "INSERT INTO images (id_user, url, likes, date) VALUES('$id_user', '$url', '$likes', '$date') ";
+        $resultado = $conexion->prepare($consulta);
+        $resultado->execute();                
+        break;
+  case 3:
+        $consulta = "SELECT * FROM images WHERE id_user = '$id_user' ORDER BY id DESC";
+        $resultado = $conexion->prepare($consulta);
+        $resultado->execute();
+        $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
+        break;
+  case 4:
+        $consulta = "SELECT * FROM images WHERE id_user = '$id_user' ORDER BY id DESC LIMIT 9";
         $resultado = $conexion->prepare($consulta);
         $resultado->execute();
         $data=$resultado->fetchAll(PDO::FETCH_ASSOC);

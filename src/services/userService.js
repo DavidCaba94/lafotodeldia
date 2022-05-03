@@ -34,7 +34,6 @@ export default {
     await axios.post(url, {
       opcion:4,
       user: form.user,
-      email: form.email,
       pass: form.pass
     }).then(response =>{
       if(response.status == 200){

@@ -3,8 +3,12 @@
     <div id="nav">
       <div class="desktop-menu">
         <div class="icon-lettering">
-          <div class="icon-img"></div>
-          <div class="lettering"></div>
+          <a href="/">
+            <div class="icon-img"></div>
+          </a>
+          <a href="/">
+            <div class="lettering"></div>
+          </a>
         </div>
         <router-link to="/">
           <div class="desktop-item">Inicio</div>
@@ -20,15 +24,23 @@
         </router-link>
         <router-link to="/user">
           <div class="user-img" v-if="!userLogged"></div>
-          <div class="user-loged-img" v-if="userLogged">{{ userNameInicial }}</div>
+          <div class="user-loged-no-img" v-if="userLogged && userImage === null">{{ userNameInicial }}</div>
+          <div class="user-loged-img" v-if="userLogged && userImage !== null">
+            <div class="img-user-loged" v-bind:style="{ backgroundImage: 'url(' + userImage + ')' }"></div>
+          </div>
         </router-link>
       </div>
       <div class="header-mobile">
-        <div class="icon-img"></div>
+        <a href="/">
+          <div class="icon-img"></div>
+        </a>
         <div class="lettering"></div>
         <router-link to="/user">
           <div class="user-img" v-if="!userLogged"></div>
-          <div class="user-loged-img" v-if="userLogged">{{ userNameInicial }}</div>
+          <div class="user-loged-no-img" v-if="userLogged && userImage === null">{{ userNameInicial }}</div>
+          <div class="user-loged-img" v-if="userLogged && userImage !== null">
+            <div class="img-user-loged" v-bind:style="{ backgroundImage: 'url(' + userImage + ')' }"></div>
+          </div>
         </router-link>
       </div>
       <div class="mobile-menu">
@@ -67,7 +79,8 @@ export default {
   name: 'Menu',
   data() {
     return {
-      userNameInicial: this.$store.state.login.user.charAt(0).toUpperCase()
+      userNameInicial: this.$store.state.login.user.charAt(0).toUpperCase(),
+      userImage: this.$store.state.login.foto ? this.$store.state.login.foto : null
     }
   },
   created() {
@@ -89,6 +102,7 @@ export default {
   methods: {
     setUserInicial() {
       this.userNameInicial = this.$store.state.login.user.charAt(0).toUpperCase();
+      this.userImage = this.$store.state.login.foto ? this.$store.state.login.foto : null;
     },
     setStoredLogin() {
       if (JSON.parse(localStorage.getItem('user'))) {
@@ -127,6 +141,7 @@ export default {
   align-items: center;
   justify-content: space-around;
   flex-wrap: nowrap;
+  z-index: 1;
 }
 
 .desktop-menu {
@@ -155,6 +170,7 @@ export default {
   align-items: center;
   justify-content: space-between;
   flex-wrap: nowrap;
+  z-index: 1;
 }
 
 .header-mobile a {
@@ -189,7 +205,7 @@ export default {
   cursor: pointer;
 }
 
-.user-loged-img {
+.user-loged-no-img {
   width: 30px;
   height: 30px;
   font-size: 24px;
@@ -199,6 +215,29 @@ export default {
   margin: 10px;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.user-loged-img {
+  width: 35px;
+  height: 35px;
+  font-size: 24px;
+  font-weight: 700;
+  color: #000000;
+  border: 1px solid #000000;
+  margin: 10px;
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+.img-user-loged {
+  width: 33px;
+  height: 33px;
+  margin: 0 auto;
+  margin-top: 1px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 50px;
 }
 
 .icon-img {

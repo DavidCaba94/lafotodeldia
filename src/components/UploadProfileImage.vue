@@ -14,7 +14,7 @@
       <input type="file" name="photo" id="upload-photo" @change="changeInputImage()" />
       <img id="image-uploaded" class="image-uploaded" src="#" v-if="isFotoToShow">
       <div class="no-foto" v-if="!isFotoToShow"></div>
-      <div class="btn-guardar" @click="saveImage()">Publicar</div>
+      <div class="btn-guardar" @click="saveImage()">Guardar</div>
     </div>
   </div>
 </template>

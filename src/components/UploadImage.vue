@@ -46,19 +46,26 @@ export default {
           document.getElementById('image-uploaded').setAttribute("src", rawImg);
         }
         reader.readAsDataURL(file);
-        console.log(file);
         this.isFotoToShow = true;
       }
     },
     async saveImage() {
-      /*
-      let formData = new FormData();
-      let files = document.getElementById('upload-photo')[0].files[0];
-      formData.append('file', files);
-      */
-      let uploadedImage = await imageService.uploadImage();
-      if (uploadedImage) {
-        this.closeUploadImage();
+      var formData = new FormData();
+      var files = document.querySelector('#upload-photo').files[0];
+      formData.append('file',files);
+      let uploadedImage = await imageService.uploadImage(formData);
+      if (uploadedImage !== 0 && uploadedImage !== 1) {
+        debugger;
+        let dataForm = {
+          id_user: this.$store.state.login.id,
+          url: uploadedImage,
+          likes: 0,
+          date: new Date().toISOString().slice(0, 10)
+        };
+        let updateSuccess = await imageService.saveImage(dataForm);
+        if (updateSuccess) {
+          this.closeUploadImage();
+        }
       }
     }
   }

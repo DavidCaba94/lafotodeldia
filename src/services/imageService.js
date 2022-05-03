@@ -3,15 +3,11 @@ import axios from "axios";
 var url = "https://davidcaballerocalvo.es/lafotodeldia/rest/";
 
 export default {
-  async uploadImage(form) {
+  async uploadImage(file) {
     let uploadedImage;
-    await axios.post(url + 'upload_image.php', {
-      opcion:1,
-      user: form.user,
-      email: form.email
-    }).then(response =>{
+    await axios.post(url + 'upload_image.php', file).then(response =>{
       if(response.status == 200){
-        uploadedImage = response.data[0];
+        uploadedImage = response.data;
       } else {
         console.log('error');
       }
@@ -28,5 +24,50 @@ export default {
       }
     });
     return uploadedProfileImage;
+  },
+  async saveImage(form) {
+    let successSave = false;
+    await axios.post(url + 'images.php', {
+      opcion:2, 
+      id_user: form.id_user,
+      url: form.url, 
+      likes: form.likes,
+      date: form.date
+    }).then(response =>{
+      if(response.status == 200){
+        successSave = true;
+      } else {
+        console.log('error');
+      }
+    });
+    return successSave;
+  },
+  async getAllImagesByUser(id_user) {
+    let imagesArray = [];
+    await axios.post(url + 'images.php', {
+      opcion:3,
+      id_user: id_user
+    }).then(response =>{
+      if(response.status == 200){
+        imagesArray = response.data;
+      } else {
+        console.log('error');
+      }
+    });
+    return imagesArray;
+  },
+  async getFirstNineImagesByUser(id_user) {
+    let imagesArray = [];
+    await axios.post(url + 'images.php', {
+      opcion:4,
+      id_user: id_user
+    }).then(response =>{
+      if(response.status == 200){
+        imagesArray = response.data;
+      } else {
+        console.log('error');
+      }
+    });
+    return imagesArray;
   }
 }

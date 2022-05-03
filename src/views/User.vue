@@ -3,7 +3,9 @@
     <Unauthorized />
   </div>
   <div v-if="showImage">
-    <DetailImage @closeFullImage="closeFullImage" />
+    <DetailImage
+    :urlImage="selectedShowImage"
+    @closeFullImage="closeFullImage" />
   </div>
   <div v-if="showUpload">
     <UploadImage @closeUploadImage="closeUploadImage" />
@@ -19,7 +21,11 @@
     </div>
     <div class="user-name">
       <img src="../assets/img/verified.png" v-if="verified">
-      {{ username }}
+      @{{ username }}
+    </div>
+    <div class="verify-box" v-if="!verified">
+      <p>Verifica tu cuenta mediante un email</p>
+      <div class="verify-btn" @click="verificarCuenta()">VERIFICAR</div>
     </div>
     <div class="prizes-box">
       <div class="prize-item">
@@ -43,15 +49,13 @@
       <p>SUBIR IMAGEN</p>
     </div>
     <div class="fotos-box">
-      <img class="foto-item" @click="showFullImage()" src="https://neliosoftware.com/es/wp-content/uploads/sites/3/2018/07/aziz-acharki-549137-unsplash-1200x775.jpg">
-      <img class="foto-item" @click="showFullImage()" src="https://c.pxhere.com/photos/1d/87/adult_blur_camera_canon_capture_dslr_dslr_camera_fashion-1549227.jpg!d">
-      <img class="foto-item" @click="showFullImage()" src="https://images.unsplash.com/photo-1574217013471-c32c6846cef7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8Zm90b3xlbnwwfHwwfHw%3D&w=1000&q=80">
-      <img class="foto-item" @click="showFullImage()" src="https://images.unsplash.com/photo-1606946887361-78feb162a525?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Zm90b3xlbnwwfHwwfHw%3D&w=1000&q=80">
-      <img class="foto-item" @click="showFullImage()" src="https://neliosoftware.com/es/wp-content/uploads/sites/3/2018/07/aziz-acharki-549137-unsplash-1200x775.jpg">
-      <img class="foto-item" @click="showFullImage()" src="https://c.pxhere.com/photos/1d/87/adult_blur_camera_canon_capture_dslr_dslr_camera_fashion-1549227.jpg!d">
-      <img class="foto-item" @click="showFullImage()" src="https://images.unsplash.com/photo-1574217013471-c32c6846cef7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8Zm90b3xlbnwwfHwwfHw%3D&w=1000&q=80">
-      <img class="foto-item" @click="showFullImage()" src="https://images.unsplash.com/photo-1606946887361-78feb162a525?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Zm90b3xlbnwwfHwwfHw%3D&w=1000&q=80">
-      <img class="foto-item" @click="showFullImage()" src="https://neliosoftware.com/es/wp-content/uploads/sites/3/2018/07/aziz-acharki-549137-unsplash-1200x775.jpg">
+      <img
+        v-for="image of imagesArray"
+        :key="image.id"
+        class="foto-item"
+        @click="showFullImage(image.url)"
+        :src="image.url">
+      <p v-if="imagesArray.length === 0">No has publicado ninguna foto todavía</p>
     </div>
     <div class="ver-mas">
       <p>Ver todas las fotos</p>
@@ -75,6 +79,7 @@ import Unauthorized from '../components/Unauthorized.vue';
 import DetailImage from '../components/DetailImage.vue';
 import UploadImage from '../components/UploadImage.vue';
 import UploadProfileImage from '../components/UploadProfileImage.vue';
+import imageService from '../services/imageService.js';
 
 export default {
   data() {
@@ -88,7 +93,9 @@ export default {
       showImage: false,
       showUpload: false,
       showUploadProfile: false,
-      errorLog: null
+      errorLog: null,
+      imagesArray: [],
+      selectedShowImage: ''
     }
   },
   components: {
@@ -96,6 +103,9 @@ export default {
     DetailImage,
     UploadImage,
     UploadProfileImage
+  },
+  created() {
+    this.getAllUserImages();
   },
   computed: {
     userLogged() {
@@ -132,11 +142,18 @@ export default {
         this.errorLog = 'Contraseña antigua incorrecta';
       }
     },
+    async getAllUserImages() {
+      this.imagesArray = await imageService.getFirstNineImagesByUser(this.$store.state.login.id);
+    },
+    verificarCuenta() {
+      // verificar cuenta
+    },
     showUploadImage() {
       this.showUpload = true;
     },
     closeUploadImage() {
       this.showUpload = false;
+      this.getAllUserImages();
     },
     showUploadProfileImage() {
       this.showUploadProfile = true;
@@ -145,7 +162,8 @@ export default {
       this.showUploadProfile = false;
       this.foto = JSON.parse(localStorage.getItem('user')).foto;
     },
-    showFullImage() {
+    showFullImage(url) {
+      this.selectedShowImage = url;
       this.showImage = true;
     },
     closeFullImage() {
@@ -370,5 +388,33 @@ export default {
 
 .new-image p {
     margin: 0;
+}
+
+.verify-box {
+  max-width: 400px;
+  margin: 0 auto;
+  background-color: #74c4f1;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 20px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+
+.verify-box p {
+  margin: 0;
+}
+
+.verify-btn {
+  background-color: #3ea1da;
+  padding: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1); 
+  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+  cursor: pointer;
+  margin-left: 10px;
 }
 </style>

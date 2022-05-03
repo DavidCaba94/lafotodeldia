@@ -4,7 +4,7 @@
       <img class="close" @click="closeFullImage()" src="../assets/img/close.png">
     </div>
     <div class="img-container">
-      <img class="img-show" src="https://images.unsplash.com/photo-1606946887361-78feb162a525?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Zm90b3xlbnwwfHwwfHw%3D&w=1000&q=80">
+      <img class="img-show" :src="urlImage">
     </div>
   </div>
 </template>
@@ -16,6 +16,9 @@ export default {
     return {
 
     }
+  },
+  props: {
+      urlImage: String
   },
   computed: {
 

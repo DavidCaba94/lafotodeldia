@@ -4,7 +4,7 @@
       <p class="titulo-login">Log In</p>
       <p class="subtitulo-login">Entra para tener acceso a todas las funcionalidades</p>
       <div class="input-box">
-        <input type="text" placeholder="Email o Usuario" v-model="loginForm.user">
+        <input type="text" placeholder="Usuario" v-model="loginForm.user">
         <input type="password" placeholder="Contraseña" v-model="loginForm.pass">
       </div>
       <p id="error-log" class="error-log" v-if="errorLog">{{errorLog}}</p>
