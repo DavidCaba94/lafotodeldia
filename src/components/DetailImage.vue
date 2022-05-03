@@ -41,6 +41,7 @@ export default {
   position: fixed;
   top: 0;
   z-index: 9;
+  overflow-x: scroll;
 }
 
 .close-box {
