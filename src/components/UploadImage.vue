@@ -14,7 +14,8 @@
       <input type="file" name="photo" id="upload-photo" @change="changeInputImage()" />
       <img id="image-uploaded" class="image-uploaded" src="#" v-if="isFotoToShow">
       <div class="no-foto" v-if="!isFotoToShow"></div>
-      <div class="btn-guardar" @click="saveImage()">Publicar</div>
+      <div class="btn-guardar" v-if="!saving" @click="saveImage()">Publicar</div>
+      <div class="lds-ellipsis" v-if="saving"><div></div><div></div><div></div><div></div></div>
     </div>
   </div>
 </template>
@@ -26,7 +27,8 @@ export default {
   name: 'UploadImage',
   data() {
     return {
-      isFotoToShow: false
+      isFotoToShow: false,
+      saving: false
     }
   },
   computed: {
@@ -50,12 +52,12 @@ export default {
       }
     },
     async saveImage() {
+      this.saving = true;
       var formData = new FormData();
       var files = document.querySelector('#upload-photo').files[0];
       formData.append('file',files);
       let uploadedImage = await imageService.uploadImage(formData);
       if (uploadedImage !== 0 && uploadedImage !== 1) {
-        debugger;
         let dataForm = {
           id_user: this.$store.state.login.id,
           url: uploadedImage,
@@ -64,6 +66,7 @@ export default {
         };
         let updateSuccess = await imageService.saveImage(dataForm);
         if (updateSuccess) {
+          this.saving = false;
           this.closeUploadImage();
         }
       }
@@ -173,5 +176,62 @@ export default {
   background-position: center;
   background-repeat: no-repeat;
   opacity: 0.5;
+}
+
+/* LOADER */
+.lds-ellipsis {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 20px;
+  margin-top: 20px;
+}
+.lds-ellipsis div {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #1fbd54;
+  animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+.lds-ellipsis div:nth-child(1) {
+  left: 8px;
+  animation: lds-ellipsis1 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(2) {
+  left: 8px;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(3) {
+  left: 32px;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(4) {
+  left: 56px;
+  animation: lds-ellipsis3 0.6s infinite;
+}
+@keyframes lds-ellipsis1 {
+  0% {
+      transform: scale(0);
+  }
+  100% {
+      transform: scale(1);
+  }
+}
+@keyframes lds-ellipsis3 {
+  0% {
+      transform: scale(1);
+  }
+  100% {
+      transform: scale(0);
+  }
+}
+@keyframes lds-ellipsis2 {
+  0% {
+      transform: translate(0, 0);
+  }
+  100% {
+      transform: translate(24px, 0);
+  }
 }
 </style>
