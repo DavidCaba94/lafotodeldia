@@ -1,6 +1,8 @@
 <template>
   <div v-if="showImage">
-    <DetailImage @closeFullImage="closeFullImage" />
+    <DetailImage
+    :imageData="selectedShowImage"
+    @closeFullImage="closeFullImage" />
   </div>
   <div class="ranking">
     <div class="selector-tiempo">
@@ -9,42 +11,24 @@
       <div id="ano" class="item-tiempo" @click="tiempoSeleccionado = 'ano'; setTabValue()">Año</div>
     </div>
     <div class="fecha-actual">{{ finalTimeLabel }}</div>
-    <div class="items-container">
-      <RankingItem 
-        urlImage='https://neliosoftware.com/es/wp-content/uploads/sites/3/2018/07/aziz-acharki-549137-unsplash-1200x775.jpg'
-        username='username'
-        order="1"
-        likes="7383"
-        @click="showFullImage()"
-      />
-      <RankingItem 
-        urlImage='https://c.pxhere.com/photos/1d/87/adult_blur_camera_canon_capture_dslr_dslr_camera_fashion-1549227.jpg!d'
-        username='username'
-        order="2"
-        likes="646"
-        @click="showFullImage()"
-      />
-      <RankingItem 
-        urlImage='https://images.unsplash.com/photo-1574217013471-c32c6846cef7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8Zm90b3xlbnwwfHwwfHw%3D&w=1000&q=80'
-        username='username'
-        order="3"
-        likes="54"
-        @click="showFullImage()"
-      />
-      <RankingItem 
-        urlImage='https://images.unsplash.com/photo-1606946887361-78feb162a525?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Zm90b3xlbnwwfHwwfHw%3D&w=1000&q=80'
-        username='username'
-        order="4"
-        likes="2"
-        @click="showFullImage()"
+    <div class="items-container" v-if="!loading">
+      <RankingItem v-for="(image, index) of imagesArray" :key="image.id"
+        :urlImage="image.url"
+        :username="image.user"
+        :order="index + 1"
+        :likes="image.likes"
+        @click="showFullImage(image)"
       />
     </div>
+    <div class="lds-ellipsis" v-if="loading"><div></div><div></div><div></div><div></div></div>
+    <p v-if="!loading && imagesArray.length === 0">No hay fotos para mostrar en esta fecha.</p>
   </div>
 </template>
 
 <script>
 import RankingItem from '../components/RankingItem.vue';
 import DetailImage from '../components/DetailImage.vue';
+import imageService from '../services/imageService.js';
 
 export default {
   data() {
@@ -55,7 +39,10 @@ export default {
       anoActual: new Date().getFullYear(),
       tiempoSeleccionado: 'dia',
       finalTimeLabel: '',
-      showImage: false
+      showImage: false,
+      imagesArray: [],
+      loading: false,
+      selectedShowImage: {}
     }
   },
   components: {
@@ -64,6 +51,7 @@ export default {
   },
   mounted() {
     this.setTabValue();
+    this.getAllImagesByDate(this.anoActual + '-' + (this.mesActual + 1) + '-' + this.diaActual);
   },
   methods: {
     setTabValue() {
@@ -77,16 +65,35 @@ export default {
       switch(t) {
         case 'dia':
           this.finalTimeLabel = this.diaActual + ' de ' + this.meses[this.mesActual] + ' de ' + this.anoActual;
+          this.getAllImagesByDate(this.anoActual + '-' + (this.mesActual + 1) + '-' + this.diaActual);
           break;
         case 'mes':
           this.finalTimeLabel = this.meses[this.mesActual];
+          this.getAllImagesByDateRange(this.anoActual + '-' + (this.mesActual + 1) + '-01', this.anoActual + '-' + (this.mesActual + 1) + '-' + this.getLastDayOfMonth(this.mesActual, this.anoActual));
           break;
         case 'ano':
           this.finalTimeLabel = this.anoActual;
+          this.getAllImagesByDateRange(this.anoActual + '-01-01', this.anoActual + '-12-31');
           break;
       }
     },
-    showFullImage() {
+    async getAllImagesByDate(dateToSend) {
+      this.loading = true;
+      this.imagesArray = await imageService.getImagesByDate(dateToSend);
+      this.loading = false;
+    },
+    async getAllImagesByDateRange(dateIni, dateFin) {
+      this.loading = true;
+      this.imagesArray = await imageService.getImagesByDateRange(dateIni, dateFin);
+      this.loading = false;
+    },
+    getLastDayOfMonth(mes, ano) {
+      return new Date(ano, mes + 1, 0).getDate();
+    },
+    showFullImage(image) {
+      this.selectedShowImage.urlImage = image.url;
+      this.selectedShowImage.userName = image.user;
+      this.selectedShowImage.urlProfile = image.foto;
       this.showImage = true;
     },
     closeFullImage() {
@@ -115,8 +122,8 @@ export default {
 .fecha-actual {
   max-width: 280px;
   margin: auto;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
   font-weight: 500;
   font-size: 20px;
   color: #000000;
@@ -136,18 +143,75 @@ export default {
 
 .item-tiempo {
   width: 33%;
-  border-radius: 5px;
   padding: 5px;
+  padding-bottom: 7px;
   cursor: pointer;
 }
 
 .tiempo-seleccionado {
-  background-color: #f0f0f0;
+  border-bottom: 2px solid #238fff;
 }
 
 @media (min-width: 768px) {
   .ranking {
     padding-top: 90px;
+  }
+}
+
+/* LOADER */
+.lds-ellipsis {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 20px;
+  margin-top: 20px;
+}
+.lds-ellipsis div {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #000000;
+  animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+.lds-ellipsis div:nth-child(1) {
+  left: 8px;
+  animation: lds-ellipsis1 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(2) {
+  left: 8px;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(3) {
+  left: 32px;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(4) {
+  left: 56px;
+  animation: lds-ellipsis3 0.6s infinite;
+}
+@keyframes lds-ellipsis1 {
+  0% {
+      transform: scale(0);
+  }
+  100% {
+      transform: scale(1);
+  }
+}
+@keyframes lds-ellipsis3 {
+  0% {
+      transform: scale(1);
+  }
+  100% {
+      transform: scale(0);
+  }
+}
+@keyframes lds-ellipsis2 {
+  0% {
+      transform: translate(0, 0);
+  }
+  100% {
+      transform: translate(24px, 0);
   }
 }
 </style>

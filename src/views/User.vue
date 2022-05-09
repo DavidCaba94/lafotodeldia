@@ -4,7 +4,7 @@
   </div>
   <div v-if="showImage">
     <DetailImage
-    :urlImage="selectedShowImage"
+    :imageData="selectedShowImage"
     @closeFullImage="closeFullImage" />
   </div>
   <div v-if="showUpload">
@@ -95,7 +95,7 @@ export default {
       showUploadProfile: false,
       errorLog: null,
       imagesArray: [],
-      selectedShowImage: ''
+      selectedShowImage: {}
     }
   },
   components: {
@@ -163,7 +163,9 @@ export default {
       this.foto = JSON.parse(localStorage.getItem('user')).foto;
     },
     showFullImage(url) {
-      this.selectedShowImage = url;
+      this.selectedShowImage.urlImage = url;
+      this.selectedShowImage.userName = this.username;
+      this.selectedShowImage.urlProfile = this.foto;
       this.showImage = true;
     },
     closeFullImage() {

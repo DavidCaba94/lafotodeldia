@@ -69,5 +69,34 @@ export default {
       }
     });
     return imagesArray;
+  },
+  async getImagesByDate(date) {
+    let imagesArray = [];
+    await axios.post(url + 'images.php', {
+      opcion:5,
+      date: date
+    }).then(response =>{
+      if(response.status == 200){
+        imagesArray = response.data;
+      } else {
+        console.log('error');
+      }
+    });
+    return imagesArray;
+  },
+  async getImagesByDateRange(dateIni, dateFin) {
+    let imagesArray = [];
+    await axios.post(url + 'images.php', {
+      opcion:6,
+      date_ini: dateIni,
+      date_fin: dateFin
+    }).then(response =>{
+      if(response.status == 200){
+        imagesArray = response.data;
+      } else {
+        console.log('error');
+      }
+    });
+    return imagesArray;
   }
 }

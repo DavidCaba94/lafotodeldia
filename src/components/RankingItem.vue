@@ -4,9 +4,9 @@
       <div class="order-container">#{{ order }}</div>
       <img :src="urlImage">
     </div>
-    <div class="username-container">{{ username }}</div>
+    <div class="username-container">@{{ username }}</div>
     <div class="likes-container">
-      <img src="../assets/img/like.png">
+      <img src="../assets/img/like-up.png">
       <div>{{ likes }}</div>
     </div>
   </div>
@@ -23,7 +23,7 @@ export default {
   props: {
       urlImage: String,
       username: String,
-      order: String,
+      order: Number,
       likes: String
   },
   computed: {
@@ -64,7 +64,8 @@ export default {
 }
 
 .username-container {
-  font-size: 16px;
+  font-size: 12px;
+  font-weight: 700;
   text-align: center;
 }
 

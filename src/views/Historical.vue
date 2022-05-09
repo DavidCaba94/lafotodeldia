@@ -1,6 +1,8 @@
 <template>
   <div v-if="showImage">
-    <DetailImage @closeFullImage="closeFullImage" />
+    <DetailImage
+    :imageData="selectedShowImage"
+    @closeFullImage="closeFullImage" />
   </div>
   <div class="historical">
     <div class="selector-tiempo">
@@ -65,7 +67,8 @@ export default {
       anoSeleccionado: '',
       modalMeses: false,
       modalAnos: false,
-      showImage: false
+      showImage: false,
+      selectedShowImage: {}
     }
   },
   components: {
@@ -92,6 +95,9 @@ export default {
       this.modalAnos = false;
     },
     showFullImage() {
+      this.selectedShowImage.urlImage = 'https://neliosoftware.com/es/wp-content/uploads/sites/3/2018/07/aziz-acharki-549137-unsplash-1200x775.jpg';
+      this.selectedShowImage.userName = 'username';
+      this.selectedShowImage.urlProfile = 'https://neliosoftware.com/es/wp-content/uploads/sites/3/2018/07/aziz-acharki-549137-unsplash-1200x775.jpg';
       this.showImage = true;
     },
     closeFullImage() {

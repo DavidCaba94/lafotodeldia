@@ -4,7 +4,15 @@
       <img class="close" @click="closeFullImage()" src="../assets/img/close.png">
     </div>
     <div class="img-container">
-      <img class="img-show" :src="urlImage">
+      <div class="box-img-show">
+        <img class="img-show" :src="imageData.urlImage">
+        <div class="profile-show">
+          <div class="profile-img">
+            <img :src="imageData.urlProfile">
+          </div>
+          <div class="profile-name">@{{ imageData.userName }}</div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -18,7 +26,7 @@ export default {
     }
   },
   props: {
-      urlImage: String
+      imageData: Object
   },
   computed: {
 
@@ -66,11 +74,55 @@ export default {
   flex-wrap: nowrap;
 }
 
-.img-show {
+.box-img-show {
   width: 90%;
   max-width: 600px;
+  margin: 0 auto;
   border-radius: 5px;
-  -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1); 
+  margin-top: 5px;
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
   box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+}
+
+.img-show {
+  width: 100%;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.profile-show {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 5px;
+  margin-top: -4px;
+  background-color: #ffffff;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  cursor: pointer;
+}
+
+.profile-img {
+  width: 26px;
+  height: 26px;
+  font-size: 24px;
+  font-weight: 700;
+  color: #000000;
+  border: 1px solid #000000;
+  margin-right: 10px;
+  border-radius: 50px;
+}
+
+.profile-img img {
+  width: 22px;
+  height: 22px;
+  border-radius: 50px;
+  margin-top: 2px;
+  margin-left: 1px;
+}
+
+.profile-name {
+  font-size: 12px;
+  font-weight: 700;
 }
 </style>
