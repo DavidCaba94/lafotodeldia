@@ -94,6 +94,7 @@ export default {
       this.selectedShowImage.urlImage = image.url;
       this.selectedShowImage.userName = image.user;
       this.selectedShowImage.urlProfile = image.foto;
+      this.selectedShowImage.userId = image.id_user;
       this.showImage = true;
     },
     closeFullImage() {

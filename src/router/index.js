@@ -4,6 +4,7 @@ import Moderate from '../views/Moderate.vue'
 import Ranking from '../views/Ranking.vue'
 import Historical from '../views/Historical.vue'
 import User from '../views/User.vue'
+import UserDetail from '../views/UserDetail.vue'
 import Products from '../views/Products.vue'
 import Login from '../views/Login.vue'
 import Registro from '../views/Registro.vue'
@@ -33,6 +34,11 @@ const routes = [
     path: '/user',
     name: 'User',
     component: User
+  },
+  {
+    path: '/user-detail/:id',
+    name: 'UserDetail',
+    component: UserDetail
   },
   {
     path: '/products',

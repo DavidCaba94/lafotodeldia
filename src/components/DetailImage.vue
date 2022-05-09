@@ -6,12 +6,14 @@
     <div class="img-container">
       <div class="box-img-show">
         <img class="img-show" :src="imageData.urlImage">
-        <div class="profile-show">
-          <div class="profile-img">
-            <img :src="imageData.urlProfile">
+        <router-link :to="'/user-detail/' + imageData.userId">
+          <div class="profile-show">
+            <div class="profile-img">
+              <img :src="imageData.urlProfile">
+            </div>
+            <div class="profile-name">@{{ imageData.userName }}</div>
           </div>
-          <div class="profile-name">@{{ imageData.userName }}</div>
-        </div>
+        </router-link>
       </div>
     </div>
   </div>
@@ -114,15 +116,27 @@ export default {
 }
 
 .profile-img img {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   border-radius: 50px;
-  margin-top: 2px;
-  margin-left: 1px;
+  margin-top: 1px;
+  margin-left: 0px;
 }
 
 .profile-name {
   font-size: 12px;
   font-weight: 700;
 }
+
+a {
+  font-weight: 300;
+  color: #000000;
+  text-decoration: none;
+}
+
+a.router-link-exact-active {
+  background-color: #f0f0f0;
+  border-radius: 5px;
+}
+
 </style>

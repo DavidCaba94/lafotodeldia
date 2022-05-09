@@ -166,6 +166,7 @@ export default {
       this.selectedShowImage.urlImage = url;
       this.selectedShowImage.userName = this.username;
       this.selectedShowImage.urlProfile = this.foto;
+      this.selectedShowImage.userId = this.$store.state.login.id;
       this.showImage = true;
     },
     closeFullImage() {

@@ -44,6 +44,20 @@ export default {
     });
     return finalUser;
   },
+  async getUserById(id) {
+    let finalUser;
+    await axios.post(url, {
+      opcion:6,
+      id: id
+    }).then(response =>{
+      if(response.status == 200){
+        finalUser = response.data[0];
+      } else {
+        console.log('error');
+      }
+    });
+    return finalUser;
+  },
   async registrarUsuario(form) {
     let successReg = false;
     await axios.post(url, {

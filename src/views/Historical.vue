@@ -98,6 +98,7 @@ export default {
       this.selectedShowImage.urlImage = 'https://neliosoftware.com/es/wp-content/uploads/sites/3/2018/07/aziz-acharki-549137-unsplash-1200x775.jpg';
       this.selectedShowImage.userName = 'username';
       this.selectedShowImage.urlProfile = 'https://neliosoftware.com/es/wp-content/uploads/sites/3/2018/07/aziz-acharki-549137-unsplash-1200x775.jpg';
+      this.selectedShowImage.userId = 1;
       this.showImage = true;
     },
     closeFullImage() {
