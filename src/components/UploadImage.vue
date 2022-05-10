@@ -53,6 +53,9 @@ export default {
     },
     async saveImage() {
       this.saving = true;
+      let diaActual = new Date().getDate();
+      let mesActual = new Date().getMonth();
+      let anoActual = new Date().getFullYear();
       var formData = new FormData();
       var files = document.querySelector('#upload-photo').files[0];
       formData.append('file',files);
@@ -62,7 +65,7 @@ export default {
           id_user: this.$store.state.login.id,
           url: uploadedImage,
           likes: 0,
-          date: new Date().toISOString().slice(0, 10)
+          date: anoActual + '-' + (mesActual + 1) + '-' + diaActual
         };
         let updateSuccess = await imageService.saveImage(dataForm);
         if (updateSuccess) {
