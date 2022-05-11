@@ -11,7 +11,10 @@
       </div>
     </router-link>
     <div class="lds-ellipsis" v-if="loading"><div></div><div></div><div></div><div></div></div>
-    <p v-if="!loading && imagesArray.length === 0">Este usuario no ha publicado fotos todavía</p>
+    <div v-if="!loading && imagesArray.length === 0">
+      <img class="img-no-photos" src="../assets/img/photos-icon.png">
+      <p>Este usuario no ha publicado fotos todavía</p>
+    </div>
     <div class="gallery-box">
       <img
         v-for="image of imagesArray"
@@ -107,6 +110,11 @@ export default {
   cursor: pointer;
 }
 
+.img-no-photos {
+  width: 150px;
+  opacity: 0.3;
+  margin-top: 40px;
+}
 
 @media (min-width: 768px) {
   .close-box {
@@ -127,10 +135,6 @@ a {
 a.router-link-exact-active {
   background-color: #f0f0f0;
   border-radius: 5px;
-}
-
-p {
-  margin-top: 50px;
 }
 
 /* LOADER */

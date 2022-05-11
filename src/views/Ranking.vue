@@ -21,7 +21,10 @@
       />
     </div>
     <div class="lds-ellipsis" v-if="loading"><div></div><div></div><div></div><div></div></div>
-    <p v-if="!loading && imagesArray.length === 0">No hay fotos para mostrar en esta fecha.</p>
+    <div v-if="!loading && imagesArray.length === 0">
+      <img class="img-no-photos" src="../assets/img/photos-icon.png">
+      <p>No hay fotos para mostrar en esta fecha.</p>
+    </div>
   </div>
 </template>
 
@@ -151,6 +154,12 @@ export default {
 
 .tiempo-seleccionado {
   border-bottom: 2px solid #238fff;
+}
+
+.img-no-photos {
+  width: 150px;
+  opacity: 0.3;
+  margin-top: 20px;
 }
 
 @media (min-width: 768px) {
