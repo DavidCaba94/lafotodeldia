@@ -24,7 +24,6 @@
         </router-link>
         <router-link to="/user">
           <div class="user-img" v-if="!userLogged"></div>
-          <div class="user-loged-no-img" v-if="userLogged && userImage === null">{{ userNameInicial }}</div>
           <div class="user-loged-img" v-if="userLogged && userImage !== null">
             <div class="img-user-loged" v-bind:style="{ backgroundImage: 'url(' + userImage + ')' }"></div>
           </div>
@@ -37,7 +36,6 @@
         <div class="lettering"></div>
         <router-link to="/user">
           <div class="user-img" v-if="!userLogged"></div>
-          <div class="user-loged-no-img" v-if="userLogged && userImage === null">{{ userNameInicial }}</div>
           <div class="user-loged-img" v-if="userLogged && userImage !== null">
             <div class="img-user-loged" v-bind:style="{ backgroundImage: 'url(' + userImage + ')' }"></div>
           </div>
@@ -79,7 +77,6 @@ export default {
   name: 'Menu',
   data() {
     return {
-      userNameInicial: this.$store.state.login.user.charAt(0).toUpperCase(),
       userImage: this.$store.state.login.foto ? this.$store.state.login.foto : null
     }
   },
@@ -101,7 +98,6 @@ export default {
   },
   methods: {
     setUserInicial() {
-      this.userNameInicial = this.$store.state.login.user.charAt(0).toUpperCase();
       this.userImage = this.$store.state.login.foto ? this.$store.state.login.foto : null;
     },
     setStoredLogin() {

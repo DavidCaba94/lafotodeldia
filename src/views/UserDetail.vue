@@ -40,10 +40,12 @@
         :src="image.url">
       <p v-if="imagesArray.length === 0">No ha publicado ninguna foto todavía</p>
     </div>
-    <div class="ver-mas">
-      <p>Ver todas las fotos</p>
-      <img src="../assets/img/arrow.png">
-    </div>
+    <router-link :to="'/user-gallery/' + idUser">
+      <div class="ver-mas">
+        <p>Ver todas las fotos</p>
+        <img src="../assets/img/arrow.png">
+      </div>
+    </router-link>
   </div>
 </template>
 
@@ -55,6 +57,7 @@ import userService from '../services/userService.js';
 export default {
   data() {
     return {
+      idUser: this.$route.params.id,
       username: '',
       foto: '',
       verified: false,
@@ -91,7 +94,7 @@ export default {
       this.getAllUserImages(idUser);
     },
     async getAllUserImages(idUser) {
-      this.imagesArray = await imageService.getAllImagesByUser(idUser);
+      this.imagesArray = await imageService.getFirstNineImagesByUser(idUser);
     },
     showFullImage(url) {
       this.selectedShowImage.urlImage = url;
@@ -245,5 +248,16 @@ export default {
 
 .btn-follow p {
     margin: 0;
+}
+
+a {
+  font-weight: 300;
+  color: #000000;
+  text-decoration: none;
+}
+
+a.router-link-exact-active {
+  background-color: #f0f0f0;
+  border-radius: 5px;
 }
 </style>

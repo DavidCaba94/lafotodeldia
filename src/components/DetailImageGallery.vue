@@ -6,14 +6,7 @@
     <div class="img-container">
       <div class="box-img-show">
         <img class="img-show" :src="imageData.urlImage">
-        <router-link :to="'/user-detail/' + imageData.userId">
-          <div class="profile-show">
-            <div class="profile-img">
-              <img :src="imageData.urlProfile">
-            </div>
-            <div class="profile-name">@{{ imageData.userName }}</div>
-          </div>
-        </router-link>
+        <div class="btn-delete" v-if="deleteEnabled" @click="deleteImage(imageData.imageId)"></div>
       </div>
     </div>
   </div>
@@ -21,10 +14,10 @@
 
 <script>
 export default {
-  name: 'DetailImage',
+  name: 'DetailImageGallery',
   data() {
     return {
-
+      deleteEnabled: this.$route.params.id === this.$store.state.login.id ? true : false
     }
   },
   props: {
@@ -36,6 +29,11 @@ export default {
   methods: {
     closeFullImage() {
       this.$emit('closeFullImage');
+    },
+    deleteImage(id) {
+      console.log(id);
+      // dialog de confirmación de delete
+      // emit para actualizar el array de imagenes
     }
   }
 }
@@ -87,61 +85,33 @@ export default {
   margin: 0 auto;
   border-radius: 5px;
   margin-top: 5px;
-  -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
-  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
 }
 
 .img-show {
   width: 100%;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-}
-
-.profile-show {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 5px;
-  margin-top: -4px;
-  background-color: #ffffff;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
-  cursor: pointer;
-}
-
-.profile-img {
-  width: 26px;
-  height: 26px;
-  font-size: 24px;
-  font-weight: 700;
-  color: #000000;
-  border: 1px solid #000000;
-  margin-right: 10px;
-  border-radius: 50px;
-}
-
-.profile-img img {
-  width: 24px;
-  height: 24px;
-  border-radius: 50px;
-  margin-top: 1px;
-  margin-left: 0px;
-}
-
-.profile-name {
-  font-size: 12px;
-  font-weight: 700;
-}
-
-a {
-  font-weight: 300;
-  color: #000000;
-  text-decoration: none;
-}
-
-a.router-link-exact-active {
-  background-color: #f0f0f0;
   border-radius: 5px;
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
 }
 
+.btn-delete {
+  position: absolute;
+  background-color: #ffffff;
+  width: 40px;
+  height: 40px;
+  border-radius: 50px;
+  margin-top: -55px;
+  margin-left: 10px;
+  background-image: url("../assets/img/delete.png");
+  background-repeat: no-repeat;
+  background-size: 25px;
+  background-position: center;
+  cursor: pointer;
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+}
+
+.btn-delete:hover {
+  background-color: #ff8585;
+}
 </style>

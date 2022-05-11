@@ -1,7 +1,7 @@
 <template>
   <div class="upload-image">
     <div class="close-box">
-      <img class="close" @click="closeUploadImage()" src="../assets/img/close.png">
+      <img class="close" @click="closeUploadImage()" src="../assets/img/close-light.png">
     </div>
     <div class="upload-container">
       <p>Selecciona una imagen para subir</p>
@@ -98,8 +98,13 @@ export default {
 
 .close {
   width: 20px;
-  margin-top: 20px;
-  margin-right: 10px;
+  margin-top: 17px;
+  margin-right: 6px;
+  background-color: #e76d6d;
+  border-radius: 50px;
+  padding: 5px;
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1); 
+  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
   cursor: pointer;
 }
 

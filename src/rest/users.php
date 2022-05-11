@@ -40,7 +40,7 @@ switch($opcion){
         $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
         break;
     case 2:
-        $consulta = "INSERT INTO users (user, pass, email, verificado) VALUES('$user', '$pass', '$email', 0) ";
+        $consulta = "INSERT INTO users (user, pass, email, foto, verificado) VALUES('$user', '$pass', '$email', '$foto', 0) ";
         $resultado = $conexion->prepare($consulta);
         $resultado->execute();                
         break;

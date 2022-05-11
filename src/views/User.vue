@@ -57,10 +57,12 @@
         :src="image.url">
       <p v-if="imagesArray.length === 0">No has publicado ninguna foto todavía</p>
     </div>
-    <div class="ver-mas">
-      <p>Ver todas las fotos</p>
-      <img src="../assets/img/arrow.png">
-    </div>
+    <router-link :to="'/user-gallery/' + idUser">
+      <div class="ver-mas">
+        <p>Ver todas las fotos</p>
+        <img src="../assets/img/arrow.png">
+      </div>
+    </router-link>
     <div class="pass-box">
       <p class="titulo-pass">CAMBIAR CONTRASEÑA</p>
       <div class="input-box">
@@ -84,6 +86,7 @@ import imageService from '../services/imageService.js';
 export default {
   data() {
     return {
+      idUser: this.$store.state.login.id,
       username: '',
       pass: '',
       foto: '',
@@ -419,5 +422,16 @@ export default {
   box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
   cursor: pointer;
   margin-left: 10px;
+}
+
+a {
+  font-weight: 300;
+  color: #000000;
+  text-decoration: none;
+}
+
+a.router-link-exact-active {
+  background-color: #f0f0f0;
+  border-radius: 5px;
 }
 </style>
