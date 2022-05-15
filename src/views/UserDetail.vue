@@ -36,7 +36,7 @@
         v-for="image of imagesArray"
         :key="image.id"
         class="foto-item"
-        @click="showFullImage(image.url)"
+        @click="showFullImage(image)"
         :src="image.url">
       <p v-if="imagesArray.length === 0">No ha publicado ninguna foto todavía</p>
     </div>
@@ -96,8 +96,9 @@ export default {
     async getAllUserImages(idUser) {
       this.imagesArray = await imageService.getFirstNineImagesByUser(idUser);
     },
-    showFullImage(url) {
-      this.selectedShowImage.urlImage = url;
+    showFullImage(image) {
+      this.selectedShowImage.urlImage = image.url;
+      this.selectedShowImage.likesImage = image.likes;
       this.selectedShowImage.userName = this.username;
       this.selectedShowImage.urlProfile = this.foto;
       this.selectedShowImage.userId = this.$route.params.id;

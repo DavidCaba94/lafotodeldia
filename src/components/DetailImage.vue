@@ -3,15 +3,21 @@
     <div class="close-box">
       <img class="close" @click="closeFullImage()" src="../assets/img/close-light.png">
     </div>
-    <div class="img-container">
+    <div class="img-container" @click="closeFullImage()">
       <div class="box-img-show">
         <img class="img-show" :src="imageData.urlImage">
         <router-link :to="'/user-detail/' + imageData.userId">
           <div class="profile-show">
-            <div class="profile-img">
-              <img :src="imageData.urlProfile">
+            <div class="flex-box">
+              <div class="profile-img">
+                <img :src="imageData.urlProfile">
+              </div>
+              <div class="profile-name">@{{ imageData.userName }}</div>
             </div>
-            <div class="profile-name">@{{ imageData.userName }}</div>
+            <div class="flex-box">
+              <img class="img-likes" src="../assets/img/like-up.png">
+              <div class="profile-name">{{ imageData.likesImage }}</div>
+            </div>
           </div>
         </router-link>
       </div>
@@ -100,8 +106,9 @@ export default {
 .profile-show {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   padding: 5px;
+  padding-right: 10px;
   margin-top: -4px;
   background-color: #ffffff;
   border-bottom-left-radius: 5px;
@@ -142,6 +149,17 @@ a {
 a.router-link-exact-active {
   background-color: #f0f0f0;
   border-radius: 5px;
+}
+
+.flex-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.img-likes {
+  width: 20px;
+  height: 20px;
 }
 
 </style>

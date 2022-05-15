@@ -3,10 +3,14 @@
     <div class="close-box">
       <img class="close" @click="closeFullImage()" src="../assets/img/close-light.png">
     </div>
-    <div class="img-container">
+    <div class="img-container" @click="() => {if(!deleteEnabled){closeFullImage()}}">
       <div class="box-img-show">
         <img class="img-show" :src="imageData.urlImage">
         <div class="btn-delete" v-if="deleteEnabled" @click="deleteImage(imageData.imageId)"></div>
+        <div class="flex-box">
+          <img class="img-likes" src="../assets/img/like-up.png">
+          <div class="likes-text">{{ imageData.likesImage }}</div>
+        </div>
       </div>
     </div>
   </div>
@@ -97,14 +101,14 @@ export default {
 .btn-delete {
   position: absolute;
   background-color: #ffffff;
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   border-radius: 50px;
-  margin-top: -55px;
-  margin-left: 10px;
+  margin-top: -45px;
+  margin-left: 60px;
   background-image: url("../assets/img/delete.png");
   background-repeat: no-repeat;
-  background-size: 25px;
+  background-size: 20px;
   background-position: center;
   cursor: pointer;
   -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
@@ -113,5 +117,29 @@ export default {
 
 .btn-delete:hover {
   background-color: #ff8585;
+}
+
+.flex-box {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -40px;
+  margin-left: 10px;
+  background-color: #ffffff;
+  border-radius: 5px;
+  padding: 2px;
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+}
+
+.img-likes {
+  width: 20px;
+  height: 20px;
+}
+
+.likes-text {
+  margin-right: 5px;
+  font-size: 14px;
 }
 </style>

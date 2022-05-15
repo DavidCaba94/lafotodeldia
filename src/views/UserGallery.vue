@@ -20,7 +20,7 @@
         v-for="image of imagesArray"
         :key="image.id"
         class="gallery-item"
-        @click="showFullImage(image.id, image.url)"
+        @click="showFullImage(image)"
         :src="image.url">
     </div>
   </div>
@@ -53,12 +53,13 @@ export default {
       this.imagesArray = await imageService.getAllImagesByUser(idUser);
       this.loading = false;
     },
-    showFullImage(imageId, url) {
-      this.selectedShowImage.urlImage = url;
+    showFullImage(image) {
+      this.selectedShowImage.urlImage = image.url;
+      this.selectedShowImage.likesImage = image.likes;
       this.selectedShowImage.userName = this.username;
       this.selectedShowImage.urlProfile = this.foto;
       this.selectedShowImage.userId = this.$route.params.id;
-      this.selectedShowImage.imageId = imageId;
+      this.selectedShowImage.imageId = image.id;
       this.showImage = true;
     },
     closeFullImage() {

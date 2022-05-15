@@ -53,7 +53,7 @@
         v-for="image of imagesArray"
         :key="image.id"
         class="foto-item"
-        @click="showFullImage(image.url)"
+        @click="showFullImage(image)"
         :src="image.url">
       <p v-if="imagesArray.length === 0">No has publicado ninguna foto todavía</p>
     </div>
@@ -165,8 +165,9 @@ export default {
       this.showUploadProfile = false;
       this.foto = JSON.parse(localStorage.getItem('user')).foto;
     },
-    showFullImage(url) {
-      this.selectedShowImage.urlImage = url;
+    showFullImage(image) {
+      this.selectedShowImage.urlImage = image.url;
+      this.selectedShowImage.likesImage = image.likes;
       this.selectedShowImage.userName = this.username;
       this.selectedShowImage.urlProfile = this.foto;
       this.selectedShowImage.userId = this.$store.state.login.id;
