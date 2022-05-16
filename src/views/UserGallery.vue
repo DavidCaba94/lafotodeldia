@@ -2,7 +2,8 @@
   <div v-if="showImage">
     <DetailImageGallery
     :imageData="selectedShowImage"
-    @closeFullImage="closeFullImage" />
+    @closeFullImage="closeFullImage"
+    @deleteImage="deleteImage" />
   </div>
   <div class="gallery">
     <router-link :to="'/user-detail/' + idUser">
@@ -49,9 +50,16 @@ export default {
   },
   methods: {
     async getAllUserImages(idUser) {
+      this.imagesArray = [];
       this.loading = true;
       this.imagesArray = await imageService.getAllImagesByUser(idUser);
       this.loading = false;
+    },
+    async deleteImage(idImage) {
+      this.loading = true;
+      this.closeFullImage();
+      await imageService.deleteImageById(idImage);
+      this.getAllUserImages(this.$route.params.id);
     },
     showFullImage(image) {
       this.selectedShowImage.urlImage = image.url;

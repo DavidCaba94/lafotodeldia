@@ -98,5 +98,19 @@ export default {
       }
     });
     return imagesArray;
+  },
+  async deleteImageById(idImage) {
+    let successDelete = false;
+    await axios.post(url + 'images.php', {
+      opcion:7,
+      id: idImage
+    }).then(response =>{
+      if(response.status == 200){
+        successDelete = true;
+      } else {
+        console.log('error');
+      }
+    });
+    return successDelete;
   }
 }

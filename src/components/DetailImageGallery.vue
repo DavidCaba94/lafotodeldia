@@ -6,13 +6,22 @@
     <div class="img-container" @click="() => {if(!deleteEnabled){closeFullImage()}}">
       <div class="box-img-show">
         <img class="img-show" :src="imageData.urlImage">
-        <div class="btn-delete" v-if="deleteEnabled" @click="deleteImage(imageData.imageId)"></div>
+        <div class="btn-delete" v-if="deleteEnabled" @click="openDeleteDialog()"></div>
         <div class="flex-box">
           <img class="img-likes" src="../assets/img/like-up.png">
           <div class="likes-text">{{ imageData.likesImage }}</div>
         </div>
       </div>
     </div>
+  </div>
+  <div class="delete-dialog" v-if="deleteDialog">
+    <div class="delete-dialog-box">
+      <div class="delete-dialog-text">¿Estás seguro de que quieres eliminar esta imagen?</div>
+      <div class="delete-dialog-buttons">
+        <div class="btn-delete-dialog-ok" @click="deleteImage(imageData.imageId)">Sí</div>
+        <div class="btn-delete-dialog-ko" @click="closeDeleteDialog()">No</div>
+      </div>
+    </div>    
   </div>
 </template>
 
@@ -21,23 +30,27 @@ export default {
   name: 'DetailImageGallery',
   data() {
     return {
-      deleteEnabled: this.$route.params.id === this.$store.state.login.id ? true : false
+      deleteEnabled: this.$route.params.id === this.$store.state.login.id ? true : false,
+      deleteDialog: false
     }
   },
+  emits: ["closeFullImage", "deleteImage"],
   props: {
       imageData: Object
-  },
-  computed: {
-
   },
   methods: {
     closeFullImage() {
       this.$emit('closeFullImage');
     },
+    openDeleteDialog() {
+      this.deleteDialog = true;
+    },
     deleteImage(id) {
-      console.log(id);
-      // dialog de confirmación de delete
-      // emit para actualizar el array de imagenes
+      this.deleteDialog = false;
+      this.$emit('deleteImage', id);
+    },
+    closeDeleteDialog() {
+      this.deleteDialog = false;
     }
   }
 }
@@ -141,5 +154,68 @@ export default {
 .likes-text {
   margin-right: 5px;
   font-size: 14px;
+}
+
+.delete-dialog {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff50;
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  position: fixed;
+  top: 0;
+  z-index: 9;
+  overflow-x: scroll;
+}
+
+.delete-dialog-box {
+  width: 250px;
+  height: 90px;
+  background-color: #ffffff;
+  border-radius: 5px;
+  padding: 10px;
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+}
+
+.delete-dialog-text {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.delete-dialog-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-delete-dialog-ok {
+  border-radius: 5px;
+  background-color: #49b84f;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+  padding: 5px 15px;
+  margin: 10px;
+}
+
+.btn-delete-dialog-ko {
+  border-radius: 5px;
+  background-color: #e76d6d;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+  padding: 5px 15px;
+  margin: 10px;
 }
 </style>
