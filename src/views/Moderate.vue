@@ -31,6 +31,13 @@
     <p class="moderate-text">No hay más fotos para moderar hoy</p>
   </div>
   <div class="lds-ellipsis" v-if="loading"><div></div><div></div><div></div><div></div></div>
+  <!-- SNACKBAR -->
+  <div id="snackbar-ok">
+    <img src="../assets/img/like-up.png">
+  </div>
+  <div id="snackbar-ko">
+    <img src="../assets/img/like-down.png">
+  </div>
 </template>
 
 <script>
@@ -91,7 +98,10 @@ export default {
     },
     async votar(voto) {
       if (voto === 'OK') {
+        this.showOKNotification();
         await this.updateImageVoted();
+      } else if (voto === 'KO') {
+        this.showKONotification();
       }
       await this.setLastImageVoted();
       this.getLastImageVoted();
@@ -101,6 +111,16 @@ export default {
     },
     async updateImageVoted() {
       await imageService.updateImageVoted(this.idFoto);
+    },
+    showOKNotification() {
+      var x = document.getElementById("snackbar-ok");
+      x.className = "show";
+      setTimeout(function(){ x.className = x.className.replace("show", ""); }, 1000);
+    },
+    showKONotification() {
+      var x = document.getElementById("snackbar-ko");
+      x.className = "show";
+      setTimeout(function(){ x.className = x.className.replace("show", ""); }, 1000);
     }
   }
 }
@@ -271,5 +291,61 @@ a.router-link-exact-active {
   100% {
       transform: translate(24px, 0);
   }
+}
+
+#snackbar-ok {
+  visibility: hidden;
+  position: fixed;
+  z-index: 1;
+  left: calc(50% - 25px);
+  top: 80px;
+}
+
+#snackbar-ok img {
+  width: 50px;
+}
+
+#snackbar-ko {
+  visibility: hidden;
+  position: fixed;
+  z-index: 1;
+  left: calc(50% - 25px);
+  top: 80px;
+}
+
+#snackbar-ko img {
+  width: 50px;
+}
+
+#snackbar-ok.show {
+  visibility: visible;
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+#snackbar-ko.show {
+  visibility: visible;
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+  from {top: 0; opacity: 0;}
+  to {top: 80px; opacity: 1;}
+}
+
+@keyframes fadein {
+  from {top: 0; opacity: 0;}
+  to {top: 80px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+  from {top: 80px; opacity: 1;}
+  to {top: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+  from {top: 80px; opacity: 1;}
+  to {top: 0; opacity: 0;}
 }
 </style>
