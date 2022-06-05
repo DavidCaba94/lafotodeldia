@@ -112,5 +112,102 @@ export default {
       }
     });
     return successDelete;
+  },
+  async getAllImagesOfToday(date) {
+    let imagesArray = [];
+    await axios.post(url + 'images.php', {
+      opcion:8,
+      date: date
+    }).then(response =>{
+      if(response.status == 200){
+        imagesArray = response.data;
+      } else {
+        console.log('error');
+      }
+    });
+    return imagesArray;
+  },
+  async getLastImageVotedByUser(id_user) {
+    let idImage;
+    await axios.post(url + 'images.php', {
+      opcion:9,
+      id_user: id_user
+    }).then(response =>{
+      if(response.status == 200){
+        if(response.data.length > 0){
+          idImage = response.data[0].id_image;
+        } else {
+          this.setLastImageVotedByUser(id_user);
+        }
+      } else {
+        console.log('error');
+      }
+    });
+    return idImage;
+  },
+  async setLastImageVotedByUser(id_user) {
+    let successSet = false;
+    await axios.post(url + 'images.php', {
+      opcion:10,
+      id_user: id_user
+    }).then(response =>{
+      if(response.status == 200){
+        successSet = true;
+      } else {
+        console.log('error');
+      }
+    });
+    return successSet;
+  },
+  async getNextImageToVote(id_image) {
+    let image;
+    let diaActual = new Date().getDate();
+    let mesActual = new Date().getMonth();
+    let anoActual = new Date().getFullYear();
+    await axios.post(url + 'images.php', {
+      opcion:11,
+      id_image: id_image,
+      date: anoActual + '-' + (mesActual + 1) + '-' + diaActual
+    }).then(response =>{
+      if(response.status == 200){
+        if(response.data.length > 0){
+          image = response.data[0];
+        } else {
+          image = null
+        }
+      } else {
+        console.log('error');
+      }
+    });
+    return image;
+  },
+  async updateLastImageVotedByUser(id_user, id_image) {
+    let successSet = false;
+    await axios.post(url + 'images.php', {
+      opcion:12,
+      id_user: id_user,
+      id_image: id_image
+    }).then(response =>{
+      if(response.status == 200){
+        successSet = true;
+      } else {
+        console.log('error');
+      }
+    });
+    return successSet;
+  },
+  async updateImageVoted(id_image) {
+    let successSet = false;
+    await axios.post(url + 'images.php', {
+      opcion:13,
+      id_image: id_image
+    }).then(response =>{
+      if(response.status == 200){
+        successSet = true;
+      } else {
+        console.log('error');
+      }
+    });
+    return successSet;
   }
 }

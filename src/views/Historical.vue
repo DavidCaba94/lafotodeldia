@@ -10,6 +10,13 @@
       <div id="ano" class="item-tiempo" @click="setAno()">{{ anoSeleccionado }}</div>
     </div>
     <div class="items-container">
+      <div class="month-photo-item" @click="showFullImage()">
+        <div class="img-container">
+            <img :src="'https://neliosoftware.com/es/wp-content/uploads/sites/3/2018/07/aziz-acharki-549137-unsplash-1200x775.jpg'">
+        </div>
+        <div class="username-container">{{ 'username' }}</div>
+        <div class="date-container">{{ 'Foto del mes de ' + mesSeleccionado }}</div>
+      </div>
       <HistoricalItem 
         urlImage='https://neliosoftware.com/es/wp-content/uploads/sites/3/2018/07/aziz-acharki-549137-unsplash-1200x775.jpg'
         date='23/03/2022'
@@ -172,9 +179,44 @@ export default {
   background-color: #f0f0f0;
 }
 
+.month-photo-item {
+  width: 90%;
+  background-color: #ffffff;
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1); 
+  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+  cursor: pointer;
+  margin: 5px;
+  border-radius: 5px;
+  border: 3px solid #238fff;
+}
+
+.month-photo-item .img-container img {
+    width: 95%;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.month-photo-item .username-container {
+    font-size: 16px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.month-photo-item .date-container {
+    font-weight: 300;
+    font-size: 18px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
 @media (min-width: 768px) {
   .historical {
     padding-top: 90px;
+  }
+
+  .month-photo-item .img-container img {
+    margin-top: 20px;
   }
 }
 </style>

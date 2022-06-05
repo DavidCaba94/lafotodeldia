@@ -31,6 +31,7 @@ $likes = (isset($_POST['likes'])) ? $_POST['likes'] : '';
 $date = (isset($_POST['date'])) ? $_POST['date'] : '';
 $date_ini = (isset($_POST['date_ini'])) ? $_POST['date_ini'] : '';
 $date_fin = (isset($_POST['date_fin'])) ? $_POST['date_fin'] : '';
+$id_image = (isset($_POST['id_image'])) ? $_POST['id_image'] : '';
 
 switch($opcion){
 	case 1:
@@ -96,6 +97,56 @@ switch($opcion){
             $consulta = "DELETE FROM images WHERE id='$id' ";		
             $resultado = $conexion->prepare($consulta);
             $resultado->execute();                           
+            break;
+      case 8:
+            $consulta = "SELECT * FROM images WHERE date='$date' ORDER BY id ASC";
+            $resultado = $conexion->prepare($consulta);
+            $resultado->execute();
+            $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
+            break;
+      case 9:
+            $consulta = "SELECT id_image FROM last_voted WHERE id_user='$id_user'";
+            $resultado = $conexion->prepare($consulta);
+            $resultado->execute();
+            $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
+            break;
+      case 10:
+            $consulta = "INSERT INTO last_voted (id_user, id_image) VALUES('$id_user', 0) ";
+            $resultado = $conexion->prepare($consulta);
+            $resultado->execute();                
+            break;
+      case 11:
+            $consulta = "SELECT
+                        U.id as 'id_user',
+                        U.user as 'user',
+                        U.foto as 'foto',
+                        U.verificado as 'verificado',
+                        I.id as 'id',
+                        I.id_user as 'id_user',
+                        I.url as 'url',
+                        I.likes as 'likes',
+                        I.date as 'date'
+                        FROM images I
+                        JOIN users U
+                        ON I.id_user = U.id
+                        WHERE I.id > '$id_image' AND I.date='$date' 
+                        ORDER BY I.id ASC 
+                        LIMIT 1";
+            $resultado = $conexion->prepare($consulta);
+            $resultado->execute();
+            $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
+            break;
+      case 12:
+            $consulta = "UPDATE last_voted SET id_image='$id_image' WHERE id_user='$id_user' ";		
+            $resultado = $conexion->prepare($consulta);
+            $resultado->execute();                        
+            $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
+            break;
+      case 13:
+            $consulta = "UPDATE images SET likes = likes + 1 WHERE id='$id_image' ";		
+            $resultado = $conexion->prepare($consulta);
+            $resultado->execute();                        
+            $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
             break;
 }
 print json_encode($data, JSON_UNESCAPED_UNICODE);
