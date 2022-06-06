@@ -222,7 +222,7 @@ a.router-link-exact-active {
 .img-no-photos {
   width: 150px;
   opacity: 0.3;
-  margin-top: 20px;
+  margin-top: 100px;
 }
 
 @media (min-width: 768px) {
