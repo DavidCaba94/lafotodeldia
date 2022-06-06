@@ -121,7 +121,6 @@ export default {
     },
     async getFotoOfTheMonth(mes, ano) {
       this.fotoOfTheMonth = await imageService.getFotoOfTheMonth(ano + '-' + (mes + 1) + '-01', ano + '-' + (mes + 1) + '-' + this.getLastDayOfMonth(mes, ano));
-      console.log(this.fotoOfTheMonth);
       this.loading = false;
     },
     async getWinnersOfMonth(mes, ano) {
