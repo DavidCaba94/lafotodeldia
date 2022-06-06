@@ -209,5 +209,39 @@ export default {
       }
     });
     return successSet;
+  },
+  async getFotoOfTheMonth(dateIni, dateFin) {
+    let image;
+    await axios.post(url + 'images.php', {
+      opcion:14,
+      date_ini: dateIni,
+      date_fin: dateFin
+    }).then(response =>{
+      if(response.status == 200){
+        if(response.data.length > 0){
+          image = response.data[0];
+        } else {
+          image = null
+        }
+      } else {
+        console.log('error');
+      }
+    });
+    return image;
+  },
+  async getWinnersOfMonth(dateIni, dateFin) {
+    let imagesArray = [];
+    await axios.post(url + 'images.php', {
+      opcion:15,
+      date_ini: dateIni,
+      date_fin: dateFin
+    }).then(response =>{
+      if(response.status == 200){
+        imagesArray = response.data;
+      } else {
+        console.log('error');
+      }
+    });
+    return imagesArray;
   }
 }

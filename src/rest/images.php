@@ -148,6 +148,47 @@ switch($opcion){
             $resultado->execute();                        
             $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
             break;
+      case 14:
+            $consulta = "SELECT
+                        U.id as 'id_user',
+                        U.user as 'user',
+                        U.foto as 'foto',
+                        U.verificado as 'verificado',
+                        I.id as 'id',
+                        I.id_user as 'id_user',
+                        I.url as 'url',
+                        I.likes as 'likes',
+                        I.date as 'date'
+                        FROM images I
+                        JOIN users U
+                        ON I.id_user = U.id
+                        WHERE I.date BETWEEN '$date_ini' AND '$date_fin'
+                        ORDER BY I.likes DESC
+                        LIMIT 1";
+            $resultado = $conexion->prepare($consulta);
+            $resultado->execute();
+            $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
+            break;
+      case 15:
+            $consulta = "SELECT
+                        U.id as 'id_user',
+                        U.user as 'user',
+                        U.foto as 'foto',
+                        U.verificado as 'verificado',
+                        I.id as 'id',
+                        I.id_user as 'id_user',
+                        I.url as 'url',
+                        I.likes as 'likes',
+                        I.date as 'date'
+                        FROM images I
+                        JOIN users U
+                        ON I.id_user = U.id
+                        WHERE I.date BETWEEN '$date_ini' AND '$date_fin'
+                        ORDER BY I.likes DESC";
+            $resultado = $conexion->prepare($consulta);
+            $resultado->execute();
+            $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
+            break;
 }
 print json_encode($data, JSON_UNESCAPED_UNICODE);
 $conexion = NULL;
