@@ -1,45 +1,52 @@
 <template>
   <div class="home">
-    <router-link to="/products">
-      <div class="banner-productos">
-        <div class="text-banner">
-          <img src="https://m.media-amazon.com/images/I/41Xn25rH9xL._AC_.jpg">
-          <p>LOS MEJORES PRODUCTOS RECOMENDADOS PARA FOTOGRAFÍA</p>
-        </div>
-        <div class="btn-productos">
-          <img src="../assets/img/arrow.png">
-        </div>
+    <div class="tabs-home">
+      <div id="feed" class="item-tab-home" @click="tabSelected = 'feed'; setTabValue()">
+        <img v-if="tabSelected !== 'feed'" src="../assets/img/feed.png">
+        <img v-if="tabSelected === 'feed'" src="../assets/img/feed-active.png">
       </div>
-    </router-link>
-    <p class="concurso-text">
-      El total recaudado en el año en comisiones de la venta de los productos irá destinado a los 
-      premios del usuario con mayor número de fotos del día, mayor número de fotos del mes y la mejor foto 
-      del año
-    </p>
-    <p class="recaudacion-text">Total recaudado: <strong>183,45€</strong></p>
-    <p class="home-text">Esta es la foto ganadora del día de ayer</p>
-    <div class="items-container">
-      <HistoricalItem 
-        urlImage='https://c.pxhere.com/photos/1d/87/adult_blur_camera_canon_capture_dslr_dslr_camera_fashion-1549227.jpg!d'
-        date='24/03/2022'
-        username='username'
-      />
+      <div id="social" class="item-tab-home" @click="tabSelected = 'social'; setTabValue()">
+        <img v-if="tabSelected !== 'social'" src="../assets/img/users.png">
+        <img v-if="tabSelected === 'social'" src="../assets/img/users-active.png">
+      </div>
+      <div id="shop" class="item-tab-home" @click="tabSelected = 'shop'; setTabValue()">
+        <img v-if="tabSelected !== 'shop'" src="../assets/img/shop.png">
+        <img v-if="tabSelected === 'shop'" src="../assets/img/shop-active.png">
+      </div>
     </div>
+    <FeedList v-if="tabSelected === 'feed'" />
+    <SocialList v-if="tabSelected === 'social'" />
+    <ShopList v-if="tabSelected === 'shop'" />
   </div>
 </template>
 
 <script>
-import HistoricalItem from '../components/HistoricalItem.vue';
+import FeedList from '../components/FeedList.vue';
+import SocialList from '../components/SocialList.vue';
+import ShopList from '../components/ShopList.vue';
 
 export default {
   data() {
     return {
-      
+      tabSelected: 'feed',
     }
   },
   components: {
-    HistoricalItem
+    FeedList,
+    SocialList,
+    ShopList
   },
+  mounted() {
+    this.setTabValue();
+  },
+  methods: {
+    setTabValue() {
+      document.getElementById("feed").classList.remove("tab-home-seleccionado");
+      document.getElementById("social").classList.remove("tab-home-seleccionado");
+      document.getElementById("shop").classList.remove("tab-home-seleccionado");
+      document.getElementById(this.tabSelected).classList.add("tab-home-seleccionado");
+    }
+  }
 }
 </script>
 
@@ -56,78 +63,39 @@ a {
   text-decoration: none;
 }
 
-.btn-productos {
-  width: 40px;
-  height: 40px;
-  border-radius: 50px;
-  cursor: pointer;
-  padding: 0px 6px;
-}
-
-.btn-productos img {
-  width: 20px;
-  margin-top: 10px;
-}
-
-.home-text {
-  font-weight: 700;
-}
-
-.concurso-text {
-  font-size: 12px;
-}
-
-.recaudacion-text {
-  font-size: 14px;
-}
-
-.items-container {
-  max-width: 1000px;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  flex-wrap: wrap;
+.tabs-home {
+  max-width: 900px;
   margin: 0 auto;
-}
-
-.banner-productos {
-  width: 90%;
-  max-width: 600px;
-  height: 70px;
-  margin: 0 auto;
-  border: 1px solid #919191;
-  border-radius: 5px;
-  padding: 10px;
-  -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1); 
-  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
   display: flex;
   align-items: center;
   justify-content: space-around;
   flex-wrap: nowrap;
 }
 
-.text-banner {
-  font-size: 12px;
-  display: contents;
+.item-tab-home {
+  width: 33%;
+  padding: 5px;
+  padding-bottom: 7px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.text-banner img {
-  width: 40px;
+.item-tab-home img {
+  width: 20px;
+  margin-right: 5px;
 }
 
-.text-banner p {
-  padding-left: 10px;
-  padding-right: 10px;
+.tab-home-seleccionado {
+  border-bottom: 2px solid #238fff;
+  color: #238fff;
 }
 
 @media (min-width: 768px) {
-  .home-text {
-    margin-top: 40px;
-    margin-bottom: 40px;
-  }
-
-  .banner-productos {
-    margin-top: 20px;
+  .home {
+    padding-top: 90px;
   }
 }
 </style>
