@@ -6,11 +6,11 @@
     <div class="selector-users">
       <div id="seguidores" class="item-users" @click="tabSeleccionado = 'seguidores'; setTabValue()">
         <div>Seguidores</div>
-        <span>234</span>
+        <span>{{ numFollowers }}</span>
       </div>
       <div id="seguidos" class="item-users" @click="tabSeleccionado = 'seguidos'; setTabValue()">
         <div>Seguidos</div>
-        <span>342</span>
+        <span>{{ numFollowed }}</span>
       </div>
       <div id="todos" class="item-users" @click="tabSeleccionado = 'todos'; setTabValue()">
         <div>Todos</div>
@@ -18,16 +18,39 @@
       </div>
     </div>
     <div class="lds-ellipsis" v-if="loading"><div></div><div></div><div></div><div></div></div>
+    <div v-if="tabSeleccionado === 'seguidores'">
+      <SocialItem v-for="user in followersUserList" :key="user.id" 
+        :user="user"
+        :followButton="true"
+        :unfollowButton="false"
+        @followUser="followUser"
+        @unfollowUser="unfollowUser"
+      />
+    </div>
+    <div v-if="tabSeleccionado === 'seguidos'">
+      <SocialItem v-for="user in followedUserList" :key="user.id" 
+        :user="user"
+        :followButton="false"
+        :unfollowButton="true"
+        @followUser="followUser"
+        @unfollowUser="unfollowUser"
+      />
+    </div>
     <div v-if="tabSeleccionado === 'todos'">
-      <div v-for="user in allUsersList" :key="user.id">
-        {{ user.user }}
-      </div>
+      <SocialItem v-for="user in allUsersList" :key="user.id" 
+        :user="user"
+        :followButton="true"
+        :unfollowButton="false"
+        @followUser="followUser"
+        @unfollowUser="unfollowUser"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import Unauthorized from '../components/Unauthorized.vue';
+import SocialItem from '../components/SocialItem.vue';
 import homeService from '../services/homeService.js';
 
 export default {
@@ -35,9 +58,13 @@ export default {
   data() {
     return {
       allUsersList: [],
+      followersUserList: [],
+      followedUserList: [],
       loading: false,
       tabSeleccionado: 'seguidores',
-      numUsers: 0
+      numUsers: 0,
+      numFollowed: 0,
+      numFollowers: 0
     }
   },
   props: {
@@ -56,17 +83,30 @@ export default {
     }
   },
   components: {
-    Unauthorized
+    Unauthorized,
+    SocialItem
   },
   async mounted() {
     this.setTabValue();
-    this.numUsers = await homeService.getNumUsers();
+    this.getNumsTabs();
   },
   methods: {
     async getAllUsers() {
       this.allUsersList = [];
       this.loading = true;
       this.allUsersList = await homeService.getAllUsers();
+      this.loading = false;
+    },
+    async getFollowedUsers() {
+      this.followedUserList = [];
+      this.loading = true;
+      this.followedUserList = await homeService.getFollowedUsers(this.$store.state.login.id);
+      this.loading = false;
+    },
+    async getFollowersUsers() {
+      this.followersUserList = [];
+      this.loading = true;
+      this.followersUserList = await homeService.getFollowersUsers(this.$store.state.login.id);
       this.loading = false;
     },
     setTabValue() {
@@ -79,16 +119,39 @@ export default {
     getTabList(t) {
       switch(t) {
         case 'seguidores':
-          //TODO
+          this.getFollowersUsers();
           break;
         case 'seguidos':
-          //TODO
+          this.getFollowedUsers();
           break;
         case 'todos':
           this.getAllUsers();
           break;
       }
-    }
+    },
+    async followUser(idFollowing) {
+      let followSuccess = await homeService.saveNewFollower(this.$store.state.login.id, idFollowing);
+      if (followSuccess) {
+        // this.changeFollowButton(idFollowing);
+      }
+      this.getNumsTabs();
+    },
+    unfollowUser(idUser) {
+      homeService.unfollowUser(idUser);
+    },
+    changeFollowButton(idUser) {
+      let user = this.allUsersList.find(user => user.id === idUser);
+      if (user.followed) {
+        user.followed = false;
+      } else {
+        user.followed = true;
+      }
+    },
+    async getNumsTabs() {
+      this.numUsers = await homeService.getNumUsers();
+      this.numFollowed = await homeService.getNumFollowedUsers(this.$store.state.login.id);
+      this.numFollowers = await homeService.getNumFollowersUsers(this.$store.state.login.id);
+    },
   }
 }
 </script>
@@ -101,6 +164,7 @@ export default {
 .selector-users {
   max-width: 900px;
   margin: 0 auto;
+  margin-bottom: 20px;
   display: flex;
   align-items: center;
   justify-content: space-around;

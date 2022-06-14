@@ -26,9 +26,10 @@ permisos();
 $opcion = (isset($_POST['opcion'])) ? $_POST['opcion'] : '';
 $id = (isset($_POST['id'])) ? $_POST['id'] : '';
 $id_user = (isset($_POST['id_user'])) ? $_POST['id_user'] : '';
+$id_following = (isset($_POST['id_following'])) ? $_POST['id_following'] : '';
 
 switch($opcion){
-	case 1:
+	  case 1:
         $consulta = "SELECT * FROM users ORDER BY id DESC";
         $resultado = $conexion->prepare($consulta);
         $resultado->execute();
@@ -36,6 +37,45 @@ switch($opcion){
         break;
     case 2:
         $consulta = "SELECT COUNT(*) as numUsers FROM users";
+        $resultado = $conexion->prepare($consulta);
+        $resultado->execute();
+        $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
+        break;
+    case 3:
+        $consulta = "INSERT INTO followers (id_user, id_following) VALUES('$id_user', '$id_following') ";
+        $resultado = $conexion->prepare($consulta);
+        $resultado->execute();                
+        break;
+    case 4:
+        $consulta = "SELECT *
+                    FROM users
+                    WHERE id IN 
+                    (SELECT id_following 
+                    FROM followers 
+                    WHERE id_user = '$id_user')";
+        $resultado = $conexion->prepare($consulta);
+        $resultado->execute();
+        $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
+        break;
+    case 5:
+        $consulta = "SELECT COUNT(*) as numFollowedUsers FROM followers WHERE id_user = '$id_user'";
+        $resultado = $conexion->prepare($consulta);
+        $resultado->execute();
+        $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
+        break;
+    case 6:
+        $consulta = "SELECT *
+                    FROM users
+                    WHERE id IN 
+                    (SELECT id_user 
+                    FROM followers 
+                    WHERE id_following = '$id_user')";
+        $resultado = $conexion->prepare($consulta);
+        $resultado->execute();
+        $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
+        break;
+    case 7:
+        $consulta = "SELECT COUNT(*) as numFollowersUsers FROM followers WHERE id_following = '$id_user'";
         $resultado = $conexion->prepare($consulta);
         $resultado->execute();
         $data=$resultado->fetchAll(PDO::FETCH_ASSOC);

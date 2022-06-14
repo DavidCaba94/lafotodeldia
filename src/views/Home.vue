@@ -84,8 +84,7 @@ a {
 }
 
 .item-tab-home img {
-  width: 20px;
-  margin-right: 5px;
+  width: 25px;
 }
 
 .tab-home-seleccionado {
