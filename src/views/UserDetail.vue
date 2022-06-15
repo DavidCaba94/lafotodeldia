@@ -10,9 +10,13 @@
       <img src="../assets/img/verified.png" v-if="verified">
       @{{ username }}
     </div>
-    <div class="btn-follow" @click="followUser()">
+    <div class="btn-follow" v-if="!following" @click="followUser()">
       <img src="../assets/img/follow.png" alt="">
       <p>Seguir</p>
+    </div>
+    <div class="btn-unfollow" v-if="following" @click="unfollowUser()">
+      <img src="../assets/img/unfollow.png" alt="">
+      <p>Dejar de seguir</p>
     </div>
     <div class="prizes-box">
       <div class="prize-item">
@@ -64,7 +68,8 @@ export default {
       showImage: false,
       errorLog: null,
       imagesArray: [],
-      selectedShowImage: {}
+      selectedShowImage: {},
+      following: false
     }
   },
   components: {
@@ -72,6 +77,7 @@ export default {
   },
   mounted() {
     this.cargarDatosUser(this.$route.params.id);
+    this.getIsFollowing();
   },
   computed: {
     userLogged() {
@@ -95,6 +101,22 @@ export default {
     },
     async getAllUserImages(idUser) {
       this.imagesArray = await imageService.getFirstNineImagesByUser(idUser);
+    },
+    async getIsFollowing() {
+      let followList = await userService.getIsFollowing(this.$store.state.login.id, this.idUser);
+      if (followList.length > 0) {
+        this.following = true;
+      } else {
+        this.following = false;
+      }
+    },
+    async followUser() {
+      await userService.saveNewFollower(this.$store.state.login.id, this.idUser);
+      this.getIsFollowing();
+    },
+    async unfollowUser() {
+      await userService.deleteFollowing(this.$store.state.login.id, this.idUser);
+      this.getIsFollowing();
     },
     showFullImage(image) {
       this.selectedShowImage.urlImage = image.url;
@@ -220,35 +242,60 @@ export default {
 }
 
 .error-log {
-    font-size: 12px;
-    color: #ff6d6d;
-    font-weight: 300;
-    margin-top: -10px;
+  font-size: 12px;
+  color: #ff6d6d;
+  font-weight: 300;
+  margin-top: -10px;
 }
 
 .btn-follow {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    flex-wrap: nowrap;
-    max-width: 90px;
-    margin: 0 auto;
-    margin-bottom: 20px;
-    background-color: #1fbd54;
-    color: #ffffff;
-    border-radius: 5px;
-    padding: 5px;
-    cursor: pointer;
-    -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1); 
-    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-wrap: nowrap;
+  max-width: 90px;
+  margin: 0 auto;
+  margin-bottom: 20px;
+  background-color: #1fbd54;
+  color: #ffffff;
+  border-radius: 5px;
+  padding: 5px;
+  cursor: pointer;
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1); 
+  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
 }
 
 .btn-follow img {
-    width: 30px;
+  width: 30px;
 }
 
 .btn-follow p {
-    margin: 0;
+  margin: 0;
+}
+
+.btn-unfollow {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-wrap: nowrap;
+  max-width: 150px;
+  margin: 0 auto;
+  margin-bottom: 20px;
+  background-color: #ff6d6d;
+  color: #ffffff;
+  border-radius: 5px;
+  padding: 5px;
+  cursor: pointer;
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1); 
+  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+}
+
+.btn-unfollow img {
+  width: 30px;
+}
+
+.btn-unfollow p {
+  margin: 0;
 }
 
 a {

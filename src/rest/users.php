@@ -29,6 +29,8 @@ $user = (isset($_POST['user'])) ? $_POST['user'] : '';
 $pass = (isset($_POST['pass'])) ? $_POST['pass'] : '';
 $email = (isset($_POST['email'])) ? $_POST['email'] : '';
 $foto = (isset($_POST['foto'])) ? $_POST['foto'] : '';
+$id_user = (isset($_POST['id_user'])) ? $_POST['id_user'] : '';
+$id_following = (isset($_POST['id_following'])) ? $_POST['id_following'] : '';
 
 $pass = md5($pass);
 
@@ -63,6 +65,22 @@ switch($opcion){
         break;
     case 6:
         $consulta = "SELECT * FROM users WHERE id = '$id'";
+        $resultado = $conexion->prepare($consulta);
+        $resultado->execute();
+        $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
+        break;
+    case 7:
+        $consulta = "INSERT INTO followers (id_user, id_following) VALUES('$id_user', '$id_following') ";
+        $resultado = $conexion->prepare($consulta);
+        $resultado->execute();                
+        break;
+    case 8:
+        $consulta = "DELETE FROM followers WHERE id_user = '$id_user' AND id_following = '$id_following'";		
+        $resultado = $conexion->prepare($consulta);
+        $resultado->execute();                           
+        break;
+    case 9:
+        $consulta = "SELECT * FROM followers WHERE id_user = '$id_user' AND id_following = '$id_following'";
         $resultado = $conexion->prepare($consulta);
         $resultado->execute();
         $data=$resultado->fetchAll(PDO::FETCH_ASSOC);

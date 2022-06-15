@@ -89,5 +89,50 @@ export default {
       }
     });
     return successUpdate;
+  },
+  async saveNewFollower(idUser, idFollowing) {
+    let successSave = false;
+    await axios.post(url, {
+      opcion:7,
+      id_user: idUser,
+      id_following: idFollowing
+    }).then(response =>{
+      if(response.status == 200){
+        successSave = true;
+      } else {
+        console.log('error');
+      }
+    });
+    return successSave;
+  },
+  async deleteFollowing(idUser, idFollowing) {
+    let successDelete = false;
+    await axios.post(url, {
+      opcion:8,
+      id_user: idUser,
+      id_following: idFollowing
+    }).then(response =>{
+      if(response.status == 200){
+        successDelete = true;
+      } else {
+        console.log('error');
+      }
+    });
+    return successDelete;
+  },
+  async getIsFollowing(idUser, idFollowing) {
+    let idList = [];
+    await axios.post(url, {
+      opcion:9,
+      id_user: idUser,
+      id_following: idFollowing
+    }).then(response =>{
+      if(response.status == 200){
+        idList = response.data;
+      } else {
+        console.log('error');
+      }
+    });
+    return idList;
   }
 }
