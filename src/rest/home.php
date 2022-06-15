@@ -80,6 +80,17 @@ switch($opcion){
         $resultado->execute();
         $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
         break;
+    case 8:
+        $consulta = "SELECT * FROM followers WHERE id_user = '$id_user' OR id_following = '$id_user'";
+        $resultado = $conexion->prepare($consulta);
+        $resultado->execute();
+        $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
+        break;
+    case 9:
+        $consulta = "DELETE FROM followers WHERE id_user = '$id_user' AND id_following = '$id_following'";		
+        $resultado = $conexion->prepare($consulta);
+        $resultado->execute();                           
+        break;
 }
 print json_encode($data, JSON_UNESCAPED_UNICODE);
 $conexion = NULL;

@@ -12,7 +12,7 @@
       <div class="follow-button" v-if="followButton && this.$store.state.login.id !== user.id" @click="followUser()">
         <img src="../assets/img/follow-green.png">
       </div>
-      <div class="unfollow-button" v-if="unfollowButton && this.$store.state.login.id !== user.id">
+      <div class="unfollow-button" v-if="unfollowButton && this.$store.state.login.id !== user.id" @click="unfollowUser()">
         <img src="../assets/img/unfollow-red.png">
       </div>
     </div>

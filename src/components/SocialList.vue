@@ -21,8 +21,8 @@
     <div v-if="tabSeleccionado === 'seguidores'">
       <SocialItem v-for="user in followersUserList" :key="user.id" 
         :user="user"
-        :followButton="true"
-        :unfollowButton="false"
+        :followButton="isFollowButtonActive(user.id)"
+        :unfollowButton="!isFollowButtonActive(user.id)"
         @followUser="followUser"
         @unfollowUser="unfollowUser"
       />
@@ -30,8 +30,8 @@
     <div v-if="tabSeleccionado === 'seguidos'">
       <SocialItem v-for="user in followedUserList" :key="user.id" 
         :user="user"
-        :followButton="false"
-        :unfollowButton="true"
+        :followButton="isFollowButtonActive(user.id)"
+        :unfollowButton="!isFollowButtonActive(user.id)"
         @followUser="followUser"
         @unfollowUser="unfollowUser"
       />
@@ -39,8 +39,8 @@
     <div v-if="tabSeleccionado === 'todos'">
       <SocialItem v-for="user in allUsersList" :key="user.id" 
         :user="user"
-        :followButton="true"
-        :unfollowButton="false"
+        :followButton="isFollowButtonActive(user.id)"
+        :unfollowButton="!isFollowButtonActive(user.id)"
         @followUser="followUser"
         @unfollowUser="unfollowUser"
       />
@@ -60,6 +60,7 @@ export default {
       allUsersList: [],
       followersUserList: [],
       followedUserList: [],
+      listofIds: [],
       loading: false,
       tabSeleccionado: 'seguidores',
       numUsers: 0,
@@ -109,6 +110,10 @@ export default {
       this.followersUserList = await homeService.getFollowersUsers(this.$store.state.login.id);
       this.loading = false;
     },
+    async getListOfIds() {
+      this.listofIds = [];
+      this.listofIds = await homeService.getListOfIds(this.$store.state.login.id);
+    },
     setTabValue() {
       document.getElementById("seguidores").classList.remove("users-seleccionado");
       document.getElementById("seguidos").classList.remove("users-seleccionado");
@@ -130,28 +135,29 @@ export default {
       }
     },
     async followUser(idFollowing) {
-      let followSuccess = await homeService.saveNewFollower(this.$store.state.login.id, idFollowing);
-      if (followSuccess) {
-        // this.changeFollowButton(idFollowing);
-      }
+      await homeService.saveNewFollower(this.$store.state.login.id, idFollowing);
       this.getNumsTabs();
     },
-    unfollowUser(idUser) {
-      homeService.unfollowUser(idUser);
-    },
-    changeFollowButton(idUser) {
-      let user = this.allUsersList.find(user => user.id === idUser);
-      if (user.followed) {
-        user.followed = false;
-      } else {
-        user.followed = true;
-      }
+    async unfollowUser(idFollowing) {
+      await homeService.deleteFollowing(this.$store.state.login.id, idFollowing);
+      this.getNumsTabs();
+      this.getFollowedUsers();
     },
     async getNumsTabs() {
       this.numUsers = await homeService.getNumUsers();
       this.numFollowed = await homeService.getNumFollowedUsers(this.$store.state.login.id);
       this.numFollowers = await homeService.getNumFollowersUsers(this.$store.state.login.id);
+      this.getListOfIds();
     },
+    isFollowButtonActive(idFollowing) {
+      let followable = true;
+      this.listofIds.forEach(follow => {
+        if (this.$store.state.login.id === follow.id_user && follow.id_following === idFollowing) {
+          followable = false;
+        }
+      });
+      return followable;
+    }
   }
 }
 </script>
