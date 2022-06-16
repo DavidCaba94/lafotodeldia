@@ -110,6 +110,13 @@ export default {
         if (bottomOfWindow && !this.noMoreImages) {
           this.getFeedImagesWithLimit();
         }
+      };
+      window.touchmove = () => {
+        let bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) 
+                           + window.innerHeight === document.documentElement.offsetHeight;
+        if (bottomOfWindow && !this.noMoreImages) {
+          this.getFeedImagesWithLimit();
+        }
       }
     }
   }
