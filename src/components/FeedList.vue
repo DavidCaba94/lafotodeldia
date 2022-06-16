@@ -111,7 +111,7 @@ export default {
           this.getFeedImagesWithLimit();
         }
       };
-      window.touchmove = () => {
+      window.ontouchmove = () => {
         let bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) 
                            + window.innerHeight === document.documentElement.offsetHeight;
         if (bottomOfWindow && !this.noMoreImages) {
