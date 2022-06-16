@@ -170,6 +170,7 @@ export default {
 .selector-users {
   max-width: 900px;
   margin: 0 auto;
+  margin-top: 10px;
   margin-bottom: 20px;
   display: flex;
   align-items: center;

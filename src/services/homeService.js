@@ -128,5 +128,33 @@ export default {
       }
     });
     return idList;
+  },
+  async getLastDayImage(date) {
+    let lastDayImage = {};
+    await axios.post(url, {
+      opcion:10,
+      date: date
+    }).then(response =>{
+      if(response.status == 200){
+        lastDayImage = response.data;
+      } else {
+        console.log('error');
+      }
+    });
+    return lastDayImage;
+  },
+  async getListFeedImages(idUser) {
+    let feedImageList = [];
+    await axios.post(url, {
+      opcion:11,
+      id_user: idUser
+    }).then(response =>{
+      if(response.status == 200){
+        feedImageList = response.data;
+      } else {
+        console.log('error');
+      }
+    });
+    return feedImageList;
   }
 }

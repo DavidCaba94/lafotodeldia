@@ -27,6 +27,7 @@ $opcion = (isset($_POST['opcion'])) ? $_POST['opcion'] : '';
 $id = (isset($_POST['id'])) ? $_POST['id'] : '';
 $id_user = (isset($_POST['id_user'])) ? $_POST['id_user'] : '';
 $id_following = (isset($_POST['id_following'])) ? $_POST['id_following'] : '';
+$date = (isset($_POST['date'])) ? $_POST['date'] : '';
 
 switch($opcion){
 	  case 1:
@@ -90,6 +91,51 @@ switch($opcion){
         $consulta = "DELETE FROM followers WHERE id_user = '$id_user' AND id_following = '$id_following'";		
         $resultado = $conexion->prepare($consulta);
         $resultado->execute();                           
+        break;
+    case 10:
+        $consulta = "SELECT
+                    U.id as 'id_user',
+                    U.user as 'user',
+                    U.foto as 'foto',
+                    U.verificado as 'verificado',
+                    I.id as 'id',
+                    I.id_user as 'id_user',
+                    I.url as 'url',
+                    I.likes as 'likes',
+                    I.date as 'date'
+                    FROM images I
+                    JOIN users U
+                    ON I.id_user = U.id
+                    WHERE I.date = '$date'
+                    ORDER BY I.likes DESC
+                    LIMIT 1";
+        $resultado = $conexion->prepare($consulta);
+        $resultado->execute();
+        $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
+        break;
+    case 11:
+        $consulta = "SELECT
+                    U.id as 'id_user',
+                    U.user as 'user',
+                    U.foto as 'foto',
+                    U.verificado as 'verificado',
+                    I.id as 'id',
+                    I.id_user as 'id_user',
+                    I.url as 'url',
+                    I.likes as 'likes',
+                    I.date as 'date'
+                    FROM images I
+                    JOIN users U
+                    ON I.id_user = U.id
+                    WHERE I.id_user IN (
+                        SELECT id_following 
+                        FROM followers 
+                        WHERE id_user = '$id_user'
+                    ) OR I.id_user = '$id_user'
+                    ORDER BY I.id DESC";
+        $resultado = $conexion->prepare($consulta);
+        $resultado->execute();
+        $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
         break;
 }
 print json_encode($data, JSON_UNESCAPED_UNICODE);

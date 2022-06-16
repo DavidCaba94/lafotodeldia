@@ -66,7 +66,6 @@ a {
 .tabs-home {
   max-width: 900px;
   margin: 0 auto;
-  margin-bottom: 20px;
   display: flex;
   align-items: center;
   justify-content: space-around;

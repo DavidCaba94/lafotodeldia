@@ -17,12 +17,12 @@
       <p>Este usuario no ha publicado fotos todavía</p>
     </div>
     <div class="gallery-box">
-      <img
+      <div
         v-for="image of imagesArray"
         :key="image.id"
         class="gallery-item"
         @click="showFullImage(image)"
-        :src="image.url">
+        v-bind:style="{ backgroundImage: 'url(' + image.url + ')' }"></div>
     </div>
   </div>
 </template>
@@ -114,6 +114,10 @@ export default {
 
 .gallery-item {
   width: 30%;
+  height: 100px;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
   margin: 5px;
   border-radius: 5px;
   cursor: pointer;
@@ -132,6 +136,10 @@ export default {
     margin: 0 auto;
     margin-top: 20px;
     margin-left: auto;
+  }
+
+  .gallery-item {
+    height: 200px;
   }
 }
 

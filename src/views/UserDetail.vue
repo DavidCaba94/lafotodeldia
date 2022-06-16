@@ -36,12 +36,12 @@
       </div>
     </div>
     <div class="fotos-box">
-      <img
+      <div
         v-for="image of imagesArray"
         :key="image.id"
         class="foto-item"
         @click="showFullImage(image)"
-        :src="image.url">
+        v-bind:style="{ backgroundImage: 'url(' + image.url + ')' }"></div>
       <p v-if="imagesArray.length === 0">No ha publicado ninguna foto todavía</p>
     </div>
     <router-link :to="'/user-gallery/' + idUser">
@@ -76,6 +76,9 @@ export default {
     DetailImage
   },
   mounted() {
+    if (this.$route.params.id === this.$store.state.login.id) {
+      this.$router.push('/user');
+    }
     this.cargarDatosUser(this.$route.params.id);
     this.getIsFollowing();
   },
@@ -216,6 +219,10 @@ export default {
 
 .foto-item {
   width: 30%;
+  height: 100px;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
   border-radius: 5px;
   margin: 5px;
   cursor: pointer;
