@@ -1,5 +1,5 @@
 <template>
-  <div class="feed-list">
+  <div class="feed-list" @scroll="onScroll">
     <div class="yesterday-container" v-if="lastDayImage.length !== 0">
       <router-link :to="'/user-detail/' + lastDayImage[0].id_user">
         <div class="yesterday-item">
@@ -25,6 +25,7 @@
       <img class="img-no-photos" src="../assets/img/photos-icon.png">
       <p>Comienza a seguir a gente para ver sus publicaciones</p>
     </div>
+    <div class="lds-ellipsis" v-if="loadingMore"><div></div><div></div><div></div><div></div></div>
   </div>
 </template>
 
@@ -39,15 +40,22 @@ export default {
     return {
       lastDayImage: [],
       feedImages: [],
-      loading: false
+      loading: false,
+      loadingMore: false,
+      scrollCounter: 0,
+      noMoreImages: false
     }
   },
   props: {
 
   },
+  computed: {
+
+  },
   mounted() {
     this.getLastDayImage();
     this.getFeedImages();
+    this.scroll();
   },
   components: {
     FeedItem
@@ -61,6 +69,20 @@ export default {
       this.loading = true;
       this.feedImages = await homeService.getListFeedImages(this.$store.state.login.id);
       this.loading = false;
+    },
+    async getFeedImagesWithLimit() {
+      let feedImagesLimited = [];
+      this.scrollCounter++;
+      this.loadingMore = true;
+      feedImagesLimited = await homeService.getListFeedImagesWithLimit(this.$store.state.login.id, (this.scrollCounter*10) + 1);
+      this.loadingMore = false;
+      if(feedImagesLimited.length === 0) {
+        this.noMoreImages = true;
+      } else {
+        feedImagesLimited.forEach(img => {
+          this.feedImages.push(img);
+        });
+      }
     },
     getYesterdayDay() {
       var today = new Date();
@@ -80,6 +102,15 @@ export default {
     },
     transformDateFirstDay(dateToTransform) {
       return utils.transformDate(dateToTransform);
+    },
+    scroll () {
+      window.onscroll = () => {
+        let bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) 
+                           + window.innerHeight === document.documentElement.offsetHeight;
+        if (bottomOfWindow && !this.noMoreImages) {
+          this.getFeedImagesWithLimit();
+        }
+      }
     }
   }
 }

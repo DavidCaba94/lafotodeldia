@@ -28,6 +28,7 @@ $id = (isset($_POST['id'])) ? $_POST['id'] : '';
 $id_user = (isset($_POST['id_user'])) ? $_POST['id_user'] : '';
 $id_following = (isset($_POST['id_following'])) ? $_POST['id_following'] : '';
 $date = (isset($_POST['date'])) ? $_POST['date'] : '';
+$first_limit = (isset($_POST['first_limit'])) ? $_POST['first_limit'] : '';
 
 switch($opcion){
 	  case 1:
@@ -132,7 +133,33 @@ switch($opcion){
                         FROM followers 
                         WHERE id_user = '$id_user'
                     ) OR I.id_user = '$id_user'
-                    ORDER BY I.id DESC";
+                    ORDER BY I.id DESC
+                    LIMIT 10";
+        $resultado = $conexion->prepare($consulta);
+        $resultado->execute();
+        $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
+        break;
+    case 12:
+        $consulta = "SELECT
+                    U.id as 'id_user',
+                    U.user as 'user',
+                    U.foto as 'foto',
+                    U.verificado as 'verificado',
+                    I.id as 'id',
+                    I.id_user as 'id_user',
+                    I.url as 'url',
+                    I.likes as 'likes',
+                    I.date as 'date'
+                    FROM images I
+                    JOIN users U
+                    ON I.id_user = U.id
+                    WHERE I.id_user IN (
+                        SELECT id_following 
+                        FROM followers 
+                        WHERE id_user = '$id_user'
+                    ) OR I.id_user = '$id_user'
+                    ORDER BY I.id DESC
+                    LIMIT $first_limit, 10";
         $resultado = $conexion->prepare($consulta);
         $resultado->execute();
         $data=$resultado->fetchAll(PDO::FETCH_ASSOC);

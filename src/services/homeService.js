@@ -156,5 +156,20 @@ export default {
       }
     });
     return feedImageList;
+  },
+  async getListFeedImagesWithLimit(idUser, limit) {
+    let feedImageListWithLimit = [];
+    await axios.post(url, {
+      opcion:12,
+      id_user: idUser,
+      first_limit: limit
+    }).then(response =>{
+      if(response.status == 200){
+        feedImageListWithLimit = response.data;
+      } else {
+        console.log('error');
+      }
+    });
+    return feedImageListWithLimit;
   }
 }
