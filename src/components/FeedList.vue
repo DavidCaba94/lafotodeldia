@@ -1,5 +1,6 @@
 <template>
-  <div class="feed-list" @scroll="onScroll">
+  <InfiniteLoading  @infinite="scroll"/>
+  <div class="feed-list">
     <div class="yesterday-container" v-if="lastDayImage.length !== 0">
       <router-link :to="'/user-detail/' + lastDayImage[0].id_user">
         <div class="yesterday-item">
@@ -26,13 +27,14 @@
       <p>Comienza a seguir a gente para ver sus publicaciones</p>
     </div>
     <div class="lds-ellipsis" v-if="loadingMore"><div></div><div></div><div></div><div></div></div>
-  </div>
+  </div >
 </template>
 
 <script>
 import FeedItem from '../components/FeedItem.vue';
 import homeService from '../services/homeService.js';
 import utils from '../utils/utils.js';
+import InfiniteLoading from "v3-infinite-loading";
 
 export default {
   name: 'FeedList',
@@ -55,10 +57,11 @@ export default {
   mounted() {
     this.getLastDayImage();
     this.getFeedImages();
-    this.scroll();
+    //this.scroll();
   },
   components: {
-    FeedItem
+    FeedItem,
+    InfiniteLoading
   },
   methods: {
     async getLastDayImage() {
