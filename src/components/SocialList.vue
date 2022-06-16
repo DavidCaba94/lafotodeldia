@@ -88,8 +88,10 @@ export default {
     SocialItem
   },
   async mounted() {
-    this.setTabValue();
-    this.getNumsTabs();
+    if (this.userLogged) {
+      this.setTabValue();
+      this.getNumsTabs();
+    }
   },
   methods: {
     async getAllUsers() {

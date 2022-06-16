@@ -65,7 +65,7 @@ export default {
       user: form.user,
       email: form.email, 
       pass: form.pass,
-      foto: 'https://davidcaballerocalvo.es/lafotodeldia/rest/perfil-images/default-user-img.png'
+      foto: 'https://davidcaballerocalvo.es/lafotodeldia/rest/perfil-images/default-user-img.svg'
     }).then(response =>{
       if(response.status == 200){
         successReg = true;

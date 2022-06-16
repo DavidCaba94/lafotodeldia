@@ -18,7 +18,10 @@
           <img src="../assets/img/verified.png" v-if="fotoOfTheMonth.verificado">
           @{{ fotoOfTheMonth.user }}
         </div>
-        <div class="date-container">{{ 'Foto del mes de ' + mesSeleccionado }}</div>
+        <div class="date-container">
+          <img class="prize-foto" src="../assets/img/prize-day.png">
+          {{ 'Foto del mes de ' + mesSeleccionado }}
+        </div>
         <div class="likes-container">
           <img src="../assets/img/like-up.png">
           <div>{{ fotoOfTheMonth.likes }}</div>
@@ -141,7 +144,7 @@ export default {
 }
 
 .items-container {
-  max-width: 1000px;
+  max-width: 600px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -240,11 +243,14 @@ export default {
 }
 
 .month-photo-item .date-container {
-    font-weight: 300;
-    font-size: 18px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    text-align: center;
+  font-weight: 300;
+  font-size: 18px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .img-no-photos {
@@ -263,6 +269,10 @@ export default {
 
 .likes-container img {
   width: 20px;
+}
+
+.prize-foto {
+  width: 30px;
 }
 
 @media (min-width: 768px) {

@@ -114,8 +114,12 @@ export default {
       }
     },
     async followUser() {
-      await userService.saveNewFollower(this.$store.state.login.id, this.idUser);
-      this.getIsFollowing();
+      if (this.$store.state.login.id === 0) {
+        this.$router.push('/login');
+      } else {
+        await userService.saveNewFollower(this.$store.state.login.id, this.idUser);
+        this.getIsFollowing();
+      }
     },
     async unfollowUser() {
       await userService.deleteFollowing(this.$store.state.login.id, this.idUser);
