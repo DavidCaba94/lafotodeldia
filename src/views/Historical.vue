@@ -19,7 +19,7 @@
           @{{ fotoOfTheMonth.user }}
         </div>
         <div class="date-container">
-          <img class="prize-foto" src="../assets/img/prize-day.png">
+          <img class="prize-foto" src="../assets/img/prize-month.png">
           {{ 'Foto del mes de ' + mesSeleccionado }}
         </div>
         <div class="likes-container">
@@ -28,11 +28,7 @@
         </div>
       </div>
       <HistoricalItem v-for="(image) of winnersOfMonth" :key="image.id"
-        :urlImage="image.url"
-        :date='image.date'
-        :username='image.user'
-        :likes='image.likes'
-        :verificado="image.verificado"
+        :image="image"
         @click="showFullImage(image)"
       />
     </div>
@@ -273,6 +269,7 @@ export default {
 
 .prize-foto {
   width: 30px;
+  margin-right: 10px;
 }
 
 @media (min-width: 768px) {
