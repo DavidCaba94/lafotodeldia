@@ -27,11 +27,6 @@
       <p>Comienza a seguir a gente para ver sus publicaciones</p>
     </div>
     <div class="lds-ellipsis" v-if="loadingMore"><div></div><div></div><div></div><div></div></div>
-    <p>pageYOffset: {{ pageYOffset }}</p>
-    <p>scrollTop: {{ scrollTop }}</p>
-    <p>bodyscrollTop: {{ bodyscrollTop }}</p>
-    <p>innerHeight: {{ innerHeight }}</p>
-    <p>offsetHeight: {{ offsetHeight }}</p>
   </div >
 </template>
 
@@ -67,7 +62,6 @@ export default {
   mounted() {
     this.getLastDayImage();
     this.getFeedImages();
-    //this.scroll();
   },
   components: {
     FeedItem,
@@ -119,29 +113,11 @@ export default {
     scroll () {
       window.onscroll = () => {
         let bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) 
-                           + window.innerHeight === document.documentElement.offsetHeight;
-        console.log('window.pageYOffset-' + window.pageYOffset);
-        console.log('document.documentElement.scrollTop-' + document.documentElement.scrollTop);
-        console.log('document.body.scrollTop-' + document.body.scrollTop);
-        console.log('window.innerHeight-' + window.innerHeight);
-        console.log('document.documentElement.offsetHeight-' + document.documentElement.offsetHeight);
-        this.pageYOffset = window.pageYOffset;
-        this.scrollTop = document.documentElement.scrollTop;
-        this.bodyscrollTop = document.body.scrollTop;
-        this.innerHeight = window.innerHeight;
-        this.offsetHeight = document.documentElement.offsetHeight;
-        console.log(bottomOfWindow);
+                           + window.innerHeight >= document.documentElement.offsetHeight - 100;
         if (bottomOfWindow && !this.noMoreImages) {
           this.getFeedImagesWithLimit();
         }
       };
-      window.ontouchmove = () => {
-        let bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) 
-                           + window.innerHeight === document.documentElement.offsetHeight;
-        if (bottomOfWindow && !this.noMoreImages) {
-          this.getFeedImagesWithLimit();
-        }
-      }
     }
   }
 }
