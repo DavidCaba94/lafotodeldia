@@ -10,6 +10,7 @@
   "dependencies": {
     "axios": "^0.26.1",
     "core-js": "^3.6.5",
+    "md5": "^2.3.0",
     "register-service-worker": "^1.7.1",
     "v-lazy-image": "^2.1.1",
     "v3-infinite-loading": "^1.0.6",

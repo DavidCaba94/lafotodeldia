@@ -134,5 +134,20 @@ export default {
       }
     });
     return idList;
+  },
+  async updatePassUsuario(id, pass) {
+    let successUpdate = false;
+    await axios.post(url, {
+      opcion:10, 
+      id: id,
+      pass: pass
+    }).then(response =>{
+      if(response.status == 200){
+        successUpdate = true;
+      } else {
+        console.log('error');
+      }
+    });
+    return successUpdate;
   }
 }

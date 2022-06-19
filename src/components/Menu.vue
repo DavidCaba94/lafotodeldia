@@ -152,6 +152,7 @@ export default {
   align-items: center;
   justify-content: space-around;
   flex-wrap: nowrap;
+  z-index: 1;
 }
 
 .header-mobile {

@@ -70,6 +70,7 @@
         <input type="password" placeholder="Nueva contraseña" v-model="newPass">
       </div>
       <p id="error-log" class="error-log" v-if="errorLog">{{errorLog}}</p>
+      <p id="success-log" class="success-log" v-if="successLog">{{successLog}}</p>
       <div class="btn-confirmar" @click="changePass()">CONFIRMAR</div>
     </div>
     <div class="cerrar-sesion" @click="cerrarSesion()">CERRAR SESION</div>
@@ -82,6 +83,8 @@ import DetailImage from '../components/DetailImage.vue';
 import UploadImage from '../components/UploadImage.vue';
 import UploadProfileImage from '../components/UploadProfileImage.vue';
 import imageService from '../services/imageService.js';
+import md5 from 'md5';
+import userService from '../services/userService.js';
 
 export default {
   data() {
@@ -97,6 +100,7 @@ export default {
       showUpload: false,
       showUploadProfile: false,
       errorLog: null,
+      successLog: null,
       imagesArray: [],
       selectedShowImage: {}
     }
@@ -137,13 +141,25 @@ export default {
         this.verified = JSON.parse(localStorage.getItem('user')).verificado === '1' ? true : false;
       }
     },
-    changePass() {
+    async changePass() {
       this.errorLog = null;
-      if (this.oldPass === this.pass) {
-        // cambio de contraseña
+      this.successLog = null;
+      if (md5(this.oldPass) === this.pass) {
+        let updateSuccess = await userService.updatePassUsuario(this.$store.state.login.id, this.newPass);
+        if (updateSuccess) {
+          this.pass = md5(this.newPass);
+          this.$store.state.login.pass = md5(this.newPass);
+          localStorage.setItem(localStorage.getItem('user').pass, md5(this.newPass));
+          this.oldPass = '';
+          this.newPass = '';
+          this.successLog = 'Contraseña cambiada correctamente';
+        } else {
+          this.errorLog = 'Error al cambiar la contraseña';
+        }
       } else {
         this.errorLog = 'Contraseña antigua incorrecta';
       }
+      console.log(md5(this.oldPass) + ' - ' + this.pass);
     },
     async getAllUserImages() {
       this.imagesArray = await imageService.getFirstNineImagesByUser(this.$store.state.login.id);
@@ -372,6 +388,13 @@ export default {
 .error-log {
     font-size: 12px;
     color: #ff6d6d;
+    font-weight: 300;
+    margin-top: -10px;
+}
+
+.success-log {
+    font-size: 12px;
+    color: #00a315;
     font-weight: 300;
     margin-top: -10px;
 }
