@@ -5,12 +5,12 @@
     </div>
     <div class="img-container" @click="closeFullImage()">
       <div class="box-img-show">
-        <img class="img-show" :src="imageData.urlImage">
+        <v-lazy-image class="img-show" :src="imageData.urlImage" />
         <router-link :to="'/user-detail/' + imageData.userId">
           <div class="profile-show">
             <div class="flex-box">
               <div class="profile-img">
-                <img :src="imageData.urlProfile">
+                <v-lazy-image :src="imageData.urlProfile" />
               </div>
               <div class="profile-name">@{{ imageData.userName }}</div>
             </div>
@@ -26,6 +26,8 @@
 </template>
 
 <script>
+import VLazyImage from "v-lazy-image";
+
 export default {
   name: 'DetailImage',
   data() {
@@ -35,6 +37,9 @@ export default {
   },
   props: {
       imageData: Object
+  },
+  components: {
+    VLazyImage
   },
   computed: {
 
@@ -162,4 +167,12 @@ a.router-link-exact-active {
   height: 20px;
 }
 
+.v-lazy-image {
+  filter: blur(4px);
+  transition: filter 0.7s;
+}
+
+.v-lazy-image-loaded {
+  filter: blur(0);
+}
 </style>

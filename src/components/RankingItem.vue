@@ -2,7 +2,7 @@
   <div class="ranking-item">
     <div class="img-container">
       <div class="order-container">#{{ order }}</div>
-      <img :src="urlImage">
+      <v-lazy-image :src="urlImage" />
     </div>
     <div class="username-container">@{{ username }}</div>
     <div class="likes-container">
@@ -13,6 +13,8 @@
 </template>
 
 <script>
+import VLazyImage from "v-lazy-image";
+
 export default {
   name: 'RankingItem',
   data() {
@@ -25,6 +27,9 @@ export default {
       username: String,
       order: Number,
       likes: String
+  },
+  components: {
+    VLazyImage
   },
   computed: {
 
@@ -81,6 +86,15 @@ export default {
 
 .likes-container img {
   width: 20px;
+}
+
+.v-lazy-image {
+  filter: blur(4px);
+  transition: filter 0.7s;
+}
+
+.v-lazy-image-loaded {
+  filter: blur(0);
 }
 
 @media (min-width: 768px) {

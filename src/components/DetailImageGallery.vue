@@ -5,7 +5,7 @@
     </div>
     <div class="img-container" @click="() => {if(!deleteEnabled){closeFullImage()}}">
       <div class="box-img-show">
-        <img class="img-show" :src="imageData.urlImage">
+        <v-lazy-image class="img-show" :src="imageData.urlImage" />
         <div class="btn-delete" v-if="deleteEnabled" @click="openDeleteDialog()"></div>
         <div class="flex-box">
           <img class="img-likes" src="../assets/img/like-up.png">
@@ -26,6 +26,8 @@
 </template>
 
 <script>
+import VLazyImage from "v-lazy-image";
+
 export default {
   name: 'DetailImageGallery',
   data() {
@@ -37,6 +39,9 @@ export default {
   emits: ["closeFullImage", "deleteImage"],
   props: {
       imageData: Object
+  },
+  components: {
+    VLazyImage
   },
   methods: {
     closeFullImage() {
@@ -217,5 +222,14 @@ export default {
   box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
   padding: 5px 15px;
   margin: 10px;
+}
+
+.v-lazy-image {
+  filter: blur(4px);
+  transition: filter 0.7s;
+}
+
+.v-lazy-image-loaded {
+  filter: blur(0);
 }
 </style>

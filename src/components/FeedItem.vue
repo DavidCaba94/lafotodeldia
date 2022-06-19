@@ -12,7 +12,7 @@
       </div>
     </router-link>
     <div class="img-container">
-        <img :src="image.url">
+      <v-lazy-image :src="image.url" />
     </div>
     <div class="footer-container">
       <div class="date-container">{{ transformDateFirstDay(image.date) }}</div>
@@ -26,6 +26,7 @@
 
 <script>
 import utils from '../utils/utils.js';
+import VLazyImage from "v-lazy-image";
 
 export default {
   name: 'FeedItem',
@@ -36,6 +37,9 @@ export default {
   },
   props: {
     image: Object
+  },
+  components: {
+    VLazyImage
   },
   computed: {
 
@@ -142,6 +146,15 @@ a {
   justify-content: space-between;
   padding-left: 10px;
   padding-right: 10px;
+}
+
+.v-lazy-image {
+  filter: blur(4px);
+  transition: filter 0.7s;
+}
+
+.v-lazy-image-loaded {
+  filter: blur(0);
 }
 
 @media (min-width: 768px) {

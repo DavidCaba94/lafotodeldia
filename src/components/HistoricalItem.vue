@@ -10,7 +10,7 @@
       </div>
     </div>
     <div class="img-container">
-        <img :src="image.url">
+        <v-lazy-image :src="image.url" />
     </div>
     <div class="footer-container">
       <div class="date-container">
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import VLazyImage from "v-lazy-image";
 import utils from '../utils/utils.js';
 
 export default {
@@ -37,6 +38,9 @@ export default {
   },
   props: {
       image: Object,
+  },
+  components: {
+    VLazyImage
   },
   computed: {
 
@@ -144,6 +148,15 @@ export default {
   justify-content: space-between;
   padding-left: 10px;
   padding-right: 10px;
+}
+
+.v-lazy-image {
+  filter: blur(4px);
+  transition: filter 0.7s;
+}
+
+.v-lazy-image-loaded {
+  filter: blur(0);
 }
 
 @media (min-width: 768px) {
