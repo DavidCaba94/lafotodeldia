@@ -180,11 +180,12 @@ switch($opcion){
                         I.url as 'url',
                         I.likes as 'likes',
                         I.date as 'date'
-                        FROM images I
+                        FROM image_of_day W
+                        JOIN images I
+                        ON W.id_image = I.id
                         JOIN users U
                         ON I.id_user = U.id
-                        WHERE I.date BETWEEN '$date_ini' AND '$date_fin'
-                        ORDER BY I.likes DESC";
+                        WHERE W.date BETWEEN '$date_ini' AND '$date_fin'";
             $resultado = $conexion->prepare($consulta);
             $resultado->execute();
             $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
