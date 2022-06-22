@@ -243,5 +243,63 @@ export default {
       }
     });
     return imagesArray;
+  },
+  async getMostVotedImageOfDay(date) {
+    let imagesArray = [];
+    await axios.post(url + 'images.php', {
+      opcion:16,
+      date: date
+    }).then(response =>{
+      if(response.status == 200){
+        imagesArray = response.data;
+      } else {
+        console.log('error');
+      }
+    });
+    return imagesArray;
+  },
+  async getImageById(idFoto) {
+    let imagesArray = [];
+    await axios.post(url + 'images.php', {
+      opcion:17,
+      id: idFoto
+    }).then(response =>{
+      if(response.status == 200){
+        imagesArray = response.data;
+      } else {
+        console.log('error');
+      }
+    });
+    return imagesArray;
+  },
+  async updateMostVotedImageOfDay(idFoto, date) {
+    let successSave = false;
+    await axios.post(url + 'images.php', {
+      opcion:18,
+      id_image: idFoto,
+      date: date
+    }).then(response =>{
+      if(response.status == 200){
+        successSave = true;
+      } else {
+        console.log('error');
+      }
+    });
+    return successSave;
+  },
+  async setMostVotedImageOfDay(idFoto, date) {
+    let successSave = false;
+    await axios.post(url + 'images.php', {
+      opcion:19,
+      id_image: idFoto,
+      date: date
+    }).then(response =>{
+      if(response.status == 200){
+        successSave = true;
+      } else {
+        console.log('error');
+      }
+    });
+    return successSave;
   }
 }

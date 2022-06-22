@@ -189,6 +189,29 @@ switch($opcion){
             $resultado->execute();
             $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
             break;
+      case 16:
+            $consulta = "SELECT * FROM images WHERE date='$date' ORDER BY likes DESC LIMIT 1";
+            $resultado = $conexion->prepare($consulta);
+            $resultado->execute();
+            $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
+            break;
+      case 17:
+            $consulta = "SELECT * FROM images WHERE id='$id'";
+            $resultado = $conexion->prepare($consulta);
+            $resultado->execute();
+            $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
+            break;
+      case 18:
+            $consulta = "UPDATE image_of_day SET id_image='$id_image' WHERE date='$date' ";
+            $resultado = $conexion->prepare($consulta);
+            $resultado->execute();                        
+            $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
+            break;
+      case 19:
+            $consulta = "INSERT INTO image_of_day (id_image, date) VALUES('$id_image', '$date') ";
+            $resultado = $conexion->prepare($consulta);
+            $resultado->execute();                
+            break;
 }
 print json_encode($data, JSON_UNESCAPED_UNICODE);
 $conexion = NULL;

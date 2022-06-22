@@ -55,7 +55,10 @@ export default {
       verified: false,
       imagesArray: [],
       nextImage: null,
-      loading: true
+      loading: true,
+      diaActual: new Date().getDate(),
+      mesActual: new Date().getMonth(),
+      anoActual: new Date().getFullYear()
     }
   },
   components: {
@@ -110,7 +113,17 @@ export default {
       await imageService.updateLastImageVotedByUser(this.$store.state.login.id, this.idFoto);
     },
     async updateImageVoted() {
+      let today = this.anoActual + '-' + (this.mesActual + 1) + '-' + this.diaActual;
       await imageService.updateImageVoted(this.idFoto);
+      let mostVotedImageOfDay = await imageService.getMostVotedImageOfDay(today);
+      let thisImage = await imageService.getImageById(this.idFoto);
+      if (parseInt(thisImage[0].likes) > 1 && parseInt(mostVotedImageOfDay[0].likes) <= parseInt(thisImage[0].likes)) {
+        await imageService.updateMostVotedImageOfDay(thisImage[0].id, today);
+      } else if (parseInt(thisImage[0].likes) > 1 && parseInt(mostVotedImageOfDay[0].likes) > parseInt(thisImage[0].likes)) {
+        await imageService.updateMostVotedImageOfDay(mostVotedImageOfDay[0].id, today);
+      } else if (parseInt(thisImage[0].likes) === 1) {
+        await imageService.setMostVotedImageOfDay(mostVotedImageOfDay[0].id, today);
+      }
     },
     showOKNotification() {
       var x = document.getElementById("snackbar-ok");
