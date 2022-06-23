@@ -23,10 +23,6 @@
       <img src="../assets/img/verified.png" v-if="verified">
       @{{ username }}
     </div>
-    <div class="verify-box" v-if="!verified">
-      <p>Verifica tu cuenta mediante un email</p>
-      <div class="verify-btn" @click="verificarCuenta()">VERIFICAR</div>
-    </div>
     <div class="followers-container">
       <div class="followers-item">
         <p>Seguidores</p>
@@ -73,6 +69,10 @@
         <img src="../assets/img/arrow.png">
       </div>
     </router-link>
+    <div class="verify-box" v-if="!verified">
+      <p>Verifica tu cuenta mediante un email</p>
+      <div class="verify-btn" @click="verificarCuenta()">VERIFICAR</div>
+    </div>
     <div class="pass-box">
       <p class="titulo-pass">CAMBIAR CONTRASEÑA</p>
       <div class="input-box">
