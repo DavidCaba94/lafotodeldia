@@ -58,6 +58,20 @@ export default {
     });
     return finalUser;
   },
+  async getUserByIdNoPass(id) {
+    let finalUser;
+    await axios.post(url, {
+      opcion:11,
+      id: id
+    }).then(response =>{
+      if(response.status == 200){
+        finalUser = response.data[0];
+      } else {
+        console.log('error');
+      }
+    });
+    return finalUser;
+  },
   async registrarUsuario(form) {
     let successReg = false;
     await axios.post(url, {
@@ -149,5 +163,19 @@ export default {
       }
     });
     return successUpdate;
-  }
+  },
+  async getPhotosOfDay(idUser) {
+    let numPhotos = 0;
+    await axios.post(url, {
+      opcion:12,
+      id: idUser
+    }).then(response =>{
+      if(response.status == 200){
+        numPhotos = response.data[0].numPhotosOfDay;
+      } else {
+        console.log('error');
+      }
+    });
+    return numPhotos;
+  },
 }

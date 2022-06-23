@@ -18,11 +18,21 @@
       <img src="../assets/img/unfollow.png" alt="">
       <p>Dejar de seguir</p>
     </div>
+    <div class="followers-container">
+      <div class="followers-item">
+        <p>Seguidores</p>
+        <div>{{ numFollowers }}</div>
+      </div>
+      <div class="followers-item">
+        <p>Seguidos</p>
+        <div>{{ numFollowed }}</div>
+      </div>
+    </div>
     <div class="prizes-box">
       <div class="prize-item">
         <p class="titulo-premio">Foto del día</p>
         <img src="../assets/img/prize-day.png" class="prize-image">
-        <p class="num-premios">0</p>
+        <p class="num-premios">{{ photosOfDay }}</p>
       </div>
       <div class="prize-item">
         <p class="titulo-premio">Foto del mes</p>
@@ -57,6 +67,7 @@
 import DetailImage from '../components/DetailImage.vue';
 import imageService from '../services/imageService.js';
 import userService from '../services/userService.js';
+import homeService from '../services/homeService.js';
 
 export default {
   data() {
@@ -69,7 +80,10 @@ export default {
       errorLog: null,
       imagesArray: [],
       selectedShowImage: {},
-      following: false
+      following: false,
+      numFollowed: 0,
+      numFollowers: 0,
+      photosOfDay: 0
     }
   },
   components: {
@@ -81,6 +95,7 @@ export default {
     }
     this.cargarDatosUser(this.$route.params.id);
     this.getIsFollowing();
+    this.getnumFollowers();
   },
   computed: {
     userLogged() {
@@ -96,11 +111,12 @@ export default {
   },
   methods: {
     async cargarDatosUser(idUser) {
-      let u = await userService.getUserById(idUser);
+      let u = await userService.getUserByIdNoPass(idUser);
       this.username = u.user;
       this.foto = u.foto;
       this.verified = u.verificado === '1' ? true : false;
       this.getAllUserImages(idUser);
+      this.getPhotosOfDay();
     },
     async getAllUserImages(idUser) {
       this.imagesArray = await imageService.getFirstNineImagesByUser(idUser);
@@ -124,6 +140,13 @@ export default {
     async unfollowUser() {
       await userService.deleteFollowing(this.$store.state.login.id, this.idUser);
       this.getIsFollowing();
+    },
+    async getnumFollowers() {
+      this.numFollowed = await homeService.getNumFollowedUsers(this.$store.state.login.id);
+      this.numFollowers = await homeService.getNumFollowersUsers(this.$store.state.login.id);
+    },
+    async getPhotosOfDay() {
+      this.photosOfDay = await userService.getPhotosOfDay(this.idUser);
     },
     showFullImage(image) {
       this.selectedShowImage.urlImage = image.url;
@@ -307,6 +330,31 @@ export default {
 
 .btn-unfollow p {
   margin: 0;
+}
+
+.followers-container {
+  max-width: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-wrap: nowrap;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+
+.followers-item p {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.followers-item div {
+  width: fit-content;
+  margin: 0 auto;
+  border: 1px solid #3ea1da;
+  color: #3ea1da;
+  border-radius: 2px;
+  margin-top: 5px;
+  padding: 2px 7px;
 }
 
 a {

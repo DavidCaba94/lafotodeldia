@@ -27,11 +27,21 @@
       <p>Verifica tu cuenta mediante un email</p>
       <div class="verify-btn" @click="verificarCuenta()">VERIFICAR</div>
     </div>
+    <div class="followers-container">
+      <div class="followers-item">
+        <p>Seguidores</p>
+        <div>{{ numFollowers }}</div>
+      </div>
+      <div class="followers-item">
+        <p>Seguidos</p>
+        <div>{{ numFollowed }}</div>
+      </div>
+    </div>
     <div class="prizes-box">
       <div class="prize-item">
         <p class="titulo-premio">Foto del día</p>
         <img src="../assets/img/prize-day.png" class="prize-image">
-        <p class="num-premios">0</p>
+        <p class="num-premios">{{ photosOfDay }}</p>
       </div>
       <div class="prize-item">
         <p class="titulo-premio">Foto del mes</p>
@@ -85,6 +95,7 @@ import UploadProfileImage from '../components/UploadProfileImage.vue';
 import imageService from '../services/imageService.js';
 import md5 from 'md5';
 import userService from '../services/userService.js';
+import homeService from '../services/homeService.js';
 
 export default {
   data() {
@@ -102,7 +113,10 @@ export default {
       errorLog: null,
       successLog: null,
       imagesArray: [],
-      selectedShowImage: {}
+      selectedShowImage: {},
+      numFollowed: 0,
+      numFollowers: 0,
+      photosOfDay: 0
     }
   },
   components: {
@@ -133,13 +147,14 @@ export default {
       this.$store.commit('closeSession');
       this.$router.push('/');
     },
-    cargarDatosUser() {
-      this.username = this.$store.state.login.user;
-      this.pass = this.$store.state.login.pass;
-      if (JSON.parse(localStorage.getItem('user'))) {
-        this.foto = JSON.parse(localStorage.getItem('user')).foto ? JSON.parse(localStorage.getItem('user')).foto : 'https://c.pxhere.com/photos/1d/87/adult_blur_camera_canon_capture_dslr_dslr_camera_fashion-1549227.jpg!d';
-        this.verified = JSON.parse(localStorage.getItem('user')).verificado === '1' ? true : false;
-      }
+    async cargarDatosUser() {
+      let u = await userService.getUserById(this.$store.state.login.id);
+      this.username = u.user;
+      this.pass = u.pass;
+      this.foto = u.foto;
+      this.verified = u.verificado === '1' ? true : false;
+      this.getnumFollowers();
+      this.getPhotosOfDay();
     },
     async changePass() {
       this.errorLog = null;
@@ -161,8 +176,15 @@ export default {
       }
       console.log(md5(this.oldPass) + ' - ' + this.pass);
     },
+    async getnumFollowers() {
+      this.numFollowed = await homeService.getNumFollowedUsers(this.$store.state.login.id);
+      this.numFollowers = await homeService.getNumFollowersUsers(this.$store.state.login.id);
+    },
     async getAllUserImages() {
       this.imagesArray = await imageService.getFirstNineImagesByUser(this.$store.state.login.id);
+    },
+    async getPhotosOfDay() {
+      this.photosOfDay = await userService.getPhotosOfDay(this.$store.state.login.id);
     },
     verificarCuenta() {
       // verificar cuenta
@@ -450,6 +472,31 @@ export default {
   box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
   cursor: pointer;
   margin-left: 10px;
+}
+
+.followers-container {
+  max-width: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-wrap: nowrap;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+
+.followers-item p {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.followers-item div {
+  width: fit-content;
+  margin: 0 auto;
+  border: 1px solid #3ea1da;
+  color: #3ea1da;
+  border-radius: 2px;
+  margin-top: 5px;
+  padding: 2px 7px;
 }
 
 a {
