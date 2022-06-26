@@ -180,7 +180,6 @@ export default {
       } else {
         this.errorLog = 'Contraseña antigua incorrecta';
       }
-      console.log(md5(this.oldPass) + ' - ' + this.pass);
     },
     async getnumFollowers() {
       this.numFollowed = await homeService.getNumFollowedUsers(this.$store.state.login.id);

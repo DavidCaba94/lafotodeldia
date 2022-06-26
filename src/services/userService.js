@@ -3,17 +3,6 @@ import axios from "axios";
 var url = "https://davidcaballerocalvo.es/lafotodeldia/rest/users.php";
 
 export default {
-  async getAllUsers() {
-    await axios.post(url, {
-      opcion:1
-    }).then(response =>{
-      if(response.status == 200){
-        console.log(response.data);
-      } else {
-        console.log('error');
-      }
-    });
-  },
   async getUserByNameOrEmail(form) {
     let finalUser;
     await axios.post(url, {

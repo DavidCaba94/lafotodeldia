@@ -95,8 +95,6 @@ export default {
       return include;
     },
     showFullImage(image, isFotoOfMoth, isFotoOfYear) {
-      console.log('isFotoOfMoth', isFotoOfMoth);
-      console.log('isFotoOfYear', isFotoOfYear);
       this.selectedShowImage.urlImage = image.url;
       this.selectedShowImage.likesImage = image.likes;
       this.selectedShowImage.userName = this.username;
