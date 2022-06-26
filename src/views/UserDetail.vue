@@ -37,12 +37,12 @@
       <div class="prize-item">
         <p class="titulo-premio">Foto del mes</p>
         <img src="../assets/img/prize-month.png" class="prize-image">
-        <p class="num-premios">0</p>
+        <p class="num-premios">{{ photosOfMonth }}</p>
       </div>
       <div class="prize-item">
         <p class="titulo-premio">Foto del año</p>
         <img src="../assets/img/prize-year.png" class="prize-image">
-        <p class="num-premios">0</p>
+        <p class="num-premios">{{ photosOfYear }}</p>
       </div>
     </div>
     <div class="fotos-box">
@@ -83,7 +83,9 @@ export default {
       following: false,
       numFollowed: 0,
       numFollowers: 0,
-      photosOfDay: 0
+      photosOfDay: 0,
+      photosOfMonth: 0,
+      photosOfYear: 0
     }
   },
   components: {
@@ -117,6 +119,8 @@ export default {
       this.verified = u.verificado === '1' ? true : false;
       this.getAllUserImages(idUser);
       this.getPhotosOfDay();
+      this.getPhotosOfMonth();
+      this.getPhotosOfYear();
     },
     async getAllUserImages(idUser) {
       this.imagesArray = await imageService.getFirstNineImagesByUser(idUser);
@@ -135,18 +139,26 @@ export default {
       } else {
         await userService.saveNewFollower(this.$store.state.login.id, this.idUser);
         this.getIsFollowing();
+        this.getnumFollowers();
       }
     },
     async unfollowUser() {
       await userService.deleteFollowing(this.$store.state.login.id, this.idUser);
       this.getIsFollowing();
+      this.getnumFollowers();
     },
     async getnumFollowers() {
-      this.numFollowed = await homeService.getNumFollowedUsers(this.$store.state.login.id);
-      this.numFollowers = await homeService.getNumFollowersUsers(this.$store.state.login.id);
+      this.numFollowed = await homeService.getNumFollowedUsers(this.idUser);
+      this.numFollowers = await homeService.getNumFollowersUsers(this.idUser);
     },
     async getPhotosOfDay() {
       this.photosOfDay = await userService.getPhotosOfDay(this.idUser);
+    },
+    async getPhotosOfMonth() {
+      this.photosOfMonth = await userService.getPhotosOfMonth(this.idUser);
+    },
+    async getPhotosOfYear() {
+      this.photosOfYear = await userService.getPhotosOfYear(this.idUser);
     },
     showFullImage(image) {
       this.selectedShowImage.urlImage = image.url;

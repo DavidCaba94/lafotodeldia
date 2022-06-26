@@ -203,13 +203,47 @@ switch($opcion){
             $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
             break;
       case 18:
-            $consulta = "UPDATE image_of_day SET id_image='$id_image' WHERE date='$date' ";
+            $consulta = "UPDATE image_of_day SET id_image='$id_image' WHERE date='$date'";
             $resultado = $conexion->prepare($consulta);
             $resultado->execute();                        
             $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
             break;
       case 19:
-            $consulta = "INSERT INTO image_of_day (id_image, date) VALUES('$id_image', '$date') ";
+            $consulta = "INSERT INTO image_of_day (id_image, date) VALUES('$id_image', '$date')";
+            $resultado = $conexion->prepare($consulta);
+            $resultado->execute();                
+            break;
+      case 20:
+            $consulta = "SELECT * FROM images WHERE date BETWEEN '$date_ini' AND '$date_fin' ORDER BY likes DESC LIMIT 1";
+            $resultado = $conexion->prepare($consulta);
+            $resultado->execute();
+            $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
+            break;
+      case 21:
+            $consulta = "UPDATE image_of_month SET id_image='$id_image', date='$date' WHERE date BETWEEN '$date_ini' AND '$date_fin'";
+            $resultado = $conexion->prepare($consulta);
+            $resultado->execute();                        
+            $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
+            break;
+      case 22:
+            $consulta = "INSERT INTO image_of_month (id_image, date) VALUES('$id_image', '$date')";
+            $resultado = $conexion->prepare($consulta);
+            $resultado->execute();                
+            break;
+      case 23:
+            $consulta = "SELECT * FROM images WHERE date BETWEEN '$date_ini' AND '$date_fin' ORDER BY likes DESC LIMIT 1";
+            $resultado = $conexion->prepare($consulta);
+            $resultado->execute();
+            $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
+            break;
+      case 24:
+            $consulta = "UPDATE image_of_year SET id_image='$id_image', date='$date' WHERE date BETWEEN '$date_ini' AND '$date_fin'";
+            $resultado = $conexion->prepare($consulta);
+            $resultado->execute();                        
+            $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
+            break;
+      case 25:
+            $consulta = "INSERT INTO image_of_year (id_image, date) VALUES('$id_image', '$date')";
             $resultado = $conexion->prepare($consulta);
             $resultado->execute();                
             break;

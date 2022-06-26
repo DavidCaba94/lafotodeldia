@@ -178,4 +178,32 @@ export default {
     });
     return numPhotos;
   },
+  async getPhotosOfMonth(idUser) {
+    let numPhotos = 0;
+    await axios.post(url, {
+      opcion:13,
+      id: idUser
+    }).then(response =>{
+      if(response.status == 200){
+        numPhotos = response.data[0].numPhotosOfMonth;
+      } else {
+        console.log('error');
+      }
+    });
+    return numPhotos;
+  },
+  async getPhotosOfYear(idUser) {
+    let numPhotos = 0;
+    await axios.post(url, {
+      opcion:14,
+      id: idUser
+    }).then(response =>{
+      if(response.status == 200){
+        numPhotos = response.data[0].numPhotosOfYear;
+      } else {
+        console.log('error');
+      }
+    });
+    return numPhotos;
+  }
 }

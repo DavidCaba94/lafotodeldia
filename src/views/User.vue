@@ -42,12 +42,12 @@
       <div class="prize-item">
         <p class="titulo-premio">Foto del mes</p>
         <img src="../assets/img/prize-month.png" class="prize-image">
-        <p class="num-premios">0</p>
+        <p class="num-premios">{{ photosOfMonth }}</p>
       </div>
       <div class="prize-item">
         <p class="titulo-premio">Foto del año</p>
         <img src="../assets/img/prize-year.png" class="prize-image">
-        <p class="num-premios">0</p>
+        <p class="num-premios">{{ photosOfYear }}</p>
       </div>
     </div>
     <div class="new-image" @click="showUploadImage()">
@@ -116,7 +116,9 @@ export default {
       selectedShowImage: {},
       numFollowed: 0,
       numFollowers: 0,
-      photosOfDay: 0
+      photosOfDay: 0,
+      photosOfMonth: 0,
+      photosOfYear: 0
     }
   },
   components: {
@@ -155,6 +157,8 @@ export default {
       this.verified = u.verificado === '1' ? true : false;
       this.getnumFollowers();
       this.getPhotosOfDay();
+      this.getPhotosOfMonth();
+      this.getPhotosOfYear();
     },
     async changePass() {
       this.errorLog = null;
@@ -185,6 +189,12 @@ export default {
     },
     async getPhotosOfDay() {
       this.photosOfDay = await userService.getPhotosOfDay(this.$store.state.login.id);
+    },
+    async getPhotosOfMonth() {
+      this.photosOfMonth = await userService.getPhotosOfMonth(this.$store.state.login.id);
+    },
+    async getPhotosOfYear() {
+      this.photosOfYear = await userService.getPhotosOfYear(this.$store.state.login.id);
     },
     verificarCuenta() {
       // verificar cuenta

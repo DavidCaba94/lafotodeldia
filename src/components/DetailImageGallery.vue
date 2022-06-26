@@ -6,10 +6,12 @@
     <div class="img-container" @click="() => {if(!deleteEnabled){closeFullImage()}}">
       <div class="box-img-show">
         <v-lazy-image class="img-show" :src="imageData.urlImage" />
-        <div class="btn-delete" v-if="deleteEnabled" @click="openDeleteDialog()"></div>
         <div class="flex-box">
-          <img class="img-likes" src="../assets/img/like-up.png">
-          <div class="likes-text">{{ imageData.likesImage }}</div>
+          <div class="flex-likes-pill">
+            <img class="img-likes" src="../assets/img/like-up.png">
+            <div class="likes-text">{{ imageData.likesImage }}</div>
+          </div>
+          <div class="btn-delete" v-if="deleteEnabled" @click="openDeleteDialog()"></div>
         </div>
       </div>
     </div>
@@ -117,13 +119,11 @@ export default {
 }
 
 .btn-delete {
-  position: absolute;
   background-color: #ffffff;
   width: 30px;
   height: 30px;
+  margin-left: 5px;
   border-radius: 50px;
-  margin-top: -45px;
-  margin-left: 60px;
   background-image: url("../assets/img/delete.png");
   background-repeat: no-repeat;
   background-size: 20px;
@@ -142,7 +142,14 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: nowrap;
   margin-top: -40px;
+}
+
+.flex-likes-pill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-left: 10px;
   background-color: #ffffff;
   border-radius: 5px;

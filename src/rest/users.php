@@ -106,6 +106,26 @@ switch($opcion){
         $resultado->execute();
         $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
         break;
+    case 13:
+        $consulta = "SELECT COUNT(*) as numPhotosOfMonth 
+                    FROM image_of_month 
+                    WHERE id_image IN
+                    (SELECT id FROM images
+                    WHERE id_user = '$id')";
+        $resultado = $conexion->prepare($consulta);
+        $resultado->execute();
+        $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
+        break;
+    case 14:
+        $consulta = "SELECT COUNT(*) as numPhotosOfYear 
+                    FROM image_of_year 
+                    WHERE id_image IN
+                    (SELECT id FROM images
+                    WHERE id_user = '$id')";
+        $resultado = $conexion->prepare($consulta);
+        $resultado->execute();
+        $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
+        break;
 }
 print json_encode($data, JSON_UNESCAPED_UNICODE);
 $conexion = NULL;

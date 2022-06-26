@@ -301,5 +301,99 @@ export default {
       }
     });
     return successSave;
+  },
+  async getMostVotedImageOfMonth(dateIni, dateFin) {
+    let imagesArray = [];
+    await axios.post(url + 'images.php', {
+      opcion:20,
+      date_ini: dateIni,
+      date_fin: dateFin
+    }).then(response =>{
+      if(response.status == 200){
+        imagesArray = response.data;
+      } else {
+        console.log('error');
+      }
+    });
+    return imagesArray;
+  },
+  async updateMostVotedImageOfMonth(idFoto, date, dateIni, dateFin) {
+    let successSave = false;
+    await axios.post(url + 'images.php', {
+      opcion:21,
+      id_image: idFoto,
+      date: date,
+      date_ini: dateIni,
+      date_fin: dateFin
+    }).then(response =>{
+      if(response.status == 200){
+        successSave = true;
+      } else {
+        console.log('error');
+      }
+    });
+    return successSave;
+  },
+  async setMostVotedImageOfMonth(idFoto, date) {
+    let successSave = false;
+    await axios.post(url + 'images.php', {
+      opcion:22,
+      id_image: idFoto,
+      date: date
+    }).then(response =>{
+      if(response.status == 200){
+        successSave = true;
+      } else {
+        console.log('error');
+      }
+    });
+    return successSave;
+  },
+  async getMostVotedImageOfYear(dateIni, dateFin) {
+    let imagesArray = [];
+    await axios.post(url + 'images.php', {
+      opcion:23,
+      date_ini: dateIni,
+      date_fin: dateFin
+    }).then(response =>{
+      if(response.status == 200){
+        imagesArray = response.data;
+      } else {
+        console.log('error');
+      }
+    });
+    return imagesArray;
+  },
+  async updateMostVotedImageOfYear(idFoto, date, dateIni, dateFin) {
+    let successSave = false;
+    await axios.post(url + 'images.php', {
+      opcion:24,
+      id_image: idFoto,
+      date: date,
+      date_ini: dateIni,
+      date_fin: dateFin
+    }).then(response =>{
+      if(response.status == 200){
+        successSave = true;
+      } else {
+        console.log('error');
+      }
+    });
+    return successSave;
+  },
+  async setMostVotedImageOfYear(idFoto, date) {
+    let successSave = false;
+    await axios.post(url + 'images.php', {
+      opcion:25,
+      id_image: idFoto,
+      date: date
+    }).then(response =>{
+      if(response.status == 200){
+        successSave = true;
+      } else {
+        console.log('error');
+      }
+    });
+    return successSave;
   }
 }
