@@ -247,6 +247,30 @@ switch($opcion){
             $resultado = $conexion->prepare($consulta);
             $resultado->execute();                
             break;
+      case 26:
+            $consulta = "SELECT * FROM images WHERE id IN 
+                        (SELECT id_image FROM image_of_day)
+                        AND id_user='$id_user'";
+            $resultado = $conexion->prepare($consulta);
+            $resultado->execute();
+            $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
+            break;
+      case 27:
+            $consulta = "SELECT id FROM images WHERE id IN 
+                        (SELECT id_image FROM image_of_month)
+                        AND id_user='$id_user'";
+                        $resultado = $conexion->prepare($consulta);
+            $resultado->execute();
+            $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
+            break;
+      case 28:
+            $consulta = "SELECT id FROM images WHERE id IN 
+                        (SELECT id_image FROM image_of_year)
+                        AND id_user='$id_user'";
+                        $resultado = $conexion->prepare($consulta);
+            $resultado->execute();
+            $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
+            break;
 }
 print json_encode($data, JSON_UNESCAPED_UNICODE);
 $conexion = NULL;

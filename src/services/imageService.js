@@ -395,5 +395,47 @@ export default {
       }
     });
     return successSave;
+  },
+  async getAllPrizedImagesByUser(id_user) {
+    let imagesArray = [];
+    await axios.post(url + 'images.php', {
+      opcion:26,
+      id_user: id_user
+    }).then(response =>{
+      if(response.status == 200){
+        imagesArray = response.data;
+      } else {
+        console.log('error');
+      }
+    });
+    return imagesArray;
+  },
+  async getMonthPrizedImagesByUser(id_user) {
+    let imagesArray = [];
+    await axios.post(url + 'images.php', {
+      opcion:27,
+      id_user: id_user
+    }).then(response =>{
+      if(response.status == 200){
+        imagesArray = response.data;
+      } else {
+        console.log('error');
+      }
+    });
+    return imagesArray;
+  },
+  async getYearPrizedImagesByUser(id_user) {
+    let imagesArray = [];
+    await axios.post(url + 'images.php', {
+      opcion:28,
+      id_user: id_user
+    }).then(response =>{
+      if(response.status == 200){
+        imagesArray = response.data;
+      } else {
+        console.log('error');
+      }
+    });
+    return imagesArray;
   }
 }

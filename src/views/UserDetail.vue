@@ -28,23 +28,25 @@
         <div>{{ numFollowed }}</div>
       </div>
     </div>
-    <div class="prizes-box">
-      <div class="prize-item">
-        <p class="titulo-premio">Foto del día</p>
-        <img src="../assets/img/prize-day.png" class="prize-image">
-        <p class="num-premios">{{ photosOfDay }}</p>
+    <router-link :to="'/prizes-gallery/' + idUser">
+      <div class="prizes-box">
+        <div class="prize-item">
+          <p class="titulo-premio">Foto del día</p>
+          <img src="../assets/img/prize-day.png" class="prize-image">
+          <p class="num-premios">{{ photosOfDay }}</p>
+        </div>
+        <div class="prize-item">
+          <p class="titulo-premio">Foto del mes</p>
+          <img src="../assets/img/prize-month.png" class="prize-image">
+          <p class="num-premios">{{ photosOfMonth }}</p>
+        </div>
+        <div class="prize-item">
+          <p class="titulo-premio">Foto del año</p>
+          <img src="../assets/img/prize-year.png" class="prize-image">
+          <p class="num-premios">{{ photosOfYear }}</p>
+        </div>
       </div>
-      <div class="prize-item">
-        <p class="titulo-premio">Foto del mes</p>
-        <img src="../assets/img/prize-month.png" class="prize-image">
-        <p class="num-premios">{{ photosOfMonth }}</p>
-      </div>
-      <div class="prize-item">
-        <p class="titulo-premio">Foto del año</p>
-        <img src="../assets/img/prize-year.png" class="prize-image">
-        <p class="num-premios">{{ photosOfYear }}</p>
-      </div>
-    </div>
+    </router-link>
     <div class="fotos-box">
       <div
         v-for="image of imagesArray"

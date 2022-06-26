@@ -6,6 +6,7 @@ import Historical from '../views/Historical.vue'
 import User from '../views/User.vue'
 import UserDetail from '../views/UserDetail.vue'
 import UserGallery from '../views/UserGallery.vue'
+import PrizesGallery from '../views/PrizesGallery.vue'
 import Products from '../views/Products.vue'
 import Login from '../views/Login.vue'
 import Registro from '../views/Registro.vue'
@@ -45,6 +46,11 @@ const routes = [
     path: '/user-gallery/:id',
     name: 'UserGallery',
     component: UserGallery
+  },
+  {
+    path: '/prizes-gallery/:id',
+    name: 'PrizesGallery',
+    component: PrizesGallery
   },
   {
     path: '/products',
