@@ -4,7 +4,7 @@
       <p class="titulo-registro">Registro</p>
       <p class="subtitulo-registro">Regístrate para tener acceso a todas las funcionalidades</p>
       <div class="input-box">
-        <input type="text" placeholder="Usuario (Ej: JohnDoe23)" v-model="registroForm.user" @keyup="disableSpaces()">
+        <input type="text" placeholder="Usuario" maxlength="20" v-model="registroForm.user" @keyup="disableSpaces()">
         <input type="email" placeholder="Email" v-model="registroForm.email">
         <input type="password" placeholder="Contraseña" v-model="registroForm.pass">
         <input type="password" placeholder="Confirmar contraseña" v-model="registroForm.pass2">
