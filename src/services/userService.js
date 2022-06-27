@@ -1,6 +1,7 @@
 import axios from "axios";
 
 var url = "https://davidcaballerocalvo.es/lafotodeldia/rest/users.php";
+var urlMail = "https://davidcaballerocalvo.es/lafotodeldia/rest/send_mail_verify.php";
 
 export default {
   async getUserByNameOrEmail(form) {
@@ -194,5 +195,18 @@ export default {
       }
     });
     return numPhotos;
+  },
+  async sendVerificationEmail(email, code, user) {
+    let successSend = false;
+    await axios.post(urlMail, {
+      email: email,
+      code: code,
+      user: user
+    }).then(response =>{
+      if(response.status == 200){
+        successSend = true;
+      }
+    });
+    return successSend;
   }
 }

@@ -73,7 +73,16 @@
     </router-link>
     <div class="verify-box" v-if="!verified">
       <p>Verifica tu cuenta mediante un email</p>
-      <div class="verify-btn" @click="verificarCuenta()">VERIFICAR</div>
+      <div class="verify-btn" v-if="!sendingEmail" @click="verificarCuenta()">VERIFICAR</div>
+      <div>
+        <div class="lds-ellipsis" v-if="sendingEmail"><div></div><div></div><div></div><div></div></div>
+      </div>
+    </div>
+    <div class="advertise-email-sent" v-if="successEmailSend === true">
+      Se ha enviado el correo de verificación. Revisa tu carpeta de SPAM si no lo encuentras.
+    </div>
+    <div class="advertise-email-error" v-if="successEmailSend === false">
+      Ha ocurrido un error al enviar el correo de verificación, intentalo de nuevo en unos minutos.
     </div>
     <div class="pass-box">
       <p class="titulo-pass">CAMBIAR CONTRASEÑA</p>
@@ -120,7 +129,9 @@ export default {
       numFollowers: 0,
       photosOfDay: 0,
       photosOfMonth: 0,
-      photosOfYear: 0
+      photosOfYear: 0,
+      sendingEmail: false,
+      successEmailSend: null
     }
   },
   components: {
@@ -197,8 +208,11 @@ export default {
     async getPhotosOfYear() {
       this.photosOfYear = await userService.getPhotosOfYear(this.$store.state.login.id);
     },
-    verificarCuenta() {
-      // verificar cuenta
+    async verificarCuenta() {
+      this.successEmailSend = null;
+      this.sendingEmail = true;
+      this.successEmailSend = await userService.sendVerificationEmail(this.$store.state.login.email, this.$store.state.login.id + '/-/861029465538201836438', this.$store.state.login.user);
+      this.sendingEmail = false;
     },
     showUploadImage() {
       this.showUpload = true;
@@ -510,6 +524,34 @@ export default {
   padding: 2px 7px;
 }
 
+.advertise-email-sent {
+  max-width: 400px;
+  margin: 0 auto;
+  background-color: #1fbd54;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 20px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+
+.advertise-email-error {
+  max-width: 400px;
+  margin: 0 auto;
+  background-color: #ff6d6d;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 20px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+
 a {
   font-weight: 300;
   color: #000000;
@@ -519,5 +561,63 @@ a {
 a.router-link-exact-active {
   background-color: #f0f0f0;
   border-radius: 5px;
+}
+
+
+/* LOADER */
+.lds-ellipsis {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 20px;
+  margin-top: 10px;
+}
+.lds-ellipsis div {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ffffff;
+  animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+.lds-ellipsis div:nth-child(1) {
+  left: 8px;
+  animation: lds-ellipsis1 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(2) {
+  left: 8px;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(3) {
+  left: 32px;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(4) {
+  left: 56px;
+  animation: lds-ellipsis3 0.6s infinite;
+}
+@keyframes lds-ellipsis1 {
+  0% {
+      transform: scale(0);
+  }
+  100% {
+      transform: scale(1);
+  }
+}
+@keyframes lds-ellipsis3 {
+  0% {
+      transform: scale(1);
+  }
+  100% {
+      transform: scale(0);
+  }
+}
+@keyframes lds-ellipsis2 {
+  0% {
+      transform: translate(0, 0);
+  }
+  100% {
+      transform: translate(24px, 0);
+  }
 }
 </style>
