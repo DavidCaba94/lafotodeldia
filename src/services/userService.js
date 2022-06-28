@@ -222,5 +222,20 @@ export default {
       }
     });
     return successUpdate;
+  },
+  async updateEmailUsuario(idUser, email) {
+    let successUpdate = false;
+    await axios.post(url, {
+      opcion:16, 
+      id: idUser,
+      email: email
+    }).then(response =>{
+      if(response.status == 200){
+        successUpdate = true;
+      } else {
+        console.log('error');
+      }
+    });
+    return successUpdate;
   }
 }

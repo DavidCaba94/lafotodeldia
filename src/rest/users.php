@@ -131,6 +131,11 @@ switch($opcion){
         $resultado = $conexion->prepare($consulta);
         $resultado->execute();                
         break;
+    case 16:
+        $consulta = "UPDATE users SET email='$email' WHERE id='$id'";	
+        $resultado = $conexion->prepare($consulta);
+        $resultado->execute();                
+        break;
 }
 print json_encode($data, JSON_UNESCAPED_UNICODE);
 $conexion = NULL;

@@ -85,6 +85,15 @@
       Ha ocurrido un error al enviar el correo de verificación, intentalo de nuevo en unos minutos.
     </div>
     <div class="pass-box">
+      <p class="titulo-pass">CAMBIAR EMAIL</p>
+      <div class="input-box">
+        <input type="email" v-model="email">
+      </div>
+      <p id="error-log" class="error-log" v-if="emailErrorLog">{{emailErrorLog}}</p>
+      <p id="success-log" class="success-log" v-if="emailSuccessLog">{{emailSuccessLog}}</p>
+      <div class="btn-confirmar" @click="changeEmail()">CONFIRMAR</div>
+    </div>
+    <div class="pass-box">
       <p class="titulo-pass">CAMBIAR CONTRASEÑA</p>
       <div class="input-box">
         <input type="password" placeholder="Contraseña antigua" v-model="oldPass">
@@ -112,6 +121,7 @@ export default {
   data() {
     return {
       idUser: this.$store.state.login.id,
+      email: '',
       username: '',
       pass: '',
       foto: '',
@@ -123,6 +133,8 @@ export default {
       showUploadProfile: false,
       errorLog: null,
       successLog: null,
+      emailErrorLog: null,
+      emailSuccessLog: null,
       imagesArray: [],
       selectedShowImage: {},
       numFollowed: 0,
@@ -166,6 +178,7 @@ export default {
       let u = await userService.getUserById(this.$store.state.login.id);
       this.username = u.user;
       this.pass = u.pass;
+      this.email = u.email;
       this.foto = u.foto;
       this.verified = u.verificado === '1' ? true : false;
       this.getnumFollowers();
@@ -190,6 +203,18 @@ export default {
         }
       } else {
         this.errorLog = 'Contraseña antigua incorrecta';
+      }
+    },
+    async changeEmail() {
+      this.emailErrorLog = null;
+      this.emailSuccessLog = null;
+      let updateSuccess = await userService.updateEmailUsuario(this.$store.state.login.id, this.email);
+      if (updateSuccess) {
+        this.$store.state.login.email = this.email;
+        localStorage.setItem(localStorage.getItem('user').email, this.email);
+        this.emailSuccessLog = 'Email cambiado';
+      } else {
+        this.emailErrorLog = 'Error al cambiar el email';
       }
     },
     async getnumFollowers() {
