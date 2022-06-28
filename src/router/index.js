@@ -7,6 +7,7 @@ import User from '../views/User.vue'
 import UserDetail from '../views/UserDetail.vue'
 import UserGallery from '../views/UserGallery.vue'
 import PrizesGallery from '../views/PrizesGallery.vue'
+import VerifyAccount from '../views/VerifyAccount.vue'
 import Products from '../views/Products.vue'
 import Login from '../views/Login.vue'
 import Registro from '../views/Registro.vue'
@@ -51,6 +52,11 @@ const routes = [
     path: '/prizes-gallery/:id',
     name: 'PrizesGallery',
     component: PrizesGallery
+  },
+  {
+    path: '/verify-account/:code',
+    name: 'VerifyAccount',
+    component: VerifyAccount
   },
   {
     path: '/products',

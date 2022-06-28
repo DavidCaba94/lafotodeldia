@@ -208,5 +208,19 @@ export default {
       }
     });
     return successSend;
+  },
+  async updateVerificadoUsuario(idUser) {
+    let successUpdate = false;
+    await axios.post(url, {
+      opcion:15, 
+      id: idUser
+    }).then(response =>{
+      if(response.status == 200){
+        successUpdate = true;
+      } else {
+        console.log('error');
+      }
+    });
+    return successUpdate;
   }
 }

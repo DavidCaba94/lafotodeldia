@@ -211,8 +211,11 @@ export default {
     async verificarCuenta() {
       this.successEmailSend = null;
       this.sendingEmail = true;
-      this.successEmailSend = await userService.sendVerificationEmail(this.$store.state.login.email, this.$store.state.login.id + '/-/861029465538201836438', this.$store.state.login.user);
+      this.successEmailSend = await userService.sendVerificationEmail(this.$store.state.login.email, this.$store.state.login.id + '::' + this.generateRandomCode(), this.$store.state.login.user);
       this.sendingEmail = false;
+    },
+    generateRandomCode() {
+      return Math.floor(Math.round(Math.random() * 1000000000000000));
     },
     showUploadImage() {
       this.showUpload = true;
