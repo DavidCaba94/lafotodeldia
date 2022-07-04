@@ -20,6 +20,10 @@
     </div>
     <div class="followers-container">
       <div class="followers-item">
+        <p>Fotos</p>
+        <div>{{ numFotos }}</div>
+      </div>
+      <div class="followers-item">
         <p>Seguidores</p>
         <div>{{ numFollowers }}</div>
       </div>
@@ -83,6 +87,7 @@ export default {
       imagesArray: [],
       selectedShowImage: {},
       following: false,
+      numFotos: 0,
       numFollowed: 0,
       numFollowers: 0,
       photosOfDay: 0,
@@ -150,6 +155,7 @@ export default {
       this.getnumFollowers();
     },
     async getnumFollowers() {
+      this.numFotos = await homeService.getNumFotosByUser(this.idUser);
       this.numFollowed = await homeService.getNumFollowedUsers(this.idUser);
       this.numFollowers = await homeService.getNumFollowersUsers(this.idUser);
     },
@@ -350,7 +356,7 @@ export default {
   max-width: 300px;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
   flex-wrap: nowrap;
   margin: 0 auto;
   margin-bottom: 20px;

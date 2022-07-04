@@ -33,5 +33,5 @@ $msg = "Hola @$user,\nVerifica tu cuenta haciendo click en el siguiente enlace\n
 $msg = wordwrap($msg,70);
 
 // send email
-mail($email,"Verificacion de cuenta - La Foto del Dia",$msg,"From: info@lafotodeldia.com");
+mail($email,"Verificacion de cuenta - La Foto del Dia",$msg,"From: info@lafotodeldia.app");
 ?>

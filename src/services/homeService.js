@@ -57,6 +57,20 @@ export default {
     });
     return numUsers;
   },
+  async getNumFotosByUser(idUser) {
+    let numFotos = 0;
+    await axios.post(url, {
+      opcion:13,
+      id_user: idUser
+    }).then(response =>{
+      if(response.status == 200){
+        numFotos = response.data[0].numFotos;
+      } else {
+        console.log('error');
+      }
+    });
+    return numFotos;
+  },
   async getNumFollowedUsers(idUser) {
     let numFollowedUsers = 0;
     await axios.post(url, {
