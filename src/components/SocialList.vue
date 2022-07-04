@@ -17,8 +17,14 @@
         <span>{{ numUsers }}</span>
       </div>
     </div>
-    <div class="lds-ellipsis" v-if="loading"><div></div><div></div><div></div><div></div></div>
     <div v-if="tabSeleccionado === 'seguidores'">
+      <div class="browser-box">
+        <input type="text" placeholder="Usuario" v-model="browseTextFollowers">
+        <div class="search-button" @click="findFollowersUsers()">
+          <img src="../assets/img/search.png" alt="">
+        </div>
+      </div>
+      <div class="lds-ellipsis" v-if="loading"><div></div><div></div><div></div><div></div></div>
       <SocialItem v-for="user in followersUserList" :key="user.id" 
         :user="user"
         :followButton="isFollowButtonActive(user.id)"
@@ -28,6 +34,13 @@
       />
     </div>
     <div v-if="tabSeleccionado === 'seguidos'">
+      <div class="browser-box">
+        <input type="text" placeholder="Usuario" v-model="browseTextFollowed">
+        <div class="search-button" @click="findFollowedUsers()">
+          <img src="../assets/img/search.png" alt="">
+        </div>
+      </div>
+      <div class="lds-ellipsis" v-if="loading"><div></div><div></div><div></div><div></div></div>
       <SocialItem v-for="user in followedUserList" :key="user.id" 
         :user="user"
         :followButton="isFollowButtonActive(user.id)"
@@ -37,6 +50,13 @@
       />
     </div>
     <div v-if="tabSeleccionado === 'todos'">
+      <div class="browser-box">
+        <input type="text" placeholder="Usuario" v-model="browseTextAll">
+        <div class="search-button" @click="findAllUsers()">
+          <img src="../assets/img/search.png" alt="">
+        </div>
+      </div>
+      <div class="lds-ellipsis" v-if="loading"><div></div><div></div><div></div><div></div></div>
       <SocialItem v-for="user in allUsersList" :key="user.id" 
         :user="user"
         :followButton="isFollowButtonActive(user.id)"
@@ -65,7 +85,10 @@ export default {
       tabSeleccionado: 'seguidores',
       numUsers: 0,
       numFollowed: 0,
-      numFollowers: 0
+      numFollowers: 0,
+      browseTextFollowed: '',
+      browseTextFollowers: '',
+      browseTextAll: ''
     }
   },
   props: {
@@ -159,6 +182,49 @@ export default {
         }
       });
       return followable;
+    },
+    async findFollowedUsers() {
+      if (this.browseTextFollowed !== '') {
+        this.followedUserList = [];
+        this.loading = true;
+        let tempList = await homeService.getFollowedUsers(this.$store.state.login.id);
+        tempList.forEach(user => {
+          if (user.user.toLowerCase().includes(this.browseTextFollowed.toLowerCase())) {
+            this.followedUserList.push(user);
+          }
+        });
+        this.loading = false;
+      } else {
+        this.getFollowedUsers();
+      }
+    },
+    async findFollowersUsers() {
+      if (this.browseTextFollowers !== '') {
+        this.followersUserList = [];
+        this.loading = true;
+        let tempList = await homeService.getFollowersUsers(this.$store.state.login.id);
+        tempList.forEach(user => {
+          if (user.user.toLowerCase().includes(this.browseTextFollowers.toLowerCase())) {
+            this.followersUserList.push(user);
+          }
+        });
+        this.loading = false;
+      } else {
+        this.getFollowersUsers();
+      }
+    },
+    async findAllUsers() {
+      if (this.browseTextAll !== '') {
+        this.allUsersList = [];
+        this.loading = true;
+        let tempList = await homeService.getAllUsersByName(this.browseTextAll);
+        tempList.forEach(user => {
+          this.allUsersList.push(user);
+        });
+        this.loading = false;
+      } else {
+        this.getAllUsers();
+      }
     }
   }
 }
@@ -202,6 +268,40 @@ export default {
 .users-seleccionado {
   background-color: #238dff1c;
   border-radius: 2px;
+}
+
+.browser-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  max-width: 300px;
+  margin: 0 auto;
+  margin-bottom: 15px;
+}
+
+.browser-box input {
+  width: 95%;
+  border: 0px;
+  border-bottom: 1px solid;
+  padding: 5px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.browser-box input:focus-visible {
+  outline: 0px;
+}
+
+.search-button {
+  padding: 5px;
+  border: 1px solid #000000;
+  border-radius: 5px;
+  margin-left: 10px;
+  height: 20px;
+}
+
+.search-button img {
+  width: 20px;
 }
 
 

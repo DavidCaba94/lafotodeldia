@@ -29,9 +29,10 @@ $id_user = (isset($_POST['id_user'])) ? $_POST['id_user'] : '';
 $id_following = (isset($_POST['id_following'])) ? $_POST['id_following'] : '';
 $date = (isset($_POST['date'])) ? $_POST['date'] : '';
 $first_limit = (isset($_POST['first_limit'])) ? $_POST['first_limit'] : '';
+$user = (isset($_POST['user'])) ? $_POST['user'] : '';
 
 switch($opcion){
-	  case 1:
+	case 1:
         $consulta = "SELECT * FROM users ORDER BY id DESC";
         $resultado = $conexion->prepare($consulta);
         $resultado->execute();
@@ -166,6 +167,12 @@ switch($opcion){
         break;
     case 13:
         $consulta = "SELECT COUNT(*) as numFotos FROM images WHERE id_user = '$id_user'";
+        $resultado = $conexion->prepare($consulta);
+        $resultado->execute();
+        $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
+        break;
+    case 14:
+        $consulta = "SELECT * FROM users WHERE user LIKE '%$user%' ORDER BY id DESC";
         $resultado = $conexion->prepare($consulta);
         $resultado->execute();
         $data=$resultado->fetchAll(PDO::FETCH_ASSOC);

@@ -16,6 +16,20 @@ export default {
     });
     return users;
   },
+  async getAllUsersByName(user) {
+    let users = [];
+    await axios.post(url, {
+      opcion:14,
+      user: user
+    }).then(response =>{
+      if(response.status == 200){
+        users = response.data;
+      } else {
+        console.log('error');
+      }
+    });
+    return users;
+  },
   async getFollowedUsers(idUser) {
     let users = [];
     await axios.post(url, {
