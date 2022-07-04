@@ -2,7 +2,7 @@
   <div class="historical-item">
     <div class="flex-box">
       <div class="profile-img">
-        <img :src="image.foto">
+        <div v-bind:style="{ backgroundImage: 'url(' + image.foto + ')' }"></div>
       </div>
       <div class="username-container">
         <img src="../assets/img/verified.png" v-if="image.verificado === '1'">
@@ -134,12 +134,15 @@ export default {
   border-radius: 50px;
 }
 
-.profile-img img {
+.profile-img div {
   width: 28px;
   height: 28px;
-  border-radius: 50px;
+  margin: 0 auto;
   margin-top: 1px;
-  margin-left: 0px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 50px;
 }
 
 .footer-container {

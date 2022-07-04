@@ -70,7 +70,8 @@ switch($opcion){
                         JOIN users U
                         ON I.id_user = U.id
                         WHERE I.date = '$date'
-                        ORDER BY I.likes DESC";
+                        ORDER BY I.likes DESC
+                        LIMIT 50";
             $resultado = $conexion->prepare($consulta);
             $resultado->execute();
             $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
@@ -88,7 +89,8 @@ switch($opcion){
                         JOIN users U
                         ON I.id_user = U.id
                         WHERE I.date BETWEEN '$date_ini' AND '$date_fin'
-                        ORDER BY I.likes DESC";
+                        ORDER BY I.likes DESC
+                        LIMIT 50";
             $resultado = $conexion->prepare($consulta);
             $resultado->execute();
             $data=$resultado->fetchAll(PDO::FETCH_ASSOC);

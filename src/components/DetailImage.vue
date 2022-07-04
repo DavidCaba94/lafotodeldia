@@ -10,7 +10,7 @@
           <div class="profile-show">
             <div class="flex-box">
               <div class="profile-img">
-                <v-lazy-image :src="imageData.urlProfile" />
+                <div v-bind:style="{ backgroundImage: 'url(' + imageData.urlProfile + ')' }"></div>
               </div>
               <div class="profile-name">@{{ imageData.userName }}</div>
             </div>
@@ -132,12 +132,15 @@ export default {
   border-radius: 50px;
 }
 
-.profile-img img {
+.profile-img div {
   width: 24px;
   height: 24px;
-  border-radius: 50px;
+  margin: 0 auto;
   margin-top: 1px;
-  margin-left: 0px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 50px;
 }
 
 .profile-name {

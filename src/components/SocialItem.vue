@@ -3,7 +3,7 @@
     <router-link :to="'/user-detail/' + user.id">
       <div class="flex-box">
         <div class="profile-img">
-          <v-lazy-image :src="user.foto" />
+          <div v-bind:style="{ backgroundImage: 'url(' + user.foto + ')' }"></div>
         </div>
         <div class="profile-name">
           <img src="../assets/img/verified.png" v-if="user.verificado === '1'">
@@ -23,8 +23,6 @@
 </template>
 
 <script>
-import VLazyImage from "v-lazy-image";
-
 export default {
   name: 'SocialItem',
   data() {
@@ -38,7 +36,7 @@ export default {
     unfollowButton: Boolean
   },
   components: {
-    VLazyImage
+
   },
   computed: {
 
@@ -87,12 +85,15 @@ a {
   border-radius: 50px;
 }
 
-.profile-img img {
+.profile-img div {
   width: 34px;
   height: 34px;
-  border-radius: 50px;
+  margin: 0 auto;
   margin-top: 1px;
-  margin-left: 0px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 50px;
 }
 
 .profile-name {
