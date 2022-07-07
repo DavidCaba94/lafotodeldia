@@ -249,7 +249,7 @@ export default {
       window.onscroll = () => {
         let bottomOfWindow = (Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) 
                            + window.innerHeight) >= document.documentElement.offsetHeight - 100;
-        if (bottomOfWindow && !this.noMoreUsers) {
+        if (bottomOfWindow && !this.noMoreUsers && this.tabSeleccionado === 'todos') {
           this.getAllUsersWithLimit();
         }
       };
