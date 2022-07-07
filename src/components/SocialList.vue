@@ -2,6 +2,7 @@
   <div v-if="!userLogged">
     <Unauthorized />
   </div>
+  <InfiniteLoading  @infinite="scroll"/>
   <div v-if="userLogged" class="social-list">
     <div class="selector-users">
       <div id="seguidores" class="item-users" @click="tabSeleccionado = 'seguidores'; setTabValue()">
@@ -19,7 +20,7 @@
     </div>
     <div v-if="tabSeleccionado === 'seguidores'">
       <div class="browser-box">
-        <input type="text" placeholder="Usuario" v-model="browseTextFollowers">
+        <input type="text" placeholder="Buscar..." v-model="browseTextFollowers">
         <div class="search-button" @click="findFollowersUsers()">
           <img src="../assets/img/search.png" alt="">
         </div>
@@ -35,7 +36,7 @@
     </div>
     <div v-if="tabSeleccionado === 'seguidos'">
       <div class="browser-box">
-        <input type="text" placeholder="Usuario" v-model="browseTextFollowed">
+        <input type="text" placeholder="Buscar..." v-model="browseTextFollowed">
         <div class="search-button" @click="findFollowedUsers()">
           <img src="../assets/img/search.png" alt="">
         </div>
@@ -51,12 +52,11 @@
     </div>
     <div v-if="tabSeleccionado === 'todos'">
       <div class="browser-box">
-        <input type="text" placeholder="Usuario" v-model="browseTextAll">
+        <input type="text" placeholder="Buscar..." v-model="browseTextAll">
         <div class="search-button" @click="findAllUsers()">
           <img src="../assets/img/search.png" alt="">
         </div>
       </div>
-      <div class="lds-ellipsis" v-if="loading"><div></div><div></div><div></div><div></div></div>
       <SocialItem v-for="user in allUsersList" :key="user.id" 
         :user="user"
         :followButton="isFollowButtonActive(user.id)"
@@ -64,6 +64,7 @@
         @followUser="followUser"
         @unfollowUser="unfollowUser"
       />
+      <div class="lds-ellipsis" v-if="loading"><div></div><div></div><div></div><div></div></div>
     </div>
   </div>
 </template>
@@ -72,6 +73,7 @@
 import Unauthorized from '../components/Unauthorized.vue';
 import SocialItem from '../components/SocialItem.vue';
 import homeService from '../services/homeService.js';
+import InfiniteLoading from "v3-infinite-loading";
 
 export default {
   name: 'SocialList',
@@ -88,7 +90,9 @@ export default {
       numFollowers: 0,
       browseTextFollowed: '',
       browseTextFollowers: '',
-      browseTextAll: ''
+      browseTextAll: '',
+      scrollCounter: 0,
+      noMoreUsers: false
     }
   },
   props: {
@@ -108,7 +112,8 @@ export default {
   },
   components: {
     Unauthorized,
-    SocialItem
+    SocialItem,
+    InfiniteLoading
   },
   async mounted() {
     if (this.userLogged) {
@@ -122,6 +127,20 @@ export default {
       this.loading = true;
       this.allUsersList = await homeService.getAllUsers();
       this.loading = false;
+    },
+    async getAllUsersWithLimit() {
+      let usersList = [];
+      this.scrollCounter++;
+      this.loading = true;
+      usersList = await homeService.getAllUsersWithLimit((this.scrollCounter*30) + 1);
+      this.loading = false;
+      if(usersList.length === 0) {
+        this.noMoreUsers = true;
+      } else {
+        usersList.forEach(usr => {
+          this.allUsersList.push(usr);
+        });
+      }
     },
     async getFollowedUsers() {
       this.followedUserList = [];
@@ -225,6 +244,15 @@ export default {
       } else {
         this.getAllUsers();
       }
+    },
+    scroll () {
+      window.onscroll = () => {
+        let bottomOfWindow = (Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) 
+                           + window.innerHeight) >= document.documentElement.offsetHeight - 100;
+        if (bottomOfWindow && !this.noMoreUsers) {
+          this.getAllUsersWithLimit();
+        }
+      };
     }
   }
 }

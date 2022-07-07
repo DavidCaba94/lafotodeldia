@@ -33,7 +33,7 @@ $user = (isset($_POST['user'])) ? $_POST['user'] : '';
 
 switch($opcion){
 	case 1:
-        $consulta = "SELECT * FROM users ORDER BY id DESC";
+        $consulta = "SELECT * FROM users ORDER BY id DESC LIMIT 30";
         $resultado = $conexion->prepare($consulta);
         $resultado->execute();
         $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
@@ -173,6 +173,12 @@ switch($opcion){
         break;
     case 14:
         $consulta = "SELECT * FROM users WHERE user LIKE '%$user%' ORDER BY id DESC";
+        $resultado = $conexion->prepare($consulta);
+        $resultado->execute();
+        $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
+        break;
+    case 15:
+        $consulta = "SELECT * FROM users ORDER BY id DESC LIMIT $first_limit, 30";
         $resultado = $conexion->prepare($consulta);
         $resultado->execute();
         $data=$resultado->fetchAll(PDO::FETCH_ASSOC);

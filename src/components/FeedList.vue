@@ -45,12 +45,7 @@ export default {
       loading: false,
       loadingMore: false,
       scrollCounter: 0,
-      noMoreImages: false,
-      pageYOffset: 0,
-      scrollTop: 0,
-      bodyscrollTop: 0,
-      innerHeight: 0,
-      offsetHeight: 0
+      noMoreImages: false
     }
   },
   props: {

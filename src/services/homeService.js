@@ -16,6 +16,20 @@ export default {
     });
     return users;
   },
+  async getAllUsersWithLimit(limit) {
+    let users = [];
+    await axios.post(url, {
+      opcion:15,
+      first_limit: limit - 1
+    }).then(response =>{
+      if(response.status == 200){
+        users = response.data;
+      } else {
+        console.log('error');
+      }
+    });
+    return users;
+  },
   async getAllUsersByName(user) {
     let users = [];
     await axios.post(url, {
