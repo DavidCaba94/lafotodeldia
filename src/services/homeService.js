@@ -190,7 +190,7 @@ export default {
     await axios.post(url, {
       opcion:12,
       id_user: idUser,
-      first_limit: limit
+      first_limit: limit - 1
     }).then(response =>{
       if(response.status == 200){
         feedImageListWithLimit = response.data;
