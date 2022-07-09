@@ -118,29 +118,35 @@ export default {
       let mostVotedImageOfDay = await imageService.getMostVotedImageOfDay(today);
       let thisImage = await imageService.getImageById(this.idFoto);
       //Actualizar image_of_day
-      if (parseInt(thisImage[0].likes) > 1 && parseInt(mostVotedImageOfDay[0].likes) <= parseInt(thisImage[0].likes)) {
-        await imageService.updateMostVotedImageOfDay(thisImage[0].id, today);
-      } else if (parseInt(thisImage[0].likes) > 1 && parseInt(mostVotedImageOfDay[0].likes) > parseInt(thisImage[0].likes)) {
-        await imageService.updateMostVotedImageOfDay(mostVotedImageOfDay[0].id, today);
-      } else if (parseInt(mostVotedImageOfDay[0].likes) === 1) {
-        await imageService.setMostVotedImageOfDay(mostVotedImageOfDay[0].id, today);
+      if (mostVotedImageOfDay.length > 0) {
+        if (parseInt(thisImage[0].likes) > 1 && parseInt(mostVotedImageOfDay[0].likes) <= parseInt(thisImage[0].likes)) {
+          await imageService.updateMostVotedImageOfDay(thisImage[0].id, today);
+        } else if (parseInt(thisImage[0].likes) > 1 && parseInt(mostVotedImageOfDay[0].likes) > parseInt(thisImage[0].likes)) {
+          await imageService.updateMostVotedImageOfDay(mostVotedImageOfDay[0].id, today);
+        }
+      } else if (mostVotedImageOfDay.length === 0) {
+        await imageService.setMostVotedImageOfDay(thisImage[0].id, today);
       }
       //Actualizar image_of_month
       let mostVotedImageOfMonth = await imageService.getMostVotedImageOfMonth(this.anoActual + '-' + (this.mesActual + 1) + '-01', this.anoActual + '-' + (this.mesActual + 1) + '-' + this.getLastDayOfMonth(this.mesActual, this.anoActual));
-      if (parseInt(thisImage[0].likes) > 1 && parseInt(mostVotedImageOfMonth[0].likes) <= parseInt(thisImage[0].likes)) {
-        await imageService.updateMostVotedImageOfMonth(thisImage[0].id, today, this.anoActual + '-' + (this.mesActual + 1) + '-01', this.anoActual + '-' + (this.mesActual + 1) + '-' + this.getLastDayOfMonth(this.mesActual, this.anoActual));
-      } else if (parseInt(thisImage[0].likes) > 1 && parseInt(mostVotedImageOfMonth[0].likes) > parseInt(thisImage[0].likes)) {
-        await imageService.updateMostVotedImageOfMonth(mostVotedImageOfMonth[0].id, mostVotedImageOfMonth[0].date, this.anoActual + '-' + (this.mesActual + 1) + '-01', this.anoActual + '-' + (this.mesActual + 1) + '-' + this.getLastDayOfMonth(this.mesActual, this.anoActual));
-      } else if (parseInt(mostVotedImageOfMonth[0].likes) === 1) {
+      if (mostVotedImageOfMonth.length > 0) {
+        if (parseInt(thisImage[0].likes) > 1 && parseInt(mostVotedImageOfMonth[0].likes) <= parseInt(thisImage[0].likes)) {
+          await imageService.updateMostVotedImageOfMonth(thisImage[0].id, today, this.anoActual + '-' + (this.mesActual + 1) + '-01', this.anoActual + '-' + (this.mesActual + 1) + '-' + this.getLastDayOfMonth(this.mesActual, this.anoActual));
+        } else if (parseInt(thisImage[0].likes) > 1 && parseInt(mostVotedImageOfMonth[0].likes) > parseInt(thisImage[0].likes)) {
+          await imageService.updateMostVotedImageOfMonth(mostVotedImageOfMonth[0].id, mostVotedImageOfMonth[0].date, this.anoActual + '-' + (this.mesActual + 1) + '-01', this.anoActual + '-' + (this.mesActual + 1) + '-' + this.getLastDayOfMonth(this.mesActual, this.anoActual));
+        }
+      } else if (mostVotedImageOfMonth.length === 0) {
         await imageService.setMostVotedImageOfMonth(thisImage[0].id, today);
       }
       //Actualizar image_of_year
       let mostVotedImageOfYear = await imageService.getMostVotedImageOfYear(this.anoActual + '-01-01', this.anoActual + '-12-31');
-      if (parseInt(thisImage[0].likes) > 1 && parseInt(mostVotedImageOfYear[0].likes) <= parseInt(thisImage[0].likes)) {
-        await imageService.updateMostVotedImageOfYear(thisImage[0].id, today, this.anoActual + '-01-01', this.anoActual + '-12-31');
-      } else if (parseInt(thisImage[0].likes) > 1 && parseInt(mostVotedImageOfYear[0].likes) > parseInt(thisImage[0].likes)) {
-        await imageService.updateMostVotedImageOfYear(mostVotedImageOfYear[0].id, mostVotedImageOfYear[0].date, this.anoActual + '-01-01', this.anoActual + '-12-31');
-      } else if (parseInt(mostVotedImageOfYear[0].likes) === 1) {
+      if (mostVotedImageOfYear.length > 0) {
+        if (parseInt(thisImage[0].likes) > 1 && parseInt(mostVotedImageOfYear[0].likes) <= parseInt(thisImage[0].likes)) {
+          await imageService.updateMostVotedImageOfYear(thisImage[0].id, today, this.anoActual + '-01-01', this.anoActual + '-12-31');
+        } else if (parseInt(thisImage[0].likes) > 1 && parseInt(mostVotedImageOfYear[0].likes) > parseInt(thisImage[0].likes)) {
+          await imageService.updateMostVotedImageOfYear(mostVotedImageOfYear[0].id, mostVotedImageOfYear[0].date, this.anoActual + '-01-01', this.anoActual + '-12-31');
+        }
+      } else if (mostVotedImageOfYear.length === 0) {
         await imageService.setMostVotedImageOfYear(thisImage[0].id, today);
       }
     },

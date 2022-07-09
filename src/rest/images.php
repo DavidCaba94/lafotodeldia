@@ -193,7 +193,22 @@ switch($opcion){
             $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
             break;
       case 16:
-            $consulta = "SELECT * FROM images WHERE date='$date' ORDER BY likes DESC LIMIT 1";
+            $consulta = "SELECT
+                        U.id as 'id_user',
+                        U.user as 'user',
+                        U.foto as 'foto',
+                        U.verificado as 'verificado',
+                        I.id as 'id',
+                        I.id_user as 'id_user',
+                        I.url as 'url',
+                        I.likes as 'likes',
+                        I.date as 'date'
+                        FROM image_of_day W
+                        JOIN images I
+                        ON W.id_image = I.id
+                        JOIN users U
+                        ON I.id_user = U.id
+                        WHERE W.date='$date'";
             $resultado = $conexion->prepare($consulta);
             $resultado->execute();
             $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
@@ -216,7 +231,22 @@ switch($opcion){
             $resultado->execute();                
             break;
       case 20:
-            $consulta = "SELECT * FROM images WHERE date BETWEEN '$date_ini' AND '$date_fin' ORDER BY likes DESC LIMIT 1";
+            $consulta = "SELECT
+                        U.id as 'id_user',
+                        U.user as 'user',
+                        U.foto as 'foto',
+                        U.verificado as 'verificado',
+                        I.id as 'id',
+                        I.id_user as 'id_user',
+                        I.url as 'url',
+                        I.likes as 'likes',
+                        I.date as 'date'
+                        FROM image_of_month W
+                        JOIN images I
+                        ON W.id_image = I.id
+                        JOIN users U
+                        ON I.id_user = U.id
+                        WHERE W.date BETWEEN '$date_ini' AND '$date_fin'";
             $resultado = $conexion->prepare($consulta);
             $resultado->execute();
             $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
@@ -233,7 +263,22 @@ switch($opcion){
             $resultado->execute();                
             break;
       case 23:
-            $consulta = "SELECT * FROM images WHERE date BETWEEN '$date_ini' AND '$date_fin' ORDER BY likes DESC LIMIT 1";
+            $consulta = "SELECT
+                        U.id as 'id_user',
+                        U.user as 'user',
+                        U.foto as 'foto',
+                        U.verificado as 'verificado',
+                        I.id as 'id',
+                        I.id_user as 'id_user',
+                        I.url as 'url',
+                        I.likes as 'likes',
+                        I.date as 'date'
+                        FROM image_of_year W
+                        JOIN images I
+                        ON W.id_image = I.id
+                        JOIN users U
+                        ON I.id_user = U.id
+                        WHERE W.date BETWEEN '$date_ini' AND '$date_fin'";
             $resultado = $conexion->prepare($consulta);
             $resultado->execute();
             $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
