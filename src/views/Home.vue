@@ -52,7 +52,6 @@ export default {
 
 <style scoped>
 .home {
-  padding: 10px;
   padding-top: 70px;
   padding-bottom: 90px;
 }
@@ -70,6 +69,8 @@ a {
   align-items: center;
   justify-content: space-around;
   flex-wrap: nowrap;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .item-tab-home {

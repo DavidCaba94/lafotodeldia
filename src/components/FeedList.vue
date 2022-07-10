@@ -1,5 +1,10 @@
 <template>
   <InfiniteLoading  @infinite="scroll"/>
+  <div v-if="showImage">
+    <DetailImage
+    :imageData="selectedShowImage"
+    @closeFullImage="closeFullImage" />
+  </div>
   <div class="feed-list">
     <div class="yesterday-container" v-if="lastDayImage.length !== 0">
       <router-link :to="'/user-detail/' + lastDayImage[0].id_user">
@@ -20,6 +25,7 @@
     <div class="items-container" v-if="feedImages.length > 0">
       <FeedItem v-for="img in feedImages" :key="img.id"
         :image="img"
+        @click="showFullImage(img)"
       />
     </div>
     <div class="no-items-container" v-if="!loading && feedImages.length === 0">
@@ -32,6 +38,7 @@
 
 <script>
 import FeedItem from '../components/FeedItem.vue';
+import DetailImage from '../components/DetailImage.vue';
 import homeService from '../services/homeService.js';
 import utils from '../utils/utils.js';
 import InfiniteLoading from "v3-infinite-loading";
@@ -45,7 +52,9 @@ export default {
       loading: false,
       loadingMore: false,
       scrollCounter: 0,
-      noMoreImages: false
+      noMoreImages: false,
+      showImage: false,
+      selectedShowImage: {}
     }
   },
   props: {
@@ -60,7 +69,8 @@ export default {
   },
   components: {
     FeedItem,
-    InfiniteLoading
+    InfiniteLoading,
+    DetailImage
   },
   methods: {
     async getLastDayImage() {
@@ -113,6 +123,17 @@ export default {
           this.getFeedImagesWithLimit();
         }
       };
+    },
+    showFullImage(image) {
+      this.selectedShowImage.urlImage = image.url;
+      this.selectedShowImage.likesImage = image.likes;
+      this.selectedShowImage.userName = image.user;
+      this.selectedShowImage.urlProfile = image.foto;
+      this.selectedShowImage.userId = image.id_user;
+      this.showImage = true;
+    },
+    closeFullImage() {
+      this.showImage = false;
     }
   }
 }
