@@ -11,7 +11,7 @@
           <p>Buscar...</p>
         </div>
       </label>
-      <input type="file" name="photo" id="upload-photo" @change="changeInputImage()" />
+      <input type="file" name="photo" id="upload-photo" accept=".pjpeg,.jpeg,.jpg,.png,.gif" @change="changeInputImage()" />
       <img id="image-uploaded" class="image-uploaded" src="#" v-if="isFotoToShow">
       <div class="no-foto" v-if="!isFotoToShow"></div>
       <div class="btn-guardar" v-if="!saving" @click="saveImage()">Publicar</div>
