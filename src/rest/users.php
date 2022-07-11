@@ -31,6 +31,7 @@ $email = (isset($_POST['email'])) ? $_POST['email'] : '';
 $foto = (isset($_POST['foto'])) ? $_POST['foto'] : '';
 $id_user = (isset($_POST['id_user'])) ? $_POST['id_user'] : '';
 $id_following = (isset($_POST['id_following'])) ? $_POST['id_following'] : '';
+$instagram = (isset($_POST['instagram'])) ? $_POST['instagram'] : '';
 
 $pass = md5($pass);
 
@@ -91,7 +92,7 @@ switch($opcion){
         $resultado->execute();                
         break;
     case 11:
-        $consulta = "SELECT id, user, email, foto, verificado FROM users WHERE id = '$id'";
+        $consulta = "SELECT id, user, email, foto, verificado, instagram FROM users WHERE id = '$id'";
         $resultado = $conexion->prepare($consulta);
         $resultado->execute();
         $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
@@ -133,6 +134,11 @@ switch($opcion){
         break;
     case 16:
         $consulta = "UPDATE users SET email='$email' WHERE id='$id'";	
+        $resultado = $conexion->prepare($consulta);
+        $resultado->execute();                
+        break;
+    case 17:
+        $consulta = "UPDATE users SET instagram='$instagram' WHERE id='$id'";	
         $resultado = $conexion->prepare($consulta);
         $resultado->execute();                
         break;

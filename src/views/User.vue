@@ -89,6 +89,18 @@
       Ha ocurrido un error al enviar el correo de verificación, intentalo de nuevo en unos minutos.
     </div>
     <div class="pass-box">
+      <p class="titulo-pass">
+        <img src="../assets/img/instagram.png">
+        INSTAGRAM
+      </p>
+      <div class="input-box">
+        @<input type="text" v-model="instagram">
+      </div>
+      <p id="error-log" class="error-log" v-if="instagramErrorLog">{{instagramErrorLog}}</p>
+      <p id="success-log" class="success-log" v-if="instagramSuccessLog">{{instagramSuccessLog}}</p>
+      <div class="btn-confirmar" @click="changeInstagram()">CONFIRMAR</div>
+    </div>
+    <div class="pass-box">
       <p class="titulo-pass">CAMBIAR EMAIL</p>
       <div class="input-box">
         <input type="email" v-model="email">
@@ -132,6 +144,7 @@ export default {
       verified: false,
       oldPass: '',
       newPass: '',
+      instagram: '',
       showImage: false,
       showUpload: false,
       showUploadProfile: false,
@@ -139,6 +152,8 @@ export default {
       successLog: null,
       emailErrorLog: null,
       emailSuccessLog: null,
+      instagramErrorLog: null,
+      instagramSuccessLog: null,
       imagesArray: [],
       selectedShowImage: {},
       numFotos: 0,
@@ -186,6 +201,7 @@ export default {
       this.email = u.email;
       this.foto = u.foto;
       this.verified = u.verificado === '1' ? true : false;
+      this.instagram = u.instagram !== null ? u.instagram : '';
       this.getnumFollowers();
       this.getPhotosOfDay();
       this.getPhotosOfMonth();
@@ -217,9 +233,19 @@ export default {
       if (updateSuccess) {
         this.$store.state.login.email = this.email;
         localStorage.setItem(localStorage.getItem('user').email, this.email);
-        this.emailSuccessLog = 'Email cambiado';
+        this.emailSuccessLog = 'Email actualizado';
       } else {
-        this.emailErrorLog = 'Error al cambiar el email';
+        this.emailErrorLog = 'Error al actualizar el email';
+      }
+    },
+    async changeInstagram() {
+      this.instagramErrorLog = null;
+      this.instagramSuccessLog = null;
+      let updateSuccess = await userService.updateInstagramUsuario(this.$store.state.login.id, this.instagram);
+      if (updateSuccess) {
+        this.instagramSuccessLog = 'Instagram actualizado';
+      } else {
+        this.instagramErrorLog = 'Error al actualizar el instagram';
       }
     },
     async getnumFollowers() {
@@ -432,7 +458,16 @@ export default {
 }
 
 .titulo-pass {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
   font-weight: 700;
+}
+
+.titulo-pass img {
+  width: 25px;
+  margin-right: 5px;
 }
 
 .input-box {

@@ -237,5 +237,20 @@ export default {
       }
     });
     return successUpdate;
+  },
+  async updateInstagramUsuario(idUser, instagram) {
+    let successUpdate = false;
+    await axios.post(url, {
+      opcion:17, 
+      id: idUser,
+      instagram: instagram
+    }).then(response =>{
+      if(response.status == 200){
+        successUpdate = true;
+      } else {
+        console.log('error');
+      }
+    });
+    return successUpdate;
   }
 }

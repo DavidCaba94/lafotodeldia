@@ -51,6 +51,12 @@
         </div>
       </div>
     </router-link>
+    <div class="prizes-box" v-if="instagram !== ''">
+      <a :href="'https://www.instagram.com/' + instagram + '/'" target="_blank" class="instagram-link">
+        <img src="../assets/img/instagram.png">
+        @{{instagram}}
+      </a>
+    </div>
     <div class="fotos-box">
       <div
         v-for="image of imagesArray"
@@ -82,6 +88,7 @@ export default {
       username: '',
       foto: '',
       verified: false,
+      instagram: '',
       showImage: false,
       errorLog: null,
       imagesArray: [],
@@ -124,6 +131,7 @@ export default {
       this.username = u.user;
       this.foto = u.foto;
       this.verified = u.verificado === '1' ? true : false;
+      this.instagram = u.instagram !== null ? u.instagram : '';
       this.getAllUserImages(idUser);
       this.getPhotosOfDay();
       this.getPhotosOfMonth();
@@ -375,6 +383,20 @@ export default {
   border-radius: 2px;
   margin-top: 5px;
   padding: 2px 7px;
+}
+
+.instagram-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.instagram-link img {
+  width: 25px;
+  margin-right: 5px;
 }
 
 a {
