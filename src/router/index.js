@@ -59,7 +59,7 @@ const routes = [
     component: VerifyAccount
   },
   {
-    path: '/products',
+    path: '/products/:id',
     name: 'Products',
     component: Products
   },

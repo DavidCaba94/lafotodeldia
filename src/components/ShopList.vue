@@ -6,6 +6,7 @@
       del año
     </p>
     <p class="recaudacion-text">Total recaudado: <strong>10,45€</strong></p>
+    <router-link to="/products/1">
       <div class="banner-productos">
         <div class="text-banner">
           <img src="https://m.media-amazon.com/images/I/41Xn25rH9xL._AC_.jpg">
@@ -15,6 +16,8 @@
           <img src="../assets/img/arrow.png">
         </div>
       </div>
+    </router-link>
+    <router-link to="/products/2">
       <div class="banner-productos">
         <div class="text-banner">
           <img src="https://m.media-amazon.com/images/I/71v5TKPcE6L._AC_SX679_.jpg">
@@ -24,6 +27,8 @@
           <img src="../assets/img/arrow.png">
         </div>
       </div>
+    </router-link>
+    <router-link to="/products/3">
       <div class="banner-productos">
         <div class="text-banner">
           <img src="https://m.media-amazon.com/images/I/61pPpftos+L._AC_SX679_.jpg">
@@ -33,6 +38,8 @@
           <img src="../assets/img/arrow.png">
         </div>
       </div>
+    </router-link>
+    <router-link to="/products/4">
       <div class="banner-productos">
         <div class="text-banner">
           <img src="https://m.media-amazon.com/images/I/81JsuwPeEDL._AC_SX679_.jpg">
@@ -42,6 +49,8 @@
           <img src="../assets/img/arrow.png">
         </div>
       </div>
+    </router-link>
+    <router-link to="/products/5">
       <div class="banner-productos">
         <div class="text-banner">
           <img src="https://m.media-amazon.com/images/I/61vjUCzQCaL._AC_SY879_.jpg">
@@ -51,6 +60,8 @@
           <img src="../assets/img/arrow.png">
         </div>
       </div>
+    </router-link>
+    <router-link to="/products/6">
       <div class="banner-productos">
         <div class="text-banner">
           <img src="https://m.media-amazon.com/images/I/61Ms1fvjRSL._AC_SX450_.jpg">
@@ -60,6 +71,7 @@
           <img src="../assets/img/arrow.png">
         </div>
       </div>
+    </router-link>
   </div>
 </template>
 
