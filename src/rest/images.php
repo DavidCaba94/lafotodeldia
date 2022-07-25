@@ -187,7 +187,8 @@ switch($opcion){
                         ON W.id_image = I.id
                         JOIN users U
                         ON I.id_user = U.id
-                        WHERE W.date BETWEEN '$date_ini' AND '$date_fin'";
+                        WHERE W.date BETWEEN '$date_ini' AND '$date_fin'
+                        ORDER BY W.date ASC";
             $resultado = $conexion->prepare($consulta);
             $resultado->execute();
             $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
