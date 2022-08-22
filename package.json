@@ -1,6 +1,6 @@
 {
-  "name": "lafotodeldia",
-  "version": "0.1.0",
+  "name": "La Foto del Día",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
