@@ -100,6 +100,18 @@
       <p id="success-log" class="success-log" v-if="instagramSuccessLog">{{instagramSuccessLog}}</p>
       <div class="btn-confirmar" @click="changeInstagram()">CONFIRMAR</div>
     </div>
+    <div class="app-box">
+      <p class="titulo-pass">DESCARGA LA APP</p>
+      <p>Ya está disponible la app para todos los dispositivos</p>
+      <div class="download-icons">
+        <img src="../assets/img/android.png">
+        <img src="../assets/img/apple.png">
+        <img src="../assets/img/windows.png">
+        <img src="../assets/img/linux.png">
+      </div>
+      <p class="error-app" v-if="showAppInstalled">Ya tienes la app instalada en este dispositivo</p>
+      <div class="btn-downlad" @click="downloadApp()">DESCARGAR</div>
+    </div>
     <div class="pass-box">
       <p class="titulo-pass">CAMBIAR EMAIL</p>
       <div class="input-box">
@@ -163,7 +175,9 @@ export default {
       photosOfMonth: 0,
       photosOfYear: 0,
       sendingEmail: false,
-      successEmailSend: null
+      successEmailSend: null,
+      deferredPrompt: null,
+      showAppInstalled: false
     }
   },
   components: {
@@ -174,6 +188,13 @@ export default {
   },
   created() {
     this.getAllUserImages();
+    window.addEventListener("beforeinstallprompt", e => {
+      e.preventDefault();
+      this.deferredPrompt = e;
+    });
+    window.addEventListener("appinstalled", () => {
+      this.deferredPrompt = null;
+    });
   },
   computed: {
     userLogged() {
@@ -298,6 +319,13 @@ export default {
     },
     closeFullImage() {
       this.showImage = false;
+    },
+    downloadApp() {
+      if (this.deferredPrompt !== null) {
+        this.deferredPrompt.prompt();
+      } else {
+        this.showAppInstalled = true;
+      }
     }
   }
 }
@@ -457,6 +485,23 @@ export default {
   margin-bottom: 20px;
 }
 
+.app-box {
+  width: 95%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 10px;
+  background-color: #ffffff;
+  border-radius: 5px;
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1); 
+  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+  color: #000000;
+}
+
+.download-icons img {
+  width: 50px;
+}
+
 .titulo-pass {
   display: flex;
   align-items: center;
@@ -501,6 +546,18 @@ export default {
     cursor: pointer;
 }
 
+.btn-downlad {
+  max-width: 150px;
+  margin: 0 auto;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  background-color: #00a315;
+  color: #ffffff;
+  border-radius: 5px;
+  padding: 5px;
+  cursor: pointer;
+}
+
 .error-log {
     font-size: 12px;
     color: #ff6d6d;
@@ -513,6 +570,13 @@ export default {
     color: #00a315;
     font-weight: 300;
     margin-top: -10px;
+}
+
+.error-app {
+  font-size: 12px;
+  color: #000000;
+  font-weight: 300;
+  margin-top: 10px;
 }
 
 .new-image {
